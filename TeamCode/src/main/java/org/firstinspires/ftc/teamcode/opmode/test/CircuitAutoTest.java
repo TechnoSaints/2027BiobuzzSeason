@@ -9,11 +9,11 @@ import org.firstinspires.ftc.teamcode.common.AutoPaths;
 import org.firstinspires.ftc.teamcode.common.FieldConstants;
 
 /**
- * CircuitTest is a testing autonomous routine to verify the robot's movement.
+ * CircuitAutoTest is a testing autonomous routine to verify the robot's movement.
  * It follows a complex path through 4 different points and returns home.
  */
 @Autonomous(name = "Circuit Path Test", group = "Test")
-public class CircuitTest extends LinearOpMode {
+public class CircuitAutoTest extends LinearOpMode {
     private AutoBot bot;
 
     @Override
