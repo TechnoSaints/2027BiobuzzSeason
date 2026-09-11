@@ -22,17 +22,12 @@ public class RobotConstants {
     }
 
     public static class Intake {
-        public static double maxMovePower = 1;
-        public static double stopPower = 0;
+        public static final String INTAKE_MOTOR_NAME = "intakeMotor";
+        public static DcMotorSimple.Direction intakeMotorDirection = DcMotorSimple.Direction.FORWARD;
+        public static double maxMovePower = 1.0;
+        public static double stopPower = 0.0;
         public static double lockPower = 0.98;
     }
 
-    public static class Camera {
-        public static final double xPosition = 0;
-        public static final double yPosition = 0;
-        public static final double zPosition = 0;
-        public static final double yaw = 0;
-        public static final double pitch = -90;
-        public static final double roll = 0;
-    }
+
 }

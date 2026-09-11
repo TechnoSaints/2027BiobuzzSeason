@@ -16,6 +16,8 @@ public class PedroTeleOp extends OpMode {
 
     @Override
     public void loop() {
+        if (bot == null) return;
+
         // Reset heading with 'Start' or 'Options'
         if (gamepad1.start) {
             bot.resetHeading();
@@ -32,13 +34,24 @@ public class PedroTeleOp extends OpMode {
         // Drive the robot (Robot-Centric)
         bot.setDrivePowers(forward, strafe, turn, powerScale);
 
+        // Intake control
+        if (gamepad1.right_trigger > 0.1) {
+            bot.forward();
+        } else if (gamepad1.right_bumper) {
+            bot.reverse();
+        } else {
+            bot.stop();
+        }
+
         // Update the bot (which updates the follower)
         bot.update();
 
         // Telemetry
         telemetry.addData("Status", "Running");
         telemetry.addData("Slow Mode", gamepad1.left_bumper ? "ON" : "OFF");
-        telemetry.addData("Pose", bot.follower.pose().toString());
+        if (bot.follower != null) {
+            telemetry.addData("Pose", bot.follower.pose().toString());
+        }
         telemetry.update();
     }
 }

@@ -14,7 +14,7 @@ public class AutoBot extends Bot {
 
     @Override
     public boolean isBusy() {
-        return follower.isBusy();
+        return follower != null && follower.isBusy();
     }
 
     @Override
@@ -23,14 +23,38 @@ public class AutoBot extends Bot {
     }
 
     public void followPath(Path path) {
-        follower.follow(path);
+        if (follower != null) {
+            follower.follow(path);
+        }
     }
 
     public void holdPose(Pose pose) {
-        follower.hold(pose);
+        if (follower != null) {
+            follower.hold(pose);
+        }
     }
 
     public void setPose(Pose pose) {
-        follower.setPose(pose);
+        if (follower != null) {
+            follower.setPose(pose);
+        }
+    }
+
+    public void forward() {
+        if (intake != null) {
+            intake.forward();
+        }
+    }
+
+    public void reverse() {
+        if (intake != null) {
+            intake.reverse();
+        }
+    }
+
+    public void stop() {
+        if (intake != null) {
+            intake.stop();
+        }
     }
 }
