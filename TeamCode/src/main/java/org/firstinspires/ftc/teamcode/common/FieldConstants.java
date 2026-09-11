@@ -24,4 +24,10 @@ public class FieldConstants {
     // Intermediate Waypoints
     public static final Pose RED_CENTER_WAYPOINT = new Pose(72, 48, Math.toRadians(0));
     public static final Pose BLUE_CENTER_WAYPOINT = new Pose(72, 96, Math.toRadians(180));
+
+    // Circuit Points for testing
+    public static final Pose CIRCUIT_POINT_1 = new Pose(60, 120, Math.toRadians(0));
+    public static final Pose CIRCUIT_POINT_2 = new Pose(120, 60, Math.toRadians(-90));
+    public static final Pose CIRCUIT_POINT_3 = new Pose(60, 20, Math.toRadians(180));
+    public static final Pose CIRCUIT_POINT_4 = new Pose(20, 60, Math.toRadians(90));
 }
