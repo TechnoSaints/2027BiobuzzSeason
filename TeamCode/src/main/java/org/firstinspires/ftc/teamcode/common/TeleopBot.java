@@ -39,27 +39,6 @@ public class TeleopBot extends Bot {
         }
     }
 
-    /** Spins the intake forward to pick up a game piece. */
-    public void forward() {
-        if (intake != null) {
-            intake.forward();
-        }
-    }
-
-    /** Spins the intake backward to let go of a game piece. */
-    public void reverse() {
-        if (intake != null) {
-            intake.reverse();
-        }
-    }
-
-    /** Turns the intake off. */
-    public void stop() {
-        if (intake != null) {
-            intake.stop();
-        }
-    }
-
     /** Tells the robot "you are currently facing forward." Use this if the robot's sense of direction has drifted. */
     public void resetHeading() {
         if (follower != null) {

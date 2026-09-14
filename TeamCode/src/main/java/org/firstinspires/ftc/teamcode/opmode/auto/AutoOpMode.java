@@ -34,9 +34,17 @@ public abstract class AutoOpMode extends LinearOpMode {
         return !isStopRequested();
     }
 
-    /** Prints one last telemetry message so the driver knows the routine finished. */
+    /**
+     * Prints one last telemetry message so the driver knows the routine finished,
+     * then keeps updating the robot until the OpMode actually stops - so the
+     * drivetrain doesn't get left in a weird state right as Autonomous ends.
+     */
     protected void finish(String message) {
         telemetry.addLine(message);
         telemetry.update();
+
+        while (opModeIsActive()) {
+            bot.update();
+        }
     }
 }

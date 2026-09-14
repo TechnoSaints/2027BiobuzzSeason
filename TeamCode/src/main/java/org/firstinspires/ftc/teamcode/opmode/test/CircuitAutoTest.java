@@ -38,11 +38,5 @@ public class CircuitAutoTest extends AutoOpMode {
         }
 
         finish("Test Complete - Returning home.");
-
-        // Keep updating the robot even after the path is done, so the
-        // OpMode doesn't exit and leave the drivetrain in a weird state
-        while (opModeIsActive()) {
-            bot.update();
-        }
     }
 }

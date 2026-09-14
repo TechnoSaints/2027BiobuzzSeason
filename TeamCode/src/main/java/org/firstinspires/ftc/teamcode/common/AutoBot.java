@@ -61,27 +61,6 @@ public class AutoBot extends Bot {
         }
     }
 
-    /** Spins the intake forward to pick up a game piece. */
-    public void forward() {
-        if (intake != null) {
-            intake.forward();
-        }
-    }
-
-    /** Spins the intake backward to let go of a game piece. */
-    public void reverse() {
-        if (intake != null) {
-            intake.reverse();
-        }
-    }
-
-    /** Turns the intake off. */
-    public void stop() {
-        if (intake != null) {
-            intake.stop();
-        }
-    }
-
     /**
      * @return the robot's current field position as text, ready to print
      *         with telemetry, or "unknown" if the localizer never started up.
