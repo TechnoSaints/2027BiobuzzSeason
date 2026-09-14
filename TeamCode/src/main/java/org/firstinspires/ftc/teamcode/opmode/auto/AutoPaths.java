@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmode.auto;
 
 import com.pedropathing.api.Paths;
-import com.pedropathing.math.Pose;
 import com.pedropathing.paths.Path;
 
 import org.firstinspires.ftc.teamcode.common.FieldConstants;
@@ -32,16 +31,6 @@ public class AutoPaths {
                 FieldConstants.BLUE_SCORING_POSITION
             );
         }
-    }
-
-    /**
-     * Generates a straight line path between two points.
-     * @param start The starting Pose.
-     * @param end The ending Pose.
-     * @return A straight Line Path.
-     */
-    public static Path getSimplePath(Pose start, Pose end) {
-        return Paths.line(start, end);
     }
 
     /**
