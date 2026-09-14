@@ -80,4 +80,12 @@ public class AutoBot extends Bot {
             intake.stop();
         }
     }
+
+    /**
+     * Returns the robot's current field position as a readable string, for telemetry.
+     * @return the pose as text, or "unknown" if the localizer never initialized.
+     */
+    public String getPoseString() {
+        return follower != null ? follower.pose().toString() : "unknown";
+    }
 }

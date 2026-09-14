@@ -2,9 +2,8 @@ package org.firstinspires.ftc.teamcode.opmode.test;
 
 import com.pedropathing.paths.Path;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.common.AutoBot;
+import org.firstinspires.ftc.teamcode.common.AutoOpMode;
 import org.firstinspires.ftc.teamcode.common.AutoPaths;
 import org.firstinspires.ftc.teamcode.common.FieldConstants;
 
@@ -13,16 +12,12 @@ import org.firstinspires.ftc.teamcode.common.FieldConstants;
  * It follows a complex path through 4 different points and returns home.
  */
 @Autonomous(name = "Circuit Path Test", group = "Test")
-public class CircuitAutoTest extends LinearOpMode {
-    private AutoBot bot;
+public class CircuitAutoTest extends AutoOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        // Initialize robot
-        bot = new AutoBot(this, telemetry);
-
-        // Set the robot's starting location on the field map
-        bot.setPose(FieldConstants.RED_LEFT_START);
+        // Initialize robot and set the robot's starting location on the field map
+        initBot(FieldConstants.RED_LEFT_START);
 
         // Load the complex circuit path from AutoPaths
         Path circuit = AutoPaths.getCircuitPath();
@@ -30,9 +25,7 @@ public class CircuitAutoTest extends LinearOpMode {
         telemetry.addLine("Ready to test complex circuit path...");
         telemetry.update();
 
-        waitForStart();
-
-        if (isStopRequested()) return;
+        if (!awaitStart()) return;
 
         // Start movement
         bot.followPath(circuit);
@@ -41,13 +34,12 @@ public class CircuitAutoTest extends LinearOpMode {
         while (opModeIsActive() && bot.isBusy()) {
             bot.update();
             telemetry.addData("Status", "Running Circuit...");
-            telemetry.addData("Pose", bot.follower.pose().toString());
+            telemetry.addData("Pose", bot.getPoseString());
             telemetry.update();
         }
 
-        telemetry.addLine("Test Complete - Returning home.");
-        telemetry.update();
-        
+        finish("Test Complete - Returning home.");
+
         // Final update loop to ensure systems stay active at the end
         while (opModeIsActive()) {
             bot.update();

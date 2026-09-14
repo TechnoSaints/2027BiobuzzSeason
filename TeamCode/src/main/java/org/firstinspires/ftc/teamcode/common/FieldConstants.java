@@ -33,4 +33,11 @@ public class FieldConstants {
     public static final Pose CIRCUIT_POINT_2 = new Pose(120, 60, Math.toRadians(-90));
     public static final Pose CIRCUIT_POINT_3 = new Pose(60, 20, Math.toRadians(180));
     public static final Pose CIRCUIT_POINT_4 = new Pose(20, 60, Math.toRadians(90));
+
+    // Intake Test Points: a simple box pattern used to test drivetrain movement and the intake together
+    public static final Pose INTAKE_TEST_START = new Pose(0, 0, 0);
+    public static final Pose INTAKE_TEST_FORWARD = new Pose(36, 0, 0);
+    public static final Pose INTAKE_TEST_LEFT = new Pose(36, 24, 0);
+    public static final Pose INTAKE_TEST_BACKWARD = new Pose(12, 24, 0);
+    public static final Pose INTAKE_TEST_RIGHT = new Pose(12, -24, 0);
 }
