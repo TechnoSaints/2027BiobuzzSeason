@@ -1,0 +1,18 @@
+{
+  "enabledPlugins": {
+    "pinpoint@ftc-claude": true,
+    "pedro-pathing@ftc-claude": true,
+    "ftclib@ftc-claude": true,
+    "ftc-dashboard@ftc-claude": true,
+    "limelight@ftc-claude": true,
+    "panels@ftc-claude": true
+  },
+  "extraKnownMarketplaces": {
+    "ftc-claude": {
+      "source": {
+        "source": "github",
+        "repo": "ncssm-robotics/ftc-claude"
+      }
+    }
+  }
+}
