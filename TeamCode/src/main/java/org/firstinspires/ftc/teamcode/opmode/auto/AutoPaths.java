@@ -1,8 +1,10 @@
-package org.firstinspires.ftc.teamcode.common;
+package org.firstinspires.ftc.teamcode.opmode.auto;
 
 import com.pedropathing.api.Paths;
 import com.pedropathing.math.Pose;
 import com.pedropathing.paths.Path;
+
+import org.firstinspires.ftc.teamcode.common.FieldConstants;
 
 /**
  * AutoPaths provides pre-defined paths for autonomous routines.

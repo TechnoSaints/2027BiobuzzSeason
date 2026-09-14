@@ -1,7 +1,9 @@
-package org.firstinspires.ftc.teamcode.common;
+package org.firstinspires.ftc.teamcode.opmode.auto;
 
 import com.pedropathing.math.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
+import org.firstinspires.ftc.teamcode.common.AutoBot;
 
 /**
  * AutoOpMode is the base class for every autonomous OpMode.

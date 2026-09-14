@@ -4,9 +4,6 @@ import com.pedropathing.api.Paths;
 import com.pedropathing.paths.Path;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.teamcode.common.AutoOpMode;
-import org.firstinspires.ftc.teamcode.common.AutoPaths;
-import org.firstinspires.ftc.teamcode.common.AutoStateMachine;
 import org.firstinspires.ftc.teamcode.common.FieldConstants;
 
 /**

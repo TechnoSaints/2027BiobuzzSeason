@@ -3,9 +3,9 @@ package org.firstinspires.ftc.teamcode.opmode.test;
 import com.pedropathing.api.Paths;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.teamcode.common.AutoOpMode;
-import org.firstinspires.ftc.teamcode.common.AutoStateMachine;
 import org.firstinspires.ftc.teamcode.common.FieldConstants;
+import org.firstinspires.ftc.teamcode.opmode.auto.AutoOpMode;
+import org.firstinspires.ftc.teamcode.opmode.auto.AutoStateMachine;
 
 /**
  * IntakeAuto performs a specific sequence of movements and intake actions.

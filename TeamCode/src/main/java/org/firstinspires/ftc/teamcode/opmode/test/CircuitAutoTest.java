@@ -3,9 +3,9 @@ package org.firstinspires.ftc.teamcode.opmode.test;
 import com.pedropathing.paths.Path;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.teamcode.common.AutoOpMode;
-import org.firstinspires.ftc.teamcode.common.AutoPaths;
 import org.firstinspires.ftc.teamcode.common.FieldConstants;
+import org.firstinspires.ftc.teamcode.opmode.auto.AutoOpMode;
+import org.firstinspires.ftc.teamcode.opmode.auto.AutoPaths;
 
 /**
  * CircuitAutoTest is a testing autonomous routine to verify the robot's movement.
