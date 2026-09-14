@@ -7,8 +7,10 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.common.FieldConstants;
 
 /**
- * SampleAuto is a complex state-machine autonomous routine.
- * It demonstrates how to perform a multi-stage routine with 9 distinct states.
+ * SampleAuto shows off a full, 9-step Autonomous routine:
+ * drive to score, score, drive to pick up a piece, pick it up, drive back
+ * to score again, score again, then park. Use it as an example for writing
+ * your own multi-step routine.
  */
 @Autonomous(name = "Sample Pedro Auto", group = "Autonomous")
 public class SampleAuto extends AutoOpMode {
@@ -27,16 +29,15 @@ public class SampleAuto extends AutoOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        // Initialize the autonomous robot object and its starting position
+        // Build the robot and tell it where it's starting
         initBot(FieldConstants.RED_LEFT_START);
 
-        // Pre-defined paths for transitions
+        // Build every path we'll need up front, before the match starts
         Path toScore = AutoPaths.getScorePath(true);
         Path toIntake = Paths.line(FieldConstants.RED_SCORING_POSITION, FieldConstants.CIRCUIT_POINT_1);
         Path toScore2 = Paths.line(FieldConstants.CIRCUIT_POINT_1, FieldConstants.RED_SCORING_POSITION);
         Path toPark = Paths.line(FieldConstants.RED_SCORING_POSITION, FieldConstants.RED_LEFT_START);
 
-        // Wait for the driver to press START
         if (!awaitStart()) return;
 
         new AutoStateMachine<State>(this, bot, State.START, State.FINISHED) {
@@ -55,7 +56,7 @@ public class SampleAuto extends AutoOpMode {
                         break;
 
                     case SCORE_PIECE:
-                        // Simulate scoring action (e.g. extending an arm)
+                        // Pretend to score for 1 second (this is where you'd run an arm/slide motor)
                         if (stateTimer.seconds() > 1.0) {
                             bot.followPath(toIntake);
                             transition(State.DRIVE_TO_INTAKE);
@@ -64,15 +65,15 @@ public class SampleAuto extends AutoOpMode {
 
                     case DRIVE_TO_INTAKE:
                         if (!bot.isBusy()) {
-                            bot.forward(); // Turn on intake
+                            bot.forward(); // Turn the intake on
                             transition(State.INTAKE_PIECE);
                         }
                         break;
 
                     case INTAKE_PIECE:
-                        // Intake for 2 seconds while stationary or slightly moving
+                        // Let the intake run for 2 seconds to grab a game piece
                         if (stateTimer.seconds() > 2.0) {
-                            bot.stop(); // Turn off intake
+                            bot.stop(); // Turn the intake back off
                             bot.followPath(toScore2);
                             transition(State.DRIVE_TO_SCORE_2);
                         }

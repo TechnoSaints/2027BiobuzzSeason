@@ -8,18 +8,18 @@ import org.firstinspires.ftc.teamcode.opmode.auto.AutoOpMode;
 import org.firstinspires.ftc.teamcode.opmode.auto.AutoPaths;
 
 /**
- * CircuitAutoTest is a testing autonomous routine to verify the robot's movement.
- * It follows a complex path through 4 different points and returns home.
+ * CircuitAutoTest checks that the robot can drive accurately.
+ * It follows a loop through 4 points and back to where it started, so you
+ * can watch whether the robot ends up back where it began.
  */
 @Autonomous(name = "Circuit Path Test", group = "Test")
 public class CircuitAutoTest extends AutoOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        // Initialize robot and set the robot's starting location on the field map
+        // Build the robot and tell it where it's starting
         initBot(FieldConstants.RED_LEFT_START);
 
-        // Load the complex circuit path from AutoPaths
         Path circuit = AutoPaths.getCircuitPath();
 
         telemetry.addLine("Ready to test complex circuit path...");
@@ -27,10 +27,9 @@ public class CircuitAutoTest extends AutoOpMode {
 
         if (!awaitStart()) return;
 
-        // Start movement
         bot.followPath(circuit);
 
-        // Update loop: Runs while the robot is moving along the path
+        // Keep driving and showing status until the robot finishes the loop
         while (opModeIsActive() && bot.isBusy()) {
             bot.update();
             telemetry.addData("Status", "Running Circuit...");
@@ -40,7 +39,8 @@ public class CircuitAutoTest extends AutoOpMode {
 
         finish("Test Complete - Returning home.");
 
-        // Final update loop to ensure systems stay active at the end
+        // Keep updating the robot even after the path is done, so the
+        // OpMode doesn't exit and leave the drivetrain in a weird state
         while (opModeIsActive()) {
             bot.update();
         }

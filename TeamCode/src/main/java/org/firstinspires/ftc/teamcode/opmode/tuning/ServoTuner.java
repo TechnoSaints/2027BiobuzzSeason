@@ -9,19 +9,21 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A tuning OpMode to adjust servo positions in 0.01 increments.
- * 
+ * ServoTuner lets you nudge any servo's position with a gamepad, in small
+ * steps, so you can find the exact position number you want without
+ * editing code and redeploying every time.
+ *
  * Controls:
- * - Dpad Up/Down: Cycle through all configured servos.
- * - Gamepad A: Increase position by 0.01.
- * - Gamepad B: Decrease position by 0.01.
+ * - Dpad Up/Down: switch which servo you're adjusting.
+ * - A: move the servo a little further (position + 0.01).
+ * - B: move the servo a little back (position - 0.01).
  */
 @TeleOp(name = "Servo Tuner", group = "tuning")
 public class ServoTuner extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        // Find all servos in the hardware map and their names
+        // Grab every servo that's in the Driver Station's Hardware Config
         List<Servo> servos = new ArrayList<>();
         List<String> servoNames = new ArrayList<>();
 
@@ -40,7 +42,8 @@ public class ServoTuner extends LinearOpMode {
         int currentServoIndex = 0;
         double currentPosition = 0.5;
 
-        // Debouncing states
+        // Remembers last loop's button state, so a button press only
+        // counts once instead of every single loop it's held down
         boolean prevDpadUp = false;
         boolean prevDpadDown = false;
         boolean prevA = false;
@@ -55,41 +58,37 @@ public class ServoTuner extends LinearOpMode {
 
         if (isStopRequested()) return;
 
-        // Initialize position to the current servo's position
+        // Start from wherever this servo already is, instead of jumping to the middle
         currentPosition = servos.get(currentServoIndex).getPosition();
 
         while (opModeIsActive()) {
-            // Switch to next servo
+            // Dpad up/down cycles to the next/previous servo in the list
             if (gamepad1.dpad_up && !prevDpadUp) {
                 currentServoIndex = (currentServoIndex + 1) % servos.size();
                 currentPosition = servos.get(currentServoIndex).getPosition();
             }
             prevDpadUp = gamepad1.dpad_up;
 
-            // Switch to previous servo
             if (gamepad1.dpad_down && !prevDpadDown) {
                 currentServoIndex = (currentServoIndex - 1 + servos.size()) % servos.size();
                 currentPosition = servos.get(currentServoIndex).getPosition();
             }
             prevDpadDown = gamepad1.dpad_down;
 
-            // Increment position
+            // A nudges the position up, B nudges it down, clamped to the 0-1 range every servo uses
             if (gamepad1.a && !prevA) {
                 currentPosition = Math.min(1.0, currentPosition + 0.01);
             }
             prevA = gamepad1.a;
 
-            // Decrement position
             if (gamepad1.b && !prevB) {
                 currentPosition = Math.max(0.0, currentPosition - 0.01);
             }
             prevB = gamepad1.b;
 
-            // Apply position to the selected servo
             Servo selectedServo = servos.get(currentServoIndex);
             selectedServo.setPosition(currentPosition);
 
-            // Display status
             telemetry.addData("--- Selected Servo ---", servoNames.get(currentServoIndex));
             telemetry.addData("Target Position", "%.2f", currentPosition);
             telemetry.addData("Current Actual", "%.2f", selectedServo.getPosition());

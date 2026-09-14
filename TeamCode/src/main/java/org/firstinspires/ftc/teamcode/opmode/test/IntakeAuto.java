@@ -8,12 +8,12 @@ import org.firstinspires.ftc.teamcode.opmode.auto.AutoOpMode;
 import org.firstinspires.ftc.teamcode.opmode.auto.AutoStateMachine;
 
 /**
- * IntakeAuto performs a specific sequence of movements and intake actions.
- * 1. Moves forward 3 feet, stops, and turns on the intake.
- * 2. Moves left 2 feet and turns off the intake.
- * 3. Moves backward 2 feet.
- * 4. Moves right 4 feet while the intake is running.
- * 5. Stops and waits 5 seconds before turning off the intake.
+ * IntakeAuto tests driving and the intake together in a simple box pattern:
+ * 1. Drive forward 3 feet, then turn the intake on.
+ * 2. Drive left 2 feet, then turn the intake off.
+ * 3. Drive backward 2 feet.
+ * 4. Drive right 4 feet while the intake runs.
+ * 5. Stop, wait 5 seconds, then turn the intake off.
  */
 @Autonomous(name = "Intake Sequence Auto", group = "Autonomous")
 public class IntakeAuto extends AutoOpMode {

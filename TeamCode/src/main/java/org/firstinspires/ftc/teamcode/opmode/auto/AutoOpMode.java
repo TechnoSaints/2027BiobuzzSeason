@@ -6,17 +6,18 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.common.AutoBot;
 
 /**
- * AutoOpMode is the base class for every autonomous OpMode.
- * It factors out the setup/wait/finish boilerplate that every autonomous
- * routine needs, so individual OpModes can focus on their own paths and logic.
+ * AutoOpMode is the starting point for every Autonomous OpMode we write.
+ * Every autonomous routine needs to do the same 3 things - build the robot,
+ * wait for the driver to press START, and print a final message - so that
+ * setup code lives here once instead of being copy-pasted into every routine.
  */
 public abstract class AutoOpMode extends LinearOpMode {
     protected AutoBot bot;
 
     /**
-     * Creates the AutoBot and sets its starting field position.
-     * Call this first in runOpMode(), before waiting for start.
-     * @param startPose where the robot begins the match.
+     * Builds the robot and tells it where it's starting on the field.
+     * Call this first thing in runOpMode(), before waiting for start.
+     * @param startPose where the robot is sitting when the match begins.
      */
     protected void initBot(Pose startPose) {
         bot = new AutoBot(this, telemetry);
@@ -24,16 +25,16 @@ public abstract class AutoOpMode extends LinearOpMode {
     }
 
     /**
-     * Waits for the driver to press START.
-     * @return false if the OpMode was stopped before START was pressed —
-     *         callers should return from runOpMode() immediately when this happens.
+     * Pauses here until the driver presses START.
+     * @return false if the OpMode was stopped before START was pressed.
+     *         When this happens, your runOpMode() should just return right away.
      */
     protected boolean awaitStart() {
         waitForStart();
         return !isStopRequested();
     }
 
-    /** Prints a final telemetry message to mark the end of the routine. */
+    /** Prints one last telemetry message so the driver knows the routine finished. */
     protected void finish(String message) {
         telemetry.addLine(message);
         telemetry.update();

@@ -7,17 +7,23 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.common.AutoBot;
 
 /**
- * AutoStateMachine factors out the "enum + timer + while loop" shell that
- * multi-step autonomous routines all need, so an OpMode only has to write
- * the switch statement for its own states.
+ * AutoStateMachine runs a multi-step Autonomous routine, like a to-do list
+ * the robot works through one step ("state") at a time - drive somewhere,
+ * wait for it to arrive, turn on the intake, drive somewhere else, and so on.
  *
- * Usage: build one of these as an anonymous subclass inside runOpMode(),
- * implementing handleState() with a switch over your own State enum, then
- * call run(). Call transition(nextState) whenever you want to move on —
- * it also resets stateTimer so you can time how long you've been in a state.
+ * Every routine like this needs the same 3 things: a variable to remember
+ * which step it's on, a timer to know how long it's been on that step, and
+ * a loop that keeps checking "are we done yet?". This class handles all of
+ * that, so a new Autonomous OpMode only has to describe what happens on
+ * each step.
  *
- * @param <S> the enum type listing this routine's states. Include a
- *            dedicated "finished" state and pass it to the constructor.
+ * How to use it: make an enum listing your steps (including a "FINISHED"
+ * step), then create one of these as an anonymous subclass inside
+ * runOpMode() and fill in handleState() with a switch statement - one case
+ * per step. Call transition(nextStep) to move on to the next step (this
+ * also resets the timer). Finally, call run() to start it going.
+ *
+ * @param <S> your enum of steps for this specific routine.
  */
 public abstract class AutoStateMachine<S extends Enum<S>> {
     protected final LinearOpMode opMode;
@@ -35,16 +41,16 @@ public abstract class AutoStateMachine<S extends Enum<S>> {
         this.finishedState = finishedState;
     }
 
-    /** Runs the logic for the current state. Call transition(...) to move to the next state. */
+    /** Fill this in with a switch statement describing what to do on each step. */
     protected abstract void handleState(S state);
 
-    /** Moves to a new state and resets the state timer. */
+    /** Moves on to the next step and resets the step timer back to zero. */
     protected void transition(S newState) {
         state = newState;
         stateTimer.reset();
     }
 
-    /** Runs the state machine to completion, updating the bot and telemetry every loop. */
+    /** Runs every step in order until the routine reaches its finished step. */
     public void run() {
         while (opMode.opModeIsActive() && state != finishedState) {
             bot.update();

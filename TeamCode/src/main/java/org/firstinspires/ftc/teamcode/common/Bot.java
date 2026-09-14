@@ -7,30 +7,31 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 /**
- * Bot is the base class for all robot types. 
- * It handles the initialization of systems like Drivetrain (Follower) and Intake.
- * All common robot logic that applies to both Auto and TeleOp should go here.
+ * Bot is the base class shared by both Autonomous and TeleOp robots.
+ * It builds the two things every robot needs - a drivetrain (the Follower)
+ * and an Intake - so that code common to both driving modes only has to
+ * be written once, here.
  */
 public abstract class Bot extends Component {
-    // Reference to the OpMode (TeleOp or Auto) that is running the robot
+    // The OpMode (TeleOp or Autonomous) that created this robot
     protected OpMode opMode;
-    // The Follower is responsible for controlling the drivetrain and movement
+    // Follower drives the robot and keeps track of where it is on the field
     public Follower follower;
-    // The Intake system for collecting game pieces
+    // Intake picks up and lets go of game pieces
     public Intake intake;
 
     protected Bot(OpMode opMode, Telemetry telemetry) {
         super(telemetry);
         this.opMode = opMode;
-        
-        // Try to initialize the Follower. If it fails (e.g. missing sensor), we log an error.
+
+        // If a sensor or motor is missing/misconfigured, catch the error and keep
+        // going instead of crashing the whole OpMode - just warn on the Driver Station.
         try {
             this.follower = Constants.create(opMode.hardwareMap);
         } catch (Exception e) {
             telemetry.addLine("Error: Failed to initialize Follower (Drivetrain)");
         }
-        
-        // Try to initialize the Intake. If it fails (e.g. missing motor), we log an error.
+
         try {
             this.intake = new Intake(opMode.hardwareMap, telemetry);
         } catch (Exception e) {
@@ -39,8 +40,8 @@ public abstract class Bot extends Component {
     }
 
     /**
-     * update() should be called in every loop of your OpMode.
-     * it ensures that movement and subsystems stay synchronized.
+     * Call this once every loop of your OpMode.
+     * It keeps the drivetrain and the intake both up to date.
      */
     @Override
     public void update() {
