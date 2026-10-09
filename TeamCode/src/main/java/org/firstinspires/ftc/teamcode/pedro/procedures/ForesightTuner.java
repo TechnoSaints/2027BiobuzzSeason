@@ -20,6 +20,8 @@ import static com.pedropathing.utils.Utils.linearFit;
 import static com.pedropathing.utils.Utils.quadraticFit;
 
 public class ForesightTuner extends Procedure {
+    static final double DEFAULT_BRAKING_DISTANCE = 36.0;
+
     Function<HardwareMap, Localizer> localizerFunction;
     Function<HardwareMap, Drivetrain> drivetrainFunction;
 
@@ -52,7 +54,7 @@ public class ForesightTuner extends Procedure {
         double headingQuadratic = headingBraking.get(1);
 
         Inputs distanceBrakingInput = inputs("Distance", "The distance to drive in inches for the Forward and Strafe Braking Identifiers");
-        Inputs.Field<Double> distanceBraking = distanceBrakingInput.d("Distance").withDefault(36.0);
+        Inputs.Field<Double> distanceBraking = distanceBrakingInput.d("Distance").withDefault(DEFAULT_BRAKING_DISTANCE);
         awaitInputs(distanceBrakingInput);
 
         List<Double> forwardBraking = runOpMode(new ForwardBraking(localizerFunction, drivetrainFunction, headingLinear, headingQuadratic, heading, distanceBraking.get()));
@@ -660,6 +662,8 @@ class HeadingTuner extends TuningOpMode<Double> {
 }
 
 class ForwardBraking extends TuningOpMode<List<Double>> {
+    private static final double REVERSE_TARGET_FRACTION = 12.0 / ForesightTuner.DEFAULT_BRAKING_DISTANCE;
+
     Function<HardwareMap, Localizer> localizerFunction;
     Function<HardwareMap, Drivetrain> drivetrainFunction;
     private final double headingLinear;
@@ -722,7 +726,8 @@ class ForwardBraking extends TuningOpMode<List<Double>> {
 
             switch (state) {
                 case DRIVE: {
-                    if ((direction > 0 && localizer.pose().x() >= distance) || (direction < 0 && localizer.pose().x() <= 12)) {
+                    if ((direction > 0 && localizer.pose().x() >= distance) ||
+                            (direction < 0 && localizer.pose().x() <= distance * REVERSE_TARGET_FRACTION)) {
                         startPosition = localizer.pose().toVector2D();
                         measuredVelocity = localizer.velocity().toVector2D().magnitude();
 
@@ -825,6 +830,8 @@ class ForwardBraking extends TuningOpMode<List<Double>> {
 }
 
 class StrafeBraking extends TuningOpMode<List<Double>> {
+    private static final double REVERSE_TARGET_FRACTION = 6.0 / ForesightTuner.DEFAULT_BRAKING_DISTANCE;
+
     Function<HardwareMap, Localizer> localizerFunction;
     Function<HardwareMap, Drivetrain> drivetrainFunction;
     private final double headingLinear;
@@ -888,7 +895,7 @@ class StrafeBraking extends TuningOpMode<List<Double>> {
             switch (state) {
                 case DRIVE: {
                     if ((direction > 0 && localizer.pose().y() > distance) ||
-                            (direction < 0 && localizer.pose().y() <= 6)) {
+                            (direction < 0 && localizer.pose().y() <= distance * REVERSE_TARGET_FRACTION)) {
                         startPosition = localizer.pose().toVector2D();
                         measuredVelocity = localizer.velocity().toVector2D().magnitude();
 
@@ -1219,4 +1226,3 @@ class StrafeTranslational extends TuningOpMode<List<Double>> {
         this.tau = -1.0/linReg[1];
     }
 }
-

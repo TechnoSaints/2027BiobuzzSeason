@@ -87,3 +87,5 @@ build.gradle
 gradle.properties
 
 gradle/gradle-daemon-jvm.properties
+settings.gradle
+build.gradle
