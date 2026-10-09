@@ -17,7 +17,7 @@ public class RobotConstants {
         public static final String RIGHT_REAR_NAME = "rightRearDrive";
 
         // Measurement constants for distance calculations
-        public static double wheelDiameterMM = 104.0;
+        public static double wheelDiameterMM = 110.0;
         public static double wheelDiameterInches = wheelDiameterMM / 25.4;
         public static double wheelCircumferenceInches = Math.PI * wheelDiameterInches;
 

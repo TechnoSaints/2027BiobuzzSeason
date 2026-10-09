@@ -14,9 +14,6 @@ public class PedroTeleOp extends OpMode {
     // Reference to our robot object
     private TeleopBot bot;
 
-    // Gamepad state for debouncing
-    private boolean prevStart = false;
-
     /** init() runs once when you press the INIT button on the Driver Station. */
     @Override
     public void init() {
@@ -30,10 +27,9 @@ public class PedroTeleOp extends OpMode {
         if (bot == null) return;
 
         // Heading Reset: Press 'Start' to reset the robot's orientation to zero.
-        if (gamepad1.start && !prevStart) {
+        if (gamepad1.startWasPressed()) {
             bot.resetHeading();
         }
-        prevStart = gamepad1.start;
 
         // Basic Mecanum Drive Control:
         // Left stick handles moving (strafe and forward/backward)
