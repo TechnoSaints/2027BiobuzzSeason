@@ -85,3 +85,5 @@ lint/tmp/
 settings.gradle
 build.gradle
 gradle.properties
+
+gradle/gradle-daemon-jvm.properties
