@@ -8,8 +8,6 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.pedro.procedures.PinpointTuner;
-
 @TeleOp(name = "MotorTest", group = "Test")
 public class MotorTest extends LinearOpMode {
 

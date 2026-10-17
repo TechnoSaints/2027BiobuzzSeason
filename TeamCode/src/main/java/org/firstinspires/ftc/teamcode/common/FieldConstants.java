@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.common;
 
-import com.pedropathing.math.Pose;
+
+import com.pedropathing.geometry.Pose;
 
 /**
  * FieldConstants holds the coordinates for various important locations on the field.

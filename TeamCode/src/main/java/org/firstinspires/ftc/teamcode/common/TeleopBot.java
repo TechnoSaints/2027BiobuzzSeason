@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.common;
 
-import com.pedropathing.drivetrain.DrivePowers;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -34,7 +33,7 @@ public class TeleopBot extends Bot {
             double scaledTurn = turn * powerScale;
 
             // Sends the movement vectors to the drivetrain
-            follower.drivetrain.drive(new DrivePowers(scaledForward, scaledStrafe, scaledTurn), true);
+            follower.setTeleOpDrive(scaledForward, scaledStrafe, scaledTurn);
         }
     }
 
