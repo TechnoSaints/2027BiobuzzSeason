@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.common.RobotConstants;
 public class Constants {
     private static final RobotConstants.Drivetrain drivetrainData = new RobotConstants.Drivetrain();
     public static FollowerConstants followerConstants = new FollowerConstants()
-            .mass(5.4)
+            .mass(5)
             .forwardZeroPowerAcceleration(-26)
             .lateralZeroPowerAcceleration(-38.67)
             .useSecondaryTranslationalPIDF(false)
