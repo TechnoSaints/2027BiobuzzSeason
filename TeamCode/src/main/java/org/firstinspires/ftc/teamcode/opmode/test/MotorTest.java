@@ -8,8 +8,6 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.pedro.procedures.PinpointTuner;
-
 @TeleOp(name = "MotorTest", group = "Test")
 public class MotorTest extends LinearOpMode {
 
@@ -22,18 +20,23 @@ public class MotorTest extends LinearOpMode {
         servo = hardwareMap.get(Servo.class, "hood");
         motor.setDirection(DcMotorSimple.Direction.REVERSE);
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(0.1, 0, 0, 0));
         waitForStart();
-        double targetVelocity = 0;
+        int targetVelocity = 0;
         double targetPosition = 0.5;
-        double kP = 0.1;
-        double kF = 0;
+        double kP = 56.4;
+        double kF = 13.47;
+        double[] pidfSteps = {10, 1, 0.1, 0.01, 0.001};
+        int pidfIndex = 0;
+        int[] velocitySteps = {100, 20};
+        int highVelocity = 1600;
+        int lowVelocity = 800;
+        int velocityIndex = 1;
         while (opModeIsActive() && !isStopRequested()) {
             if (gamepad1.aWasPressed()) {
-                targetVelocity += 20;
+                targetVelocity += velocitySteps[velocityIndex];
             }
             else if (gamepad1.bWasPressed()){
-                targetVelocity -= 20;
+                targetVelocity -= velocitySteps[velocityIndex];
             }
             if (gamepad1.xWasPressed()){
                 targetPosition += 0.01;
@@ -42,23 +45,51 @@ public class MotorTest extends LinearOpMode {
                 targetPosition -= 0.01;
             }
             if (gamepad1.dpadUpWasPressed()){
-                kP += 0.01;
+                kP += pidfSteps[pidfIndex];
             }
             else if (gamepad1.dpadDownWasPressed()){
-                kP -= 0.01;
+                kP -= pidfSteps[pidfIndex];
             }
             if (gamepad1.dpadRightWasPressed()){
-                kF += 0.01;
+                kF += pidfSteps[pidfIndex];
             }
             else if (gamepad1.dpadLeftWasPressed()){
-                kF -= 0.01;
+                kF -= pidfSteps[pidfIndex];
+            }
+            if (gamepad1.leftBumperWasPressed()){
+                pidfIndex = (pidfIndex + 1) % pidfSteps.length;
+            }
+            if (gamepad1.rightBumperWasPressed()){
+                velocityIndex = (velocityIndex + 1) % velocitySteps.length;
+            }
+            if (gamepad1.optionsWasPressed()){
+                if (gamepad1.touchpad){
+                    highVelocity = targetVelocity;
+                }
+                else {
+                    targetVelocity = highVelocity;
+                }
+            }
+            if (gamepad1.shareWasPressed()){
+                if (gamepad1.touchpad){
+                    lowVelocity = targetVelocity;
+                }
+                else {
+                    targetVelocity = lowVelocity;
+                }
             }
             motor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(kP, 0, 0, kF));
             motor.setVelocity(targetVelocity);
             servo.setPosition(targetPosition);
 
+            telemetry.addData("Tuning kP", kP);
+            telemetry.addData("Tuning kF", kF);
+            telemetry.addData("PIDF Increment", pidfSteps[pidfIndex]);
+            telemetry.addLine("--------------");
             telemetry.addData("Target Velocity", targetVelocity);
             telemetry.addData("Actual Velocity", motor.getVelocity());
+            telemetry.addData("Velocity Increment", velocitySteps[velocityIndex]);
+            telemetry.addLine("--------------");
             telemetry.addData("Hood Position", servo.getPosition());
             telemetry.update();
         }
