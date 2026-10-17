@@ -26,6 +26,8 @@ public class RobotConstants {
         public static DcMotorSimple.Direction leftRearMotorDirection = DcMotorSimple.Direction.REVERSE;
         public static DcMotorSimple.Direction rightFrontMotorDirection = DcMotorSimple.Direction.FORWARD;
         public static DcMotorSimple.Direction rightRearMotorDirection = DcMotorSimple.Direction.FORWARD;
+
+        public static double maxAutoPower = 1.0;
     }
 
     // Intake-specific constants

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.common;
 
-import com.pedropathing.math.Pose;
+
+import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.Path;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
@@ -36,7 +37,7 @@ public class AutoBot extends Bot {
      */
     public void followPath(Path path) {
         if (follower != null) {
-            follower.follow(path);
+            follower.followPath(path);
         }
     }
 
@@ -46,7 +47,7 @@ public class AutoBot extends Bot {
      */
     public void holdPose(Pose pose) {
         if (follower != null) {
-            follower.hold(pose);
+            follower.holdPoint(pose);
         }
     }
 

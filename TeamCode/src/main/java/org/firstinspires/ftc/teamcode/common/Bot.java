@@ -4,7 +4,7 @@ import com.pedropathing.follower.Follower;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.pedro.Constants;
+import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 /**
  * Bot is the base class for all robot types. 
@@ -25,7 +25,7 @@ public abstract class Bot extends Component {
         
         // Try to initialize the Follower. If it fails (e.g. missing sensor), we log an error.
         try {
-            this.follower = Constants.create(opMode.hardwareMap);
+            this.follower = Constants.createFollower(opMode.hardwareMap);
         } catch (Exception e) {
             telemetry.addLine("Error: Failed to initialize Follower (Drivetrain)");
         }

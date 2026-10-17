@@ -65,7 +65,7 @@ public class PedroTeleOp extends OpMode {
         
         // Show the robot's coordinates on the field if the sensors are active
         if (bot.follower != null) {
-            telemetry.addData("Pose", bot.follower.pose().toString());
+            telemetry.addData("Pose", bot.follower.getPose().toString());
         }
         telemetry.update();
     }
