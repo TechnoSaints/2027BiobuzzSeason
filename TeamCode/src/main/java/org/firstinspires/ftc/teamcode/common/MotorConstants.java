@@ -28,6 +28,11 @@ public abstract class MotorConstants {
         public static double gearRatio = 1.0;
     }
 
+    // SWYFT Robotics' Swyft Drive v2 module (not a goBILDA part like the others above)
+    public static class SwyftDriveV2 extends MotorConstants {
+        public static double gearRatio = 12.7;
+    }
+
 }
 
 

@@ -8,8 +8,9 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 /**
- * AutoBot is specialized for Autonomous routines.
- * It provides methods for path following and holding poses.
+ * AutoBot is the robot used during Autonomous.
+ * On top of everything Bot already does, it adds the ability to follow a
+ * pre-planned path and to hold still at a specific spot on the field.
  */
 public class AutoBot extends Bot {
 
@@ -18,8 +19,7 @@ public class AutoBot extends Bot {
     }
 
     /**
-     * Checks if the robot is currently following a path.
-     * @return true if the robot is moving or busy.
+     * @return true while the robot is still driving along a path.
      */
     @Override
     public boolean isBusy() {
@@ -32,8 +32,8 @@ public class AutoBot extends Bot {
     }
 
     /**
-     * Tells the robot to follow a specific path.
-     * @param path The path to follow.
+     * Starts driving the robot along the given path.
+     * @param path the path to follow, usually built with AutoPaths.
      */
     public void followPath(Path path) {
         if (follower != null) {
@@ -42,8 +42,8 @@ public class AutoBot extends Bot {
     }
 
     /**
-     * Tells the robot to hold a specific position (Pose).
-     * @param pose The location and heading to hold.
+     * Tells the robot to stay put at one exact spot and heading.
+     * @param pose the location and heading to hold.
      */
     public void holdPose(Pose pose) {
         if (follower != null) {
@@ -52,8 +52,9 @@ public class AutoBot extends Bot {
     }
 
     /**
-     * Manually updates the robot's current position on the field.
-     * @param pose The new position.
+     * Tells the robot "you are here" - use this once at the start of Autonomous
+     * to match the robot's actual starting spot on the field.
+     * @param pose the robot's starting position.
      */
     public void setPose(Pose pose) {
         if (follower != null) {
@@ -61,24 +62,11 @@ public class AutoBot extends Bot {
         }
     }
 
-    /** Runs the intake forward */
-    public void forward() {
-        if (intake != null) {
-            intake.forward();
-        }
-    }
-
-    /** Runs the intake in reverse */
-    public void reverse() {
-        if (intake != null) {
-            intake.reverse();
-        }
-    }
-
-    /** Stops the intake */
-    public void stop() {
-        if (intake != null) {
-            intake.stop();
-        }
+    /**
+     * @return the robot's current field position as text, ready to print
+     *         with telemetry, or "unknown" if the localizer never started up.
+     */
+    public String getPoseString() {
+        return follower != null ? follower.pose().toString() : "unknown";
     }
 }
