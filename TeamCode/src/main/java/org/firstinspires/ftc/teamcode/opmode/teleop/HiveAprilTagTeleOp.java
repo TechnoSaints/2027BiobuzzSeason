@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.opmode.teleop;
 
-import com.pedropathing.drivetrain.DrivePowers;
-import com.pedropathing.revhub.drivetrains.Mecanum;
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
@@ -12,7 +10,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.firstinspires.ftc.teamcode.pedro.Constants;
+import org.firstinspires.ftc.teamcode.common.TeleopBot;
 
 /**
  * Standalone driver control with Limelight hive detection and AprilTag aim assist.
@@ -43,15 +41,16 @@ public class HiveAprilTagTeleOp extends OpMode {
         }
     }
 
-    private Mecanum drivetrain;
+    private TeleopBot bot;
     private Limelight3A limelight;
     private Alliance alliance = Alliance.BLUE;
     private boolean previousDpadLeft;
     private boolean previousDpadRight;
+    private boolean previousStart;
 
     @Override
     public void init() {
-        drivetrain = new Mecanum(hardwareMap, Constants.drivetrainConfig);
+        bot = new TeleopBot(this, telemetry);
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
         limelight.pipelineSwitch(LIMELIGHT_PIPELINE);
         limelight.start();
@@ -64,7 +63,16 @@ public class HiveAprilTagTeleOp extends OpMode {
 
     @Override
     public void loop() {
+        if (bot == null) {
+            return;
+        }
+
         updateAllianceSelection();
+
+        if (gamepad1.start && !previousStart) {
+            bot.resetHeading();
+        }
+        previousStart = gamepad1.start;
 
         LLResult result = limelight.getLatestResult();
         Double hiveAngle = null;
@@ -89,15 +97,10 @@ public class HiveAprilTagTeleOp extends OpMode {
         }
 
         double driveScale = gamepad1.left_bumper ? 0.3 : 1.0;
-        drivetrain.drive(
-                new DrivePowers(
-                        forward * driveScale,
-                        strafe * driveScale,
-                        turn * driveScale
-                ),
-                true
-        );
+        bot.setDrivePowers(forward, strafe, turn, driveScale);
+        bot.update();
 
+        telemetry.addData("Status", "Running (TeleOp)");
         telemetry.addData("Alliance / hive pipeline",
                 "%s / %d", alliance, LIMELIGHT_PIPELINE);
         telemetry.addData("Hive detected",
@@ -115,13 +118,17 @@ public class HiveAprilTagTeleOp extends OpMode {
                         ? (tagAngle == null ? "On - waiting for tag" : "On")
                         : "Off");
         telemetry.addData("Slow mode", gamepad1.left_bumper ? "On" : "Off");
+        if (bot.follower != null) {
+            telemetry.addData("Pose", bot.follower.pose().toString());
+        }
         telemetry.update();
     }
 
     @Override
     public void stop() {
-        if (drivetrain != null) {
-            drivetrain.drive(new DrivePowers(0, 0, 0), true);
+        if (bot != null) {
+            bot.setDrivePowers(0, 0, 0, 1.0);
+            bot.stop();
         }
         if (limelight != null) {
             limelight.stop();
