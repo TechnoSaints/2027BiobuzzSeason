@@ -20,7 +20,10 @@ public class Intake extends Component {
             intakeMotor = hardwareMap.get(DcMotorEx.class, RobotConstants.Intake.INTAKE_MOTOR_NAME);
             intakeMotor.setDirection(RobotConstants.Intake.intakeMotorDirection);
         } catch (Exception e) {
-            telemetry.addLine("Warning: Intake motor not found! Check your Hardware Config.");
+            telemetry.addData(
+                    "Warning: Failed to initialize intake motor",
+                    "%s: %s", e.getClass().getSimpleName(), String.valueOf(e.getMessage())
+            );
         }
     }
 

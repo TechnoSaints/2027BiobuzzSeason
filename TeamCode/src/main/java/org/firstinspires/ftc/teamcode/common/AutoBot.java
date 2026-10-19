@@ -56,9 +56,9 @@ public class AutoBot extends Bot {
      * to match the robot's actual starting spot on the field.
      * @param pose the robot's starting position.
      */
-    public void setPose(Pose pose) {
+    public void setStartingPose(Pose pose) {
         if (follower != null) {
-            follower.setPose(pose);
+            follower.setStartingPose(pose);
         }
     }
 
@@ -67,6 +67,6 @@ public class AutoBot extends Bot {
      *         with telemetry, or "unknown" if the localizer never started up.
      */
     public String getPoseString() {
-        return follower != null ? follower.pose().toString() : "unknown";
+        return follower != null ? follower.getPose().toString() : "unknown";
     }
 }

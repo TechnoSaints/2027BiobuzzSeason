@@ -69,4 +69,12 @@ public class PedroTeleOp extends OpMode {
         }
         telemetry.update();
     }
+
+    @Override
+    public void stop() {
+        if (bot != null) {
+            bot.stopDrive();
+            bot.stop();
+        }
+    }
 }

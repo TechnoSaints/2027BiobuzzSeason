@@ -12,6 +12,9 @@ public class TeleopBot extends Bot {
 
     public TeleopBot(OpMode opMode, Telemetry telemetry) {
         super(opMode, telemetry);
+        if (follower != null) {
+            follower.startTeleopDrive();
+        }
     }
 
     @Override
@@ -27,13 +30,20 @@ public class TeleopBot extends Bot {
      * @param powerScale A multiplier for the overall speed (e.g. 0.3 for slow mode).
      */
     public void setDrivePowers(double forward, double strafe, double turn, double powerScale) {
-        if (follower != null && follower.drivetrain != null) {
+         if (follower != null) {
             double scaledForward = forward * powerScale;
             double scaledStrafe = strafe * powerScale;
             double scaledTurn = turn * powerScale;
 
             // Sends the movement vectors to the drivetrain
-            follower.setTeleOpDrive(scaledForward, scaledStrafe, scaledTurn);
+            follower.setTeleOpDrive(scaledForward, scaledStrafe, scaledTurn, true);
+        }
+    }
+
+    public void stopDrive() {
+        if (follower != null) {
+            follower.setTeleOpDrive(0, 0, 0, true);
+            follower.update();
         }
     }
 

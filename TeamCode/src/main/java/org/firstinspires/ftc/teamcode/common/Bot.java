@@ -29,7 +29,10 @@ public abstract class Bot extends Component {
         try {
             this.follower = Constants.createFollower(opMode.hardwareMap);
         } catch (Exception e) {
-            telemetry.addLine("Error: Failed to initialize Follower (Drivetrain)");
+            telemetry.addData(
+                    "Error: Failed to initialize Follower (Drivetrain)",
+                    "%s: %s", e.getClass().getSimpleName(), String.valueOf(e.getMessage())
+            );
         }
 
         try {

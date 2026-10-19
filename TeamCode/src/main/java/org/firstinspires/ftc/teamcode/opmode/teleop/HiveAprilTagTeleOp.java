@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.firstinspires.ftc.teamcode.common.TeleopBot;
+import org.firstinspires.ftc.teamcode.common.TurretConstants;
 
 /**
  * Standalone driver control with Limelight hive detection and AprilTag aim assist.
@@ -20,10 +21,10 @@ import org.firstinspires.ftc.teamcode.common.TeleopBot;
  */
 @TeleOp(name = "Hive + AprilTag TeleOp", group = "TeleOp")
 public class HiveAprilTagTeleOp extends OpMode {
-    private static final int LIMELIGHT_PIPELINE = 0;
-    private static final double AIM_DEADBAND_DEGREES = 1.0;
-    private static final double AIM_GAIN = 0.025;
-    private static final double MAX_AIM_TURN = 0.35;
+    private static final int LIMELIGHT_PIPELINE = TurretConstants.LimelightConstants.LIMELIGHT_PIPELINE;
+    private static final double AIM_DEADBAND_DEGREES = TurretConstants.LimelightConstants.aimError;
+    private static final double AIM_GAIN = TurretConstants.LimelightConstants.AIM_GAIN;
+    private static final double MAX_AIM_TURN = TurretConstants.LimelightConstants.MAX_AIM_TURN;
 
     private static final Set<Integer> RED_CENTRAL_TAGS =
             new HashSet<>(Arrays.asList(31, 32, 35, 36));
@@ -119,7 +120,7 @@ public class HiveAprilTagTeleOp extends OpMode {
                         : "Off");
         telemetry.addData("Slow mode", gamepad1.left_bumper ? "On" : "Off");
         if (bot.follower != null) {
-            telemetry.addData("Pose", bot.follower.pose().toString());
+            telemetry.addData("Pose", bot.follower.getPose().toString());
         }
         telemetry.update();
     }
@@ -127,7 +128,7 @@ public class HiveAprilTagTeleOp extends OpMode {
     @Override
     public void stop() {
         if (bot != null) {
-            bot.setDrivePowers(0, 0, 0, 1.0);
+            bot.stopDrive();
             bot.stop();
         }
         if (limelight != null) {

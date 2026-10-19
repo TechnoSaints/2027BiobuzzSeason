@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmode.auto;
 
-import com.pedropathing.math.Pose;
+import com.pedropathing.geometry.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.common.AutoBot;
@@ -21,7 +21,7 @@ public abstract class AutoOpMode extends LinearOpMode {
      */
     protected void initBot(Pose startPose) {
         bot = new AutoBot(this, telemetry);
-        bot.setPose(startPose);
+        bot.setStartingPose(startPose);
     }
 
     /**
@@ -45,6 +45,7 @@ public abstract class AutoOpMode extends LinearOpMode {
 
         while (opModeIsActive()) {
             bot.update();
+            idle();
         }
     }
 }

@@ -58,6 +58,7 @@ public abstract class AutoStateMachine<S extends Enum<S>> {
             telemetry.addData("State", state);
             telemetry.addData("Pose", bot.getPoseString());
             telemetry.update();
+            opMode.idle();
         }
     }
 }
