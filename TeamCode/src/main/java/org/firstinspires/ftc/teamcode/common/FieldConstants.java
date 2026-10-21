@@ -1,39 +1,98 @@
 package org.firstinspires.ftc.teamcode.common;
 
-
 import com.pedropathing.geometry.Pose;
 
 /**
- * FieldConstants is a list of important spots on the field, written as (x, y, heading).
- * Distances are in inches, and (0, 0) is one corner of the field.
- * Writing coordinates here once - instead of typing them into every OpMode -
- * means everyone agrees on where things are and it's easy to fix a spot later.
+ * Nominal BIOBUZZ field coordinates, based on the official 2026-2027 FTC
+ * Competition Manual, section 9 and figures 9-4 through 9-5.
+ *
+ * The manual defines a 6-by-6 grid of nominal 24-inch tiles, but does not
+ * prescribe a Cartesian origin or heading convention. This project uses the
+ * audience-left inside corner as (0, 0), +X toward the audience's right,
+ * +Y away from the audience, and headings in radians increasing
+ * counterclockwise from +X.
+ * In this frame, the red side occupies tile columns A-C and the blue side
+ * occupies columns D-F. The manual does not give fixed field (x, y) values
+ * for FLOWERS or the AprilTags; the tags move with the tipping HIVE cells.
+ *
+ * Official sources:
+ * https://ftc-resources.firstinspires.org/ftc/game/cm-html
+ * https://ftc-resources.firstinspires.org/ftc/archive/2027/field/field-cad
  */
-public class FieldConstants {
-    // A Pose is just an (x, y) spot on the field plus which way the robot is facing (heading)
+public final class FieldConstants {
+    public static final int TILE_COUNT = 6;
+    public static final double TILE_SIZE_INCHES = 24.0;
+    public static final double FIELD_SIZE_INCHES = TILE_COUNT * TILE_SIZE_INCHES;
+    public static final double ALLIANCE_DIVIDER_X_INCHES = FIELD_SIZE_INCHES / 2.0;
+    public static final double ROBOT_HALF_SIZE_INCHES = 9.0;
 
-    // Where the robot starts sitting before the match begins
-    public static final Pose RED_LEFT_START = new Pose(9, 111, Math.toRadians(0));
-    public static final Pose BLUE_RIGHT_START = new Pose(135, 111, Math.toRadians(180));
+    /** Nominal center of the field and HIVE structure; not an approach pose. */
+    public static final Pose FIELD_CENTER = new Pose(
+            FIELD_SIZE_INCHES / 2.0,
+            FIELD_SIZE_INCHES / 2.0,
+            0.0
+    );
 
-    // Where the robot needs to drive to score
-    public static final Pose RED_SCORING_POSITION = new Pose(48, 48, Math.toRadians(45));
-    public static final Pose BLUE_SCORING_POSITION = new Pose(96, 96, Math.toRadians(225));
+    private FieldConstants() {
+    }
 
-    // Points along the way, used so a path can curve around instead of driving straight through something
-    public static final Pose RED_CENTER_WAYPOINT = new Pose(72, 48, Math.toRadians(0));
-    public static final Pose BLUE_CENTER_WAYPOINT = new Pose(72, 96, Math.toRadians(180));
+    /**
+     * Returns the center of a field tile. Columns are A-F and rows are 1-6,
+     * as labeled in the official field diagram.
+     *
+     * @param column tile column, A through F
+     * @param row tile row, 1 through 6
+     * @param headingDegrees robot heading in the project field frame
+     * @return the tile-center pose, with heading converted to radians
+     */
+    public static Pose tileCenter(char column, int row, double headingDegrees) {
+        char normalizedColumn = Character.toUpperCase(column);
+        if (normalizedColumn < 'A' || normalizedColumn >= 'A' + TILE_COUNT) {
+            throw new IllegalArgumentException("Tile column must be A-F");
+        }
+        if (row < 1 || row > TILE_COUNT) {
+            throw new IllegalArgumentException("Tile row must be 1-6");
+        }
 
-    // A loop of 4 points used to test that the robot can follow a complicated path correctly
-    public static final Pose CIRCUIT_POINT_1 = new Pose(60, 120, Math.toRadians(0));
-    public static final Pose CIRCUIT_POINT_2 = new Pose(120, 60, Math.toRadians(-90));
-    public static final Pose CIRCUIT_POINT_3 = new Pose(60, 20, Math.toRadians(180));
-    public static final Pose CIRCUIT_POINT_4 = new Pose(20, 60, Math.toRadians(90));
+        double x = (normalizedColumn - 'A' + 0.5) * TILE_SIZE_INCHES;
+        double y = (row - 0.5) * TILE_SIZE_INCHES;
+        return pose(x, y, headingDegrees);
+    }
 
-    // A simple box-shaped path (forward, left, backward, right) used to test driving and the intake together
-    public static final Pose INTAKE_TEST_START = new Pose(0, 0, 0);
-    public static final Pose INTAKE_TEST_FORWARD = new Pose(36, 0, 0);
-    public static final Pose INTAKE_TEST_LEFT = new Pose(36, 24, 0);
-    public static final Pose INTAKE_TEST_BACKWARD = new Pose(12, 24, 0);
-    public static final Pose INTAKE_TEST_RIGHT = new Pose(12, -24, 0);
+    /**
+     * Returns a pose on a tile seam intersection. Grid lines are numbered
+     * 0-6 from the audience-left/near corner.
+     */
+    public static Pose gridIntersection(
+            int xGridLine,
+            int yGridLine,
+            double headingDegrees) {
+        if (xGridLine < 0 || xGridLine > TILE_COUNT
+                || yGridLine < 0 || yGridLine > TILE_COUNT) {
+            throw new IllegalArgumentException("Grid line indices must be 0-6");
+        }
+
+        return pose(
+                xGridLine * TILE_SIZE_INCHES,
+                yGridLine * TILE_SIZE_INCHES,
+                headingDegrees
+        );
+    }
+
+    public static Pose pose(double xInches, double yInches, double headingDegrees) {
+        return new Pose(xInches, yInches, Math.toRadians(headingDegrees));
+    }
+
+    /**
+     * Checks that the center of a nominal 18-inch robot remains inside the
+     * field perimeter with its full starting-size footprint.
+     */
+    public static boolean isInsideFieldForStartingRobot(double xInches, double yInches) {
+        return Double.isFinite(xInches)
+                && Double.isFinite(yInches)
+                && xInches >= ROBOT_HALF_SIZE_INCHES
+                && xInches <= FIELD_SIZE_INCHES - ROBOT_HALF_SIZE_INCHES
+                && yInches >= ROBOT_HALF_SIZE_INCHES
+                && yInches <= FIELD_SIZE_INCHES - ROBOT_HALF_SIZE_INCHES;
+    }
 }

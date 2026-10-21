@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.firstinspires.ftc.teamcode.common.LimelightUtils;
 import org.firstinspires.ftc.teamcode.common.TeleopBot;
 import org.firstinspires.ftc.teamcode.common.TurretConstants;
 
@@ -79,6 +80,7 @@ public class HiveAprilTagTeleOp extends OpMode {
         Double hiveAngle = null;
         Integer visibleCentralTag = null;
         Double tagAngle = null;
+        Double limelightToTagDistanceInches = null;
 
         if (result != null && result.isValid()) {
             hiveAngle = findHiveAngle(result);
@@ -86,6 +88,8 @@ public class HiveAprilTagTeleOp extends OpMode {
             if (targetTag != null) {
                 visibleCentralTag = targetTag.getFiducialId();
                 tagAngle = targetTag.getTargetXDegrees();
+                limelightToTagDistanceInches =
+                        LimelightUtils.getLimelightToTagDistanceInches(targetTag);
             }
         }
 
@@ -114,6 +118,10 @@ public class HiveAprilTagTeleOp extends OpMode {
                 visibleCentralTag == null ? "Not visible" : visibleCentralTag);
         telemetry.addData("AprilTag angle from center",
                 tagAngle == null ? "No central tag" : formatAngle(tagAngle));
+        telemetry.addData("Limelight-to-AprilTag distance",
+                limelightToTagDistanceInches == null
+                        ? (visibleCentralTag == null ? "No central tag" : "Unavailable")
+                        : String.format("%.1f in", limelightToTagDistanceInches));
         telemetry.addData("Aim assist",
                 gamepad1.right_bumper
                         ? (tagAngle == null ? "On - waiting for tag" : "On")

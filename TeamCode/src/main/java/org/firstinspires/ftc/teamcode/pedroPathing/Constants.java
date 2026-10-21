@@ -17,7 +17,11 @@ import org.firstinspires.ftc.teamcode.common.RobotConstants;
 
 @Configurable
 public class Constants {
-    private static final RobotConstants.Drivetrain drivetrainData = new RobotConstants.Drivetrain();
+    /** Tune with Pedro's forward/lateral velocity tests; these are inches/second. */
+    public static double forwardVelocity = 96.31;
+    public static double lateralVelocity = 52.31;
+    public static double maxAutoPower = RobotConstants.Drivetrain.maxAutoPower;
+
     public static FollowerConstants followerConstants = new FollowerConstants()
             .mass(3.4)
             .forwardZeroPowerAcceleration(-26)
@@ -33,22 +37,6 @@ public class Constants {
             )
             //.predictiveBrakingCoefficients(new PredictiveBrakingCoefficients(0,0.05032,0.00334))
             ;
-
-    public static MecanumConstants driveConstants = new MecanumConstants()
-            .maxPower(drivetrainData.maxAutoPower)
-            .leftFrontMotorName(drivetrainData.LEFT_FRONT_NAME)
-            .leftRearMotorName(drivetrainData.LEFT_REAR_NAME)
-            .rightFrontMotorName(drivetrainData.RIGHT_FRONT_NAME)
-            .rightRearMotorName(drivetrainData.RIGHT_REAR_NAME)
-            .leftFrontMotorDirection(drivetrainData.leftFrontMotorDirection)
-            .leftRearMotorDirection(drivetrainData.leftRearMotorDirection)
-            .rightFrontMotorDirection(drivetrainData.rightFrontMotorDirection)
-            .rightRearMotorDirection(drivetrainData.rightRearMotorDirection)
-            .xVelocity(96.31)
-            .yVelocity(52.31)
-            .useBrakeModeInTeleOp(true)
-            .nominalVoltage(12.5)
-            .useVoltageCompensation(true);
 
     public static PinpointConstants localizerConstants = new PinpointConstants()
             .forwardPodY(5.5)
@@ -80,10 +68,27 @@ public class Constants {
 
     public static Follower createFollower(HardwareMap hardwareMap) {
         return new FollowerBuilder(followerConstants, hardwareMap)
-                .mecanumDrivetrain(driveConstants)
+                .mecanumDrivetrain(createMecanumConstants())
                 .pinpointLocalizer(localizerConstants)
                 .pathConstraints(pathConstraints)
                 .build();
     }
-}
 
+    private static MecanumConstants createMecanumConstants() {
+        return new MecanumConstants()
+                .maxPower(maxAutoPower)
+                .leftFrontMotorName(RobotConstants.Drivetrain.LEFT_FRONT_NAME)
+                .leftRearMotorName(RobotConstants.Drivetrain.LEFT_REAR_NAME)
+                .rightFrontMotorName(RobotConstants.Drivetrain.RIGHT_FRONT_NAME)
+                .rightRearMotorName(RobotConstants.Drivetrain.RIGHT_REAR_NAME)
+                .leftFrontMotorDirection(RobotConstants.Drivetrain.leftFrontMotorDirection)
+                .leftRearMotorDirection(RobotConstants.Drivetrain.leftRearMotorDirection)
+                .rightFrontMotorDirection(RobotConstants.Drivetrain.rightFrontMotorDirection)
+                .rightRearMotorDirection(RobotConstants.Drivetrain.rightRearMotorDirection)
+                .xVelocity(forwardVelocity)
+                .yVelocity(lateralVelocity)
+                .useBrakeModeInTeleOp(true)
+                .nominalVoltage(12.5)
+                .useVoltageCompensation(true);
+    }
+}
