@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmode.teleop;
 
-import com.pedropathing.drivetrain.DrivePowers;
-import com.pedropathing.revhub.drivetrains.Mecanum;
+//import com.pedropathing.drivetrain.DrivePowers;
+//import com.pedropathing.revhub.drivetrains.Mecanum;
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
@@ -43,7 +43,7 @@ public class HiveAprilTagTeleOp extends OpMode {
         }
     }
 
-    private Mecanum drivetrain;
+  //  private Mecanum drivetrain;
     private Limelight3A limelight;
     private Alliance alliance = Alliance.BLUE;
     private boolean previousDpadLeft;
@@ -51,7 +51,7 @@ public class HiveAprilTagTeleOp extends OpMode {
 
     @Override
     public void init() {
-        drivetrain = new Mecanum(hardwareMap, Constants.drivetrainConfig);
+       // drivetrain = new Mecanum(hardwareMap, Constants.drivetrainConfig);
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
         limelight.pipelineSwitch(LIMELIGHT_PIPELINE);
         limelight.start();
@@ -80,23 +80,23 @@ public class HiveAprilTagTeleOp extends OpMode {
             }
         }
 
-        double forward = -gamepad1.left_stick_y;
-        double strafe = -gamepad1.left_stick_x;
-        double turn = -gamepad1.right_stick_x;
+//        double forward = -gamepad1.left_stick_y;
+//        double strafe = -gamepad1.left_stick_x;
+//        double turn = -gamepad1.right_stick_x;
 
-        if (gamepad1.right_bumper && Math.abs(gamepad1.right_stick_x) < 0.1) {
-            turn = tagAngle == null ? 0.0 : getAimTurn(tagAngle);
-        }
+//        if (gamepad1.right_bumper && Math.abs(gamepad1.right_stick_x) < 0.1) {
+//            turn = tagAngle == null ? 0.0 : getAimTurn(tagAngle);
+//        }
 
         double driveScale = gamepad1.left_bumper ? 0.3 : 1.0;
-        drivetrain.drive(
-                new DrivePowers(
-                        forward * driveScale,
-                        strafe * driveScale,
-                        turn * driveScale
-                ),
-                true
-        );
+//        drivetrain.drive(
+//                new DrivePowers(
+//                        forward * driveScale,
+//                        strafe * driveScale,
+//                        turn * driveScale
+//                ),
+//                true
+//        );
 
         telemetry.addData("Alliance / hive pipeline",
                 "%s / %d", alliance, LIMELIGHT_PIPELINE);
@@ -120,9 +120,9 @@ public class HiveAprilTagTeleOp extends OpMode {
 
     @Override
     public void stop() {
-        if (drivetrain != null) {
-            drivetrain.drive(new DrivePowers(0, 0, 0), true);
-        }
+//       if (drivetrain != null) {
+//            drive train.drive(new DrivePowers(0, 0, 0), true);
+//        }
         if (limelight != null) {
             limelight.stop();
         }
