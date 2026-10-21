@@ -1,36 +1,35 @@
 package org.firstinspires.ftc.teamcode.opmode.teleop;
 
-import com.pedropathing.drivetrain.DrivePowers;
-import com.pedropathing.revhub.drivetrains.Mecanum;
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.firstinspires.ftc.teamcode.pedro.Constants;
-
 /**
- * Standalone driver control with Limelight hive detection and AprilTag aim assist.
+ * Limelight AprilTag targeting and shooter control. Drivetrain hardware is not
+ * initialized, so this OpMode does not require drive motors in the hardware config.
  *
  * D-pad left selects the blue alliance; D-pad right selects red.
- * Hold the right bumper to turn toward the closest visible central alliance tag.
+ * Press A to toggle the shooter; D-pad up/down tunes its power by 0.05.
  */
 @TeleOp(name = "Hive + AprilTag TeleOp", group = "TeleOp")
 public class HiveAprilTagTeleOp extends OpMode {
+    private static final String SHOOTER_MOTOR_NAME = "shooterMotor";
     private static final int LIMELIGHT_PIPELINE = 0;
-    private static final double AIM_DEADBAND_DEGREES = 1.0;
-    private static final double AIM_GAIN = 0.025;
-    private static final double MAX_AIM_TURN = 0.35;
+    private static final double SHOOTER_POWER_STEP = 0.02;
+    private static final double MIN_SHOOTER_POWER = -1.0;
+    private static final double MAX_SHOOTER_POWER = 1.0;
 
     private static final Set<Integer> RED_CENTRAL_TAGS =
             new HashSet<>(Arrays.asList(31, 32, 35, 36));
     private static final Set<Integer> BLUE_CENTRAL_TAGS =
-            new HashSet<>(Arrays.asList(39, 40, 43, 44));
+            new HashSet<>(Arrays.asList(39, 40, 43));
 
     private enum Alliance {
         BLUE(BLUE_CENTRAL_TAGS),
@@ -43,28 +42,36 @@ public class HiveAprilTagTeleOp extends OpMode {
         }
     }
 
-    private Mecanum drivetrain;
     private Limelight3A limelight;
+    private DcMotorEx shooterMotor;
+    private double shooterPower = 0.5;
+    private boolean shooterEnabled;
     private Alliance alliance = Alliance.BLUE;
     private boolean previousDpadLeft;
     private boolean previousDpadRight;
+    private boolean previousDpadUp;
+    private boolean previousDpadDown;
+    private boolean previousA;
 
     @Override
     public void init() {
-        drivetrain = new Mecanum(hardwareMap, Constants.drivetrainConfig);
+        shooterMotor = hardwareMap.get(DcMotorEx.class, SHOOTER_MOTOR_NAME);
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
         limelight.pipelineSwitch(LIMELIGHT_PIPELINE);
         limelight.start();
 
         telemetry.addLine("Ready - Limelight pipeline 0");
         telemetry.addLine("D-pad Left: Blue | D-pad Right: Red");
-        telemetry.addLine("Hold Right Bumper: aim at central alliance AprilTag");
+        telemetry.addLine("Drivetrain disabled; tag angles are telemetry only");
+        telemetry.addLine("Press A: shooter on/off | D-pad Up/Down: tune power");
+        telemetry.addData("Shooter power", "%.2f (default 0.50)", shooterPower);
         telemetry.update();
     }
 
     @Override
     public void loop() {
         updateAllianceSelection();
+        updateShooterControls();
 
         LLResult result = limelight.getLatestResult();
         Double hiveAngle = null;
@@ -80,23 +87,7 @@ public class HiveAprilTagTeleOp extends OpMode {
             }
         }
 
-        double forward = -gamepad1.left_stick_y;
-        double strafe = -gamepad1.left_stick_x;
-        double turn = -gamepad1.right_stick_x;
-
-        if (gamepad1.right_bumper && Math.abs(gamepad1.right_stick_x) < 0.1) {
-            turn = tagAngle == null ? 0.0 : getAimTurn(tagAngle);
-        }
-
-        double driveScale = gamepad1.left_bumper ? 0.3 : 1.0;
-        drivetrain.drive(
-                new DrivePowers(
-                        forward * driveScale,
-                        strafe * driveScale,
-                        turn * driveScale
-                ),
-                true
-        );
+        shooterMotor.setPower(shooterEnabled ? shooterPower : 0.0);
 
         telemetry.addData("Alliance / hive pipeline",
                 "%s / %d", alliance, LIMELIGHT_PIPELINE);
@@ -110,22 +101,36 @@ public class HiveAprilTagTeleOp extends OpMode {
                 visibleCentralTag == null ? "Not visible" : visibleCentralTag);
         telemetry.addData("AprilTag angle from center",
                 tagAngle == null ? "No central tag" : formatAngle(tagAngle));
-        telemetry.addData("Aim assist",
-                gamepad1.right_bumper
-                        ? (tagAngle == null ? "On - waiting for tag" : "On")
-                        : "Off");
-        telemetry.addData("Slow mode", gamepad1.left_bumper ? "On" : "Off");
+        telemetry.addData("Shooter", shooterEnabled ? "On" : "Off");
+        telemetry.addData("Shooter power", "%.2f", shooterPower);
+        telemetry.addLine("Press A: toggle | D-pad Up/Down: +/- 0.05");
         telemetry.update();
     }
 
     @Override
     public void stop() {
-        if (drivetrain != null) {
-            drivetrain.drive(new DrivePowers(0, 0, 0), true);
+        if (shooterMotor != null) {
+            shooterMotor.setPower(0.0);
         }
         if (limelight != null) {
             limelight.stop();
         }
+    }
+
+    private void updateShooterControls() {
+        if (gamepad1.a && !previousA) {
+            shooterEnabled = !shooterEnabled;
+        }
+        previousA = gamepad1.a;
+
+        if (gamepad1.dpad_up && !previousDpadUp) {
+            shooterPower = Math.min(MAX_SHOOTER_POWER, shooterPower + SHOOTER_POWER_STEP);
+        } else if (gamepad1.dpad_down && !previousDpadDown) {
+            shooterPower = Math.max(MIN_SHOOTER_POWER, shooterPower - SHOOTER_POWER_STEP);
+        }
+
+        previousDpadUp = gamepad1.dpad_up;
+        previousDpadDown = gamepad1.dpad_down;
     }
 
     private void updateAllianceSelection() {
@@ -170,15 +175,6 @@ public class HiveAprilTagTeleOp extends OpMode {
         }
 
         return closestToCenter;
-    }
-
-    private double getAimTurn(double angleDegrees) {
-        if (Math.abs(angleDegrees) <= AIM_DEADBAND_DEGREES) {
-            return 0.0;
-        }
-
-        double turn = -angleDegrees * AIM_GAIN;
-        return Math.max(-MAX_AIM_TURN, Math.min(MAX_AIM_TURN, turn));
     }
 
     private String formatAngle(double angleDegrees) {
