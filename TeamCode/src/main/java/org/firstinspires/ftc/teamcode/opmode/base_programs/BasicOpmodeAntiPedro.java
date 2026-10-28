@@ -73,6 +73,7 @@ public class BasicOpmodeAntiPedro extends LinearOpMode {
     private DcMotor backLeftDrive = null;
     private DcMotor frontRightDrive = null;
     private DcMotor backRightDrive = null;
+    private DcMotor intake = null;
 
     @Override
     public void runOpMode() {
@@ -83,7 +84,7 @@ public class BasicOpmodeAntiPedro extends LinearOpMode {
         backLeftDrive = hardwareMap.get(DcMotor.class, RobotConstants.Drivetrain.LEFT_REAR_NAME);
         frontRightDrive = hardwareMap.get(DcMotor.class, RobotConstants.Drivetrain.RIGHT_FRONT_NAME);
         backRightDrive = hardwareMap.get(DcMotor.class, RobotConstants.Drivetrain.RIGHT_REAR_NAME);
-
+        intake = hardwareMap.get(DcMotor.class, "intake");
         // ########################################################################################
         // !!!            IMPORTANT Drive Information. Test your motor directions.            !!!!!
         // ########################################################################################
@@ -98,11 +99,14 @@ public class BasicOpmodeAntiPedro extends LinearOpMode {
         backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
         backRightDrive.setDirection(DcMotor.Direction.FORWARD);
+        intake.setDirection(DcMotor.Direction.FORWARD);
+
 
         frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Wait for the game to start (driver presses START)
         telemetry.addData("Status", "Initialized");
@@ -127,6 +131,7 @@ public class BasicOpmodeAntiPedro extends LinearOpMode {
             double backLeftPower   = axial - lateral + yaw;
             double backRightPower  = axial + lateral - yaw;
 
+            double intakePower = 1;
             // Normalize the values so no wheel power exceeds 100%
             // This ensures that the robot maintains the desired motion.
             max = Math.max(Math.abs(frontLeftPower), Math.abs(frontRightPower));
@@ -162,6 +167,8 @@ public class BasicOpmodeAntiPedro extends LinearOpMode {
             frontRightDrive.setPower(frontRightPower);
             backLeftDrive.setPower(backLeftPower);
             backRightDrive.setPower(backRightPower);
+
+            intake.setPower(1);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());

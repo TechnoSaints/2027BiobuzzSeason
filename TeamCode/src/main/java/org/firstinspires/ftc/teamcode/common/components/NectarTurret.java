@@ -45,7 +45,7 @@ public class NectarTurret {
             nectarAngleServo = hardwareMap.get(Servo.class, RobotConstants.NectarTurretConstants.NECTAR_ANGLE_SERVO_NAME);
         } catch (Exception e) {
             telemetry.addData(
-                    "Warning: Failed to initialize nectar turret",
+                    "Warning: Failed to initi                        alize nectar turret",
                     "%s: %s", e.getClass().getSimpleName(), String.valueOf(e.getMessage())
             );
         }
