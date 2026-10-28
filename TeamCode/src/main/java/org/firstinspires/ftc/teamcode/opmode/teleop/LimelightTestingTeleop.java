@@ -21,8 +21,8 @@ import org.firstinspires.ftc.teamcode.common.components.Pollen_Turret;
  * D-pad left selects the blue alliance; D-pad right selects red.
  * Hold the right bumper to turn toward the closest visible central alliance tag.
  */
-@TeleOp(name = "Hive + AprilTag TeleOp", group = "TeleOp")
-public class HiveAprilTagTeleOp extends OpMode {
+@TeleOp(name = "Limelight Testing Teleop", group = "TeleOp")
+public class LimelightTestingTeleop extends OpMode {
     private static final int LIMELIGHT_PIPELINE = TurretConstants.LimelightConstants.LIMELIGHT_PIPELINE;
     private static final double AIM_DEADBAND_DEGREES = TurretConstants.LimelightConstants.aimError;
     private static final double AIM_GAIN = TurretConstants.LimelightConstants.AIM_GAIN;
