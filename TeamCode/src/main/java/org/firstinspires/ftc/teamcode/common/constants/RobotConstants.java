@@ -1,5 +1,6 @@
-package org.firstinspires.ftc.teamcode.common;
+package org.firstinspires.ftc.teamcode.common.constants;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 /**
@@ -33,6 +34,10 @@ public class RobotConstants {
     // Intake-specific constants
     public static class Intake {
         public static final String INTAKE_MOTOR_NAME = "intakeMotor";
+
+        public static final String Flower_Servo_Name = "flowerServo";
+
+        public static CRServo.Direction flowerServoDirection = CRServo.Direction.FORWARD;
         public static DcMotorSimple.Direction intakeMotorDirection = DcMotorSimple.Direction.FORWARD;
         
         // Power levels for different intake actions

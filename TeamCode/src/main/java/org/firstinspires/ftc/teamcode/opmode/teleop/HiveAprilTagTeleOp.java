@@ -10,9 +10,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.firstinspires.ftc.teamcode.common.LimelightUtils;
 import org.firstinspires.ftc.teamcode.common.TeleopBot;
-import org.firstinspires.ftc.teamcode.common.TurretConstants;
+import org.firstinspires.ftc.teamcode.common.constants.TurretConstants;
 
 /**
  * Standalone driver control with Limelight hive detection and AprilTag aim assist.

@@ -4,6 +4,8 @@ import com.pedropathing.follower.Follower;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.common.components.Component;
+import org.firstinspires.ftc.teamcode.common.components.Intake;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 /**

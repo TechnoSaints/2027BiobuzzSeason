@@ -1,9 +1,11 @@
-package org.firstinspires.ftc.teamcode.common;
+package org.firstinspires.ftc.teamcode.common.components;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.common.constants.RobotConstants;
 
 /**
  * Intake is the robot part that sucks up game pieces.
@@ -13,12 +15,16 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class Intake extends Component {
     private DcMotorEx intakeMotor;
 
+    private CRServo flowerServo;
+
     public Intake(HardwareMap hardwareMap, Telemetry telemetry) {
         super(telemetry);
         try {
             // This name has to exactly match what you typed into the Driver Station's Hardware Config.
             intakeMotor = hardwareMap.get(DcMotorEx.class, RobotConstants.Intake.INTAKE_MOTOR_NAME);
             intakeMotor.setDirection(RobotConstants.Intake.intakeMotorDirection);
+            flowerServo = hardwareMap.get(CRServo.class, RobotConstants.Intake.Flower_Servo_Name);
+            flowerServo.setDirection(RobotConstants.Intake.flowerServoDirection);
         } catch (Exception e) {
             telemetry.addData(
                     "Warning: Failed to initialize intake motor",

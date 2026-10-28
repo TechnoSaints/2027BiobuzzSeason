@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.common;
+package org.firstinspires.ftc.teamcode.common.constants;
 
 public abstract class MotorConstants {
     public static double ticksPerMotorRev = 28.0;

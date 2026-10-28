@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.common;
+package org.firstinspires.ftc.teamcode.common.components;
 
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 
@@ -6,14 +6,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 
-public final class LimelightUtils {
-    private LimelightUtils() {
-    }
-
-    /**
-     * Returns the straight-line distance from the Limelight camera to the
-     * detected target, using the target's camera-space pose.
-     */
+public class Pollen_Turret {
     public static Double getLimelightToTagDistanceInches(
             LLResultTypes.FiducialResult targetTag) {
         if (targetTag == null) {
