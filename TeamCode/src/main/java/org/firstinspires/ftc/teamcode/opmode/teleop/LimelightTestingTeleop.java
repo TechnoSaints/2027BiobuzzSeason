@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.firstinspires.ftc.teamcode.common.TeleopBot;
-import org.firstinspires.ftc.teamcode.common.constants.TurretConstants;
+import org.firstinspires.ftc.teamcode.common.constants.RobotConstants;
 import org.firstinspires.ftc.teamcode.common.components.Pollen_Turret;
 
 
@@ -23,10 +23,10 @@ import org.firstinspires.ftc.teamcode.common.components.Pollen_Turret;
  */
 @TeleOp(name = "Limelight Testing Teleop", group = "TeleOp")
 public class LimelightTestingTeleop extends OpMode {
-    private static final int LIMELIGHT_PIPELINE = TurretConstants.LimelightConstants.LIMELIGHT_PIPELINE;
-    private static final double AIM_DEADBAND_DEGREES = TurretConstants.LimelightConstants.aimError;
-    private static final double AIM_GAIN = TurretConstants.LimelightConstants.AIM_GAIN;
-    private static final double MAX_AIM_TURN = TurretConstants.LimelightConstants.MAX_AIM_TURN;
+    private static final int LIMELIGHT_PIPELINE = RobotConstants.LimelightConstants.LIMELIGHT_PIPELINE;
+    private static final double AIM_DEADBAND_DEGREES = RobotConstants.LimelightConstants.aimError;
+    private static final double AIM_GAIN = RobotConstants.LimelightConstants.AIM_GAIN;
+    private static final double MAX_AIM_TURN = RobotConstants.LimelightConstants.MAX_AIM_TURN;
 
     private static final Set<Integer> RED_CENTRAL_TAGS =
             new HashSet<>(Arrays.asList(31, 32, 35, 36));

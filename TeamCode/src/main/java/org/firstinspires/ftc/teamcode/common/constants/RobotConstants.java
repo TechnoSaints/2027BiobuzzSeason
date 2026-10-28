@@ -45,4 +45,23 @@ public class RobotConstants {
         public static double stopPower = 0.0;
         public static double lockPower = 0.98;
     }
+
+
+
+    public static class LimelightConstants {
+        public static final String limelightName = "limelight";
+        public static final int LIMELIGHT_PIPELINE = 0;
+        public static final double aimError = 1.0; //Degrees
+        public static final double AIM_GAIN = 0.025;
+        public static final double MAX_AIM_TURN = 0.35;
+    }
+
+    public static class PollenTurretConstants {
+        public static final String POLLEN_TURRET_NAME = "pollenTurretFlywheel";
+        public static final String POLLEN_SERVO_NAME = "pollenTurretHood";
+        public static final String POLLEN_ANGLE_SERVO_NAME = "pollenTurretRotate";
+        public static final DcMotorSimple.Direction pollenTurretDirection = DcMotorSimple.Direction.REVERSE;
+        public static final CRServo.Direction pollenServoDirection = CRServo.Direction.FORWARD;
+    }
+
 }
