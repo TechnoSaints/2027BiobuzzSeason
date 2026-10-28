@@ -64,8 +64,8 @@ import org.firstinspires.ftc.teamcode.common.constants.RobotConstants;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Basic: Omni Linear OpMode", group="Linear OpMode")
-public class BasicOmniOpMode_Linear extends LinearOpMode {
+@TeleOp(name="Basic Opmode No PEDRO", group="Linear OpMode")
+public class BasicOpmodeAntiPedro extends LinearOpMode {
 
     // Declare OpMode members for each of the 4 motors.
     private ElapsedTime runtime = new ElapsedTime();
