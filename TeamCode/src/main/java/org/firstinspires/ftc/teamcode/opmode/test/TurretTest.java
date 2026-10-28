@@ -8,8 +8,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name = "MotorTest", group = "Test")
-public class MotorTest extends LinearOpMode {
+@TeleOp(name = "Turret Test", group = "Test")
+public class TurretTest extends LinearOpMode {
 
     private DcMotorEx motor;
     private Servo servo;

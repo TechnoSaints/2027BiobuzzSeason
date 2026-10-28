@@ -62,6 +62,30 @@ public class RobotConstants {
         public static final String POLLEN_ANGLE_SERVO_NAME = "pollenTurretRotate";
         public static final DcMotorSimple.Direction pollenTurretDirection = DcMotorSimple.Direction.REVERSE;
         public static final CRServo.Direction pollenServoDirection = CRServo.Direction.FORWARD;
+        /**
+        * PIDF coefficients used to adjust flywheel behavior.
+        * P and F should be tuned; I and D should be left as default unless problematic.
+        */
+        public static final double pollenTurretFlywheelP = 56.4;
+        public static final double pollenTurretFlywheelI = 3.0;
+        public static final double pollenTurretFlywheelD = 0.0;
+        public static final double pollenTurretFlywheelF = 13.47;
+    }
+
+    public static class NectarTurretConstants {
+        public static final String NECTAR_TURRET_NAME = "nectarTurretFlywheel";
+        public static final String NECTAR_SERVO_NAME = "nectarTurretHood";
+        public static final String NECTAR_ANGLE_SERVO_NAME = "nectarTurretRotate";
+        public static final DcMotorSimple.Direction nectarTurretDirection = DcMotorSimple.Direction.REVERSE;
+        public static final CRServo.Direction nectarServoDirection = CRServo.Direction.FORWARD;
+        /**
+         * PIDF coefficients used to adjust flywheel behavior.
+         * P and F should be tuned; I and D should be left as default unless problematic.
+         */
+        public static final double nectarTurretFlywheelP = 56.4;
+        public static final double nectarTurretFlywheelI = 3.0;
+        public static final double nectarTurretFlywheelD = 0.0;
+        public static final double nectarTurretFlywheelF = 13.47;
     }
 
 }

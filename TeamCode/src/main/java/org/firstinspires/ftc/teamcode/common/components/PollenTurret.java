@@ -2,8 +2,10 @@ package org.firstinspires.ftc.teamcode.common.components;
 
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -13,19 +15,28 @@ import org.firstinspires.ftc.robotcore.external.navigation.Position;
 
 import org.firstinspires.ftc.teamcode.common.constants.RobotConstants;
 
-public class Pollen_Turret {
+public class PollenTurret {
 
     private DcMotorEx pollenTurretMotor;
     private CRServo pollenRotationServo;
     private Servo pollenAngleServo;
+    private PIDFCoefficients pollenTurretPIDFCoefficients = new PIDFCoefficients(
+            RobotConstants.PollenTurretConstants.pollenTurretFlywheelP,
+            RobotConstants.PollenTurretConstants.pollenTurretFlywheelI,
+            RobotConstants.PollenTurretConstants.pollenTurretFlywheelD,
+            RobotConstants.PollenTurretConstants.pollenTurretFlywheelF);
 
 
-    public Pollen_Turret(HardwareMap hardwareMap, Telemetry telemetry) {
+    public PollenTurret(HardwareMap hardwareMap, Telemetry telemetry) {
         try {
             // This name has to exactly match what you typed into the Driver Station's Hardware Config.
             pollenTurretMotor = hardwareMap.get(DcMotorEx.class, RobotConstants.PollenTurretConstants.POLLEN_TURRET_NAME);
 
             pollenTurretMotor.setDirection(RobotConstants.PollenTurretConstants.pollenTurretDirection);
+
+            pollenTurretMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pollenTurretPIDFCoefficients);
+
+            pollenTurretMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
             pollenRotationServo = hardwareMap.get(CRServo.class, RobotConstants.PollenTurretConstants.POLLEN_SERVO_NAME);
 
@@ -34,7 +45,7 @@ public class Pollen_Turret {
             pollenAngleServo = hardwareMap.get(Servo.class, RobotConstants.PollenTurretConstants.POLLEN_ANGLE_SERVO_NAME);
         } catch (Exception e) {
             telemetry.addData(
-                    "Warning: Failed to initialize intake motor",
+                    "Warning: Failed to initialize pollen turret",
                     "%s: %s", e.getClass().getSimpleName(), String.valueOf(e.getMessage())
             );
         }
@@ -60,6 +71,4 @@ public class Pollen_Turret {
         );
         return Double.isFinite(distance) && distance > 0 ? distance : null;
     }
-
-
 }

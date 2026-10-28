@@ -12,7 +12,7 @@ import java.util.Set;
 
 import org.firstinspires.ftc.teamcode.common.TeleopBot;
 import org.firstinspires.ftc.teamcode.common.constants.RobotConstants;
-import org.firstinspires.ftc.teamcode.common.components.Pollen_Turret;
+import org.firstinspires.ftc.teamcode.common.components.PollenTurret;
 
 
 /**
@@ -90,7 +90,7 @@ public class LimelightTestingTeleop extends OpMode {
                 visibleCentralTag = targetTag.getFiducialId();
                 tagAngle = targetTag.getTargetXDegrees();
                 limelightToTagDistanceInches =
-                        Pollen_Turret.getLimelightToTagDistanceInches(targetTag);
+                        PollenTurret.getLimelightToTagDistanceInches(targetTag);
             }
         }
 
