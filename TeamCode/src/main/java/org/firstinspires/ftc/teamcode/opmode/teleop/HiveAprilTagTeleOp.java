@@ -12,6 +12,8 @@ import java.util.Set;
 
 import org.firstinspires.ftc.teamcode.common.TeleopBot;
 import org.firstinspires.ftc.teamcode.common.constants.TurretConstants;
+import org.firstinspires.ftc.teamcode.common.components.Pollen_Turret;
+
 
 /**
  * Standalone driver control with Limelight hive detection and AprilTag aim assist.
@@ -88,7 +90,7 @@ public class HiveAprilTagTeleOp extends OpMode {
                 visibleCentralTag = targetTag.getFiducialId();
                 tagAngle = targetTag.getTargetXDegrees();
                 limelightToTagDistanceInches =
-                        LimelightUtils.getLimelightToTagDistanceInches(targetTag);
+                        Pollen_Turret.getLimelightToTagDistanceInches(targetTag);
             }
         }
 
