@@ -18,14 +18,12 @@ import org.firstinspires.ftc.teamcode.common.constants.RobotConstants;
 @Configurable
 public class Constants {
     /** Tune with Pedro's forward/lateral velocity tests; these are inches/second. */
-    public static double forwardVelocity = 96.31;
-    public static double lateralVelocity = 52.31;
     public static double maxAutoPower = RobotConstants.Drivetrain.maxAutoPower;
 
     public static FollowerConstants followerConstants = new FollowerConstants()
             .mass(3.4)
-            .forwardZeroPowerAcceleration(-26)
-            .lateralZeroPowerAcceleration(-38.67)
+            .forwardZeroPowerAcceleration(88.85)
+            .lateralZeroPowerAcceleration(0)
             .useSecondaryTranslationalPIDF(false)
             .useSecondaryHeadingPIDF(false)
             .useSecondaryDrivePIDF(false)
@@ -39,14 +37,14 @@ public class Constants {
             ;
 
     public static PinpointConstants localizerConstants = new PinpointConstants()
-            .forwardPodY(5.5)
-            .strafePodX(-7.875)
+            .forwardPodY(6.75)
+            .strafePodX(0.25)
             .distanceUnit(DistanceUnit.INCH)
             .hardwareMapName("pinpoint")
             .encoderResolution(
                     GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD
             )
-            .forwardEncoderDirection(GoBildaPinpointDriver.EncoderDirection.FORWARD)
+            .forwardEncoderDirection(GoBildaPinpointDriver.EncoderDirection.REVERSED)
             .strafeEncoderDirection(GoBildaPinpointDriver.EncoderDirection.REVERSED);
 
     /**
@@ -85,8 +83,8 @@ public class Constants {
                 .leftRearMotorDirection(RobotConstants.Drivetrain.leftRearMotorDirection)
                 .rightFrontMotorDirection(RobotConstants.Drivetrain.rightFrontMotorDirection)
                 .rightRearMotorDirection(RobotConstants.Drivetrain.rightRearMotorDirection)
-                .xVelocity(forwardVelocity)
-                .yVelocity(lateralVelocity)
+                .xVelocity(0)
+                .yVelocity(0)
                 .useBrakeModeInTeleOp(true)
                 .nominalVoltage(12.5)
                 .useVoltageCompensation(true);

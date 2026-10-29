@@ -1,9 +1,9 @@
-package org.firstinspires.ftc.teamcode.opmode.teleop;
+package org.firstinspires.ftc.teamcode.opmode.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,12 +25,12 @@ public class MotorTest extends LinearOpMode {
     @Override
     public void runOpMode() {
         // Grab every motor that's in the Driver Station's Hardware Config
-        List<DcMotor> motors = new ArrayList<>();
+        List<DcMotorEx> motors = new ArrayList<>();
         List<String> motorNames = new ArrayList<>();
 
         for (Map.Entry<String, DcMotor> entry : hardwareMap.dcMotor.entrySet()) {
             motorNames.add(entry.getKey());
-            motors.add(entry.getValue());
+            motors.add((DcMotorEx) entry.getValue());
         }
 
         if (motors.isEmpty()) {
@@ -68,12 +68,12 @@ public class MotorTest extends LinearOpMode {
                 currentMotorIndex = (currentMotorIndex - 1 + motors.size()) % motors.size();
             }
 
-            DcMotor selectedMotor = motors.get(currentMotorIndex);
+            DcMotorEx selectedMotor = motors.get(currentMotorIndex);
             selectedMotor.setPower(-gamepad1.left_stick_y);
 
             telemetry.addData("--- Selected Motor ---", motorNames.get(currentMotorIndex));
             telemetry.addData("Target Velocity", "%.2f", -gamepad1.left_stick_y);
-            telemetry.addData("Current Actual", "%.2f", selectedMotor.getPower());
+            telemetry.addData("Actual Velocity", "%.2f", selectedMotor.getVelocity());
             telemetry.addLine("\n--- Controls ---");
             telemetry.addLine("DPAD UP/DOWN: Switch Servo");
             telemetry.addLine("LEFT JOYSTICK UP/DOWN: Set Velocity");
