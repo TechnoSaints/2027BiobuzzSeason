@@ -58,8 +58,8 @@ public class RobotConstants {
 
     public static class PollenTurretConstants {
         public static final String POLLEN_TURRET_NAME = "pollenTurretFlywheel";
-        public static final String POLLEN_SERVO_NAME = "pollenTurretHood";
-        public static final String POLLEN_ANGLE_SERVO_NAME = "pollenTurretRotate";
+        public static final String POLLEN_SERVO_NAME = "pollenTurretRotate";
+        public static final String POLLEN_ANGLE_SERVO_NAME = "pollenTurretHood";
         public static final DcMotorSimple.Direction pollenTurretDirection = DcMotorSimple.Direction.REVERSE;
         public static final CRServo.Direction pollenServoDirection = CRServo.Direction.FORWARD;
         /**
@@ -70,6 +70,12 @@ public class RobotConstants {
         public static final double pollenTurretFlywheelI = 3.0;
         public static final double pollenTurretFlywheelD = 0.0;
         public static final double pollenTurretFlywheelF = 13.47;
+        public static final double pollenTurretMaxSpeed = 1.0;
+        public static final double kP = 0.0001;
+        public static final double kD = 0.0000;
+        public static final double angleToleranceDegrees = 0.2;
+        public static final double MAX_POWER = 1;
+        public static final double goalOffset = 0;
     }
 
     public static class NectarTurretConstants {
