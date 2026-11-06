@@ -3,12 +3,17 @@ package org.firstinspires.ftc.teamcode.common;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.common.constants.RobotConstants;
 
 /**
  * TeleopBot is specialized for TeleOp (driver controlled) mode.
  * It provides methods for manual driving and subsystem control.
  */
 public class TeleopBot extends Bot {
+    private final AccelerationLimiter forwardLimiter = new AccelerationLimiter();
+    private final AccelerationLimiter strafeLimiter = new AccelerationLimiter();
+    private final AccelerationLimiter turnLimiter = new AccelerationLimiter();
+    private long lastDriveUpdateNanos = System.nanoTime();
 
     public TeleopBot(OpMode opMode, Telemetry telemetry) {
         super(opMode, telemetry);
@@ -31,17 +36,40 @@ public class TeleopBot extends Bot {
      */
     public void setDrivePowers(double forward, double strafe, double turn, double powerScale) {
          if (follower != null) {
+            long now = System.nanoTime();
+            double deltaTimeSeconds = (now - lastDriveUpdateNanos) / 1_000_000_000.0;
+            lastDriveUpdateNanos = now;
+
             double scaledForward = forward * powerScale;
             double scaledStrafe = strafe * powerScale;
             double scaledTurn = turn * powerScale;
 
             // Sends the movement vectors to the drivetrain
-            follower.setTeleOpDrive(scaledForward, scaledStrafe, scaledTurn, true);
+             // Untested AI code; disabled for now
+            follower.setTeleOpDrive(scaledForward, scaledStrafe, scaledTurn,
+//                    forwardLimiter.calculate(
+//                            scaledForward, RobotConstants.Drivetrain.maxDriveAcceleration,
+//                            deltaTimeSeconds
+//                    ),
+//                    strafeLimiter.calculate(
+//                            scaledStrafe, RobotConstants.Drivetrain.maxDriveAcceleration,
+//                            deltaTimeSeconds
+//                    ),
+//                    turnLimiter.calculate(
+//                            scaledTurn, RobotConstants.Drivetrain.maxDriveAcceleration,
+//                            deltaTimeSeconds
+//                    ),
+                    true
+            );
         }
     }
 
     public void stopDrive() {
         if (follower != null) {
+            forwardLimiter.reset(0);
+            strafeLimiter.reset(0);
+            turnLimiter.reset(0);
+            lastDriveUpdateNanos = System.nanoTime();
             follower.setTeleOpDrive(0, 0, 0, true);
             follower.update();
         }

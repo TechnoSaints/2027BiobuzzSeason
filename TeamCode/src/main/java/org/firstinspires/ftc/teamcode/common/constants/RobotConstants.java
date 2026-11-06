@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.common.constants;
 
+import com.bylazar.configurables.annotations.Configurable;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
@@ -7,9 +8,11 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
  * RobotConstants holds all the hardware configuration and tuning values.
  * Centralizing these values makes it easy to update names and constants in one place.
  */
+@Configurable
 public class RobotConstants {
 
     // Drivetrain-specific constants
+    @Configurable
     public static class Drivetrain {
         // Motor names must match your Hardware Config on the Driver Station
         public static final String LEFT_FRONT_NAME = "leftFrontDrive";
@@ -29,6 +32,8 @@ public class RobotConstants {
         public static DcMotorSimple.Direction rightRearMotorDirection = DcMotorSimple.Direction.FORWARD;
 
         public static double maxAutoPower = 1.0;
+        /** Maximum change in normalized drivetrain command per second. */
+        public static double maxDriveAcceleration = 2.0;
     }
 
     // Intake-specific constants
@@ -38,7 +43,7 @@ public class RobotConstants {
         public static final String Flower_Servo_Name = "flowerServo";
 
         public static CRServo.Direction flowerServoDirection = CRServo.Direction.FORWARD;
-        public static DcMotorSimple.Direction intakeMotorDirection = DcMotorSimple.Direction.FORWARD;
+        public static DcMotorSimple.Direction intakeMotorDirection = DcMotorSimple.Direction.REVERSE;
         
         // Power levels for different intake actions
         public static double maxMovePower = 1.0;
@@ -56,11 +61,12 @@ public class RobotConstants {
         public static final double MAX_AIM_TURN = 0.35;
     }
 
+    @Configurable
     public static class PollenTurretConstants {
         public static final String POLLEN_TURRET_NAME = "pollenTurretFlywheel";
         public static final String POLLEN_SERVO_NAME = "pollenTurretRotate";
         public static final String POLLEN_ANGLE_SERVO_NAME = "pollenTurretHood";
-        public static final DcMotorSimple.Direction pollenTurretDirection = DcMotorSimple.Direction.REVERSE;
+        public static final DcMotorSimple.Direction pollenTurretDirection = DcMotorSimple.Direction.FORWARD;
         public static final CRServo.Direction pollenServoDirection = CRServo.Direction.FORWARD;
         /**
         * PIDF coefficients used to adjust flywheel behavior.
@@ -70,11 +76,10 @@ public class RobotConstants {
         public static final double pollenTurretFlywheelI = 3.0;
         public static final double pollenTurretFlywheelD = 0.0;
         public static final double pollenTurretFlywheelF = 13.47;
-        public static final double pollenTurretMaxSpeed = 1.0;
-        public static final double kP = 0.0001;
-        public static final double kD = 0.0000;
+        public static final double pollenTurretMaxSpeed = 0.5;
+        public static double kP = 0.02;
+        public static double kD = 0.0001;
         public static final double angleToleranceDegrees = 0.2;
-        public static final double MAX_POWER = 1;
         public static final double goalOffset = 0;
     }
 

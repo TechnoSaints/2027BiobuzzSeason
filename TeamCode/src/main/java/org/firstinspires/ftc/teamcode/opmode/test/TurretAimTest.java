@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmode.test;
 
+import com.bylazar.telemetry.TelemetryManager;
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
@@ -20,6 +21,7 @@ public class TurretAimTest extends OpMode {
     double[] stepSizes = {0.1, 0.01, 0.001, 0.0001, 0.00001, 0.00001};
     // index sets stepsize
     int stepIndex = 2;
+    TelemetryManager telemetryM;
 
     @Override
     public void init() {

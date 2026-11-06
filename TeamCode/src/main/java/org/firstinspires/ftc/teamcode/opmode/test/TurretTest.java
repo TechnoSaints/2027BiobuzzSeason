@@ -1,26 +1,37 @@
 package org.firstinspires.ftc.teamcode.opmode.test;
 
+import com.bylazar.configurables.annotations.Configurable;
+import com.bylazar.telemetry.PanelsTelemetry;
+import com.bylazar.telemetry.TelemetryManager;
+import com.qualcomm.hardware.limelightvision.LLResult;
+import com.qualcomm.hardware.limelightvision.LLResultTypes;
+import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
-import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.common.components.PollenTurret;
+import org.firstinspires.ftc.teamcode.common.constants.RobotConstants;
+
+@Configurable
 @TeleOp(name = "Turret Test", group = "Test")
 public class TurretTest extends LinearOpMode {
-
-    private DcMotorEx motor;
-    private Servo servo;
+    private PollenTurret pollenTurret;
+    private Limelight3A limelight;
 
     @Override
     public void runOpMode() {
-        motor = hardwareMap.get(DcMotorEx.class, "shooter");
-        servo = hardwareMap.get(Servo.class, "hood");
-        motor.setDirection(DcMotorSimple.Direction.REVERSE);
-        motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        TelemetryManager panelsTelemetry = PanelsTelemetry.INSTANCE.getTelemetry();
+        pollenTurret = new PollenTurret(
+                hardwareMap,
+                PanelsTelemetry.INSTANCE.getFtcTelemetry(),
+                PollenTurret.Alliance.RED);
+        limelight = hardwareMap.get(
+                Limelight3A.class, RobotConstants.LimelightConstants.limelightName);
+        limelight.pipelineSwitch(RobotConstants.LimelightConstants.LIMELIGHT_PIPELINE);
         waitForStart();
+        limelight.start();
+        pollenTurret.resetAimingTimer();
         int targetVelocity = 0;
         double targetPosition = 0.5;
         double kP = 56.4;
@@ -78,20 +89,35 @@ public class TurretTest extends LinearOpMode {
                     targetVelocity = lowVelocity;
                 }
             }
-            motor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(kP, 0, 0, kF));
-            motor.setVelocity(targetVelocity);
-            servo.setPosition(targetPosition);
+            pollenTurret.setMotorPIDFCoefficients(new PIDFCoefficients(kP, 0, 0, kF));
+            pollenTurret.setVelocity(targetVelocity);
 
-            telemetry.addData("Tuning kP", kP);
-            telemetry.addData("Tuning kF", kF);
-            telemetry.addData("PIDF Increment", pidfSteps[pidfIndex]);
-            telemetry.addLine("--------------");
-            telemetry.addData("Target Velocity", targetVelocity);
-            telemetry.addData("Actual Velocity", motor.getVelocity());
-            telemetry.addData("Velocity Increment", velocitySteps[velocityIndex]);
-            telemetry.addLine("--------------");
-            telemetry.addData("Hood Position", servo.getPosition());
+            LLResult result = limelight.getLatestResult();
+            pollenTurret.update(result);
+            LLResultTypes.FiducialResult targetTag = pollenTurret.getClosestAllianceTag(result);
+            Double angleOffset = targetTag == null ? null : targetTag.getTargetXDegrees();
+
+            panelsTelemetry.addData("Tuning kP", kP);
+            panelsTelemetry.addData("Tuning kF", kF);
+            panelsTelemetry.addData("PIDF Increment", pidfSteps[pidfIndex]);
+            panelsTelemetry.addLine("--------------");
+            panelsTelemetry.addData("Target Velocity", targetVelocity);
+            panelsTelemetry.addData("Actual Velocity", pollenTurret.getVelocity());
+            panelsTelemetry.addData("Velocity Increment", velocitySteps[velocityIndex]);
+            panelsTelemetry.addLine("--------------");
+            panelsTelemetry.addData("Hood Position", pollenTurret.getHoodPosition());
+            panelsTelemetry.addLine("------------AprilTag Aiming-----------");
+            panelsTelemetry.addData("Alliance", PollenTurret.Alliance.RED);
+            panelsTelemetry.addData("Target AprilTag",
+                    targetTag == null ? "None" : targetTag.getFiducialId());
+            panelsTelemetry.addData(
+                    "AprilTag angle offset",
+                    angleOffset == null ? "No tag detected" : angleOffset);
+            pollenTurret.log();
             telemetry.update();
+            panelsTelemetry.update();
         }
+        pollenTurret.stop();
+        limelight.stop();
     }
 }
