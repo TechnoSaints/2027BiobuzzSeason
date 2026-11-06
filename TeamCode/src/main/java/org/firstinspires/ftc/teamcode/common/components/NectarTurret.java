@@ -38,7 +38,6 @@ public class NectarTurret {
     }
 
     private Integer lockedTargetTagId;
-
     private DcMotorEx nectarTurretMotor;
     private CRServo nectarRotationServo;
     private static Servo nectarAngleServo;
@@ -171,6 +170,10 @@ public class NectarTurret {
         }
         this.alliance = alliance;
         this.lockedTargetTagId = null;
+    }
+
+    public void startingHoodPosition() {
+        nectarAngleServo.setPosition(RobotConstants.NectarTurretConstants.startingHoodPosition);
     }
 
     public static void setNectarLaunchAngle(double targetLaunchAngle){

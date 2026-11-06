@@ -72,12 +72,14 @@ public abstract class Bot extends Component {
     public void startPollenTurret() {
         if (pollenTurret != null) {
             pollenTurret.startLimelight();
+            pollenTurret.startingHoodPosition();
         }
     }
 
     public void startNectarTurret() {
         if (nectarTurret != null) {
             nectarTurret.startLimelight();
+            nectarTurret.startingHoodPosition();
         }
     }
 

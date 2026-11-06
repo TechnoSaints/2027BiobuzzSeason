@@ -172,6 +172,10 @@ public class PollenTurret {
         pollenAngleServo.setPosition(targetLaunchAngle);
     }
 
+    public void startingHoodPosition() {
+        pollenAngleServo.setPosition(RobotConstants.PollenTurretConstants.startingHoodPosition);
+    }
+
     public double getkP(){
         return kP;
     }
