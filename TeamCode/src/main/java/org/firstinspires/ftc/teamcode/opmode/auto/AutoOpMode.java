@@ -4,6 +4,7 @@ import com.pedropathing.geometry.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.common.AutoBot;
+import org.firstinspires.ftc.teamcode.common.components.PollenTurret;
 
 /**
  * AutoOpMode is the starting point for every Autonomous OpMode we write.
@@ -19,8 +20,8 @@ public abstract class AutoOpMode extends LinearOpMode {
      * Call this first thing in runOpMode(), before waiting for start.
      * @param startPose where the robot is sitting when the match begins.
      */
-    protected void initBot(Pose startPose) {
-        bot = new AutoBot(this, telemetry);
+    protected void initBot(Pose startPose, PollenTurret.Alliance alliance) {
+        bot = new AutoBot(this, telemetry, alliance);
         bot.setStartingPose(startPose);
     }
 
@@ -31,6 +32,9 @@ public abstract class AutoOpMode extends LinearOpMode {
      */
     protected boolean awaitStart() {
         waitForStart();
+        if (!isStopRequested()) {
+            bot.startPollenTurret();
+        }
         return !isStopRequested();
     }
 

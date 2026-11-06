@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.common.components;
 import com.bylazar.telemetry.TelemetryManager;
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
+import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -39,7 +40,7 @@ public class PollenTurret {
     private DcMotorEx pollenTurretMotor;
     private CRServo pollenRotationServo;
     private static Servo pollenAngleServo;
-    private final Alliance alliance;
+    private Alliance alliance;
     private PIDFCoefficients pollenTurretPIDFCoefficients = new PIDFCoefficients(
             RobotConstants.PollenTurretConstants.pollenTurretFlywheelP,
             RobotConstants.PollenTurretConstants.pollenTurretFlywheelI,
@@ -50,6 +51,7 @@ public class PollenTurret {
     private double kD = RobotConstants.PollenTurretConstants.kD;
     private double lastError = 0;
     private double power = 0.5;
+    private Limelight3A limelight;
 
     Telemetry telemetry;
 
@@ -76,6 +78,10 @@ public class PollenTurret {
             pollenRotationServo.setDirection(RobotConstants.PollenTurretConstants.pollenServoDirection);
 
             pollenAngleServo = hardwareMap.get(Servo.class, RobotConstants.PollenTurretConstants.POLLEN_ANGLE_SERVO_NAME);
+
+            limelight = hardwareMap.get(
+                    Limelight3A.class, RobotConstants.LimelightConstants.limelightName);
+            limelight.pipelineSwitch(RobotConstants.LimelightConstants.LIMELIGHT_PIPELINE);
 
             timer = new ElapsedTime();
         } catch (Exception e) {
@@ -136,6 +142,13 @@ public class PollenTurret {
         return targetTag == null ? null : targetTag.getTargetXDegrees();
     }
 
+    public void setAlliance(Alliance alliance) {
+        if (alliance == null) {
+            throw new IllegalArgumentException("Alliance must be specified");
+        }
+        this.alliance = alliance;
+    }
+
     public static void setPollenLaunchAngle(double targetLaunchAngle){
         pollenAngleServo.setPosition(targetLaunchAngle);
     }
@@ -160,10 +173,25 @@ public class PollenTurret {
         timer.reset();
     }
 
+    public void startLimelight() {
+        limelight.start();
+        resetAimingTimer();
+    }
+
+    @Nullable
+    public LLResult getLatestLimelightResult() {
+        return limelight.getLatestResult();
+    }
+
     public void stop() {
         power = 0;
         pollenRotationServo.setPower(power);
         lastError = 0;
+        limelight.stop();
+    }
+
+    public void update() {
+        update(getLatestLimelightResult());
     }
 
     public void update(@Nullable LLResult result) {

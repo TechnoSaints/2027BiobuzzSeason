@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.opmode.teleop;
 
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
-import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -11,8 +10,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.firstinspires.ftc.teamcode.common.TeleopBot;
-import org.firstinspires.ftc.teamcode.common.constants.RobotConstants;
 import org.firstinspires.ftc.teamcode.common.components.PollenTurret;
+import org.firstinspires.ftc.teamcode.common.constants.RobotConstants;
 
 
 /**
@@ -23,7 +22,8 @@ import org.firstinspires.ftc.teamcode.common.components.PollenTurret;
  */
 @TeleOp(name = "Limelight Testing Teleop", group = "TeleOp")
 public class LimelightTestingTeleop extends OpMode {
-    private static final int LIMELIGHT_PIPELINE = RobotConstants.LimelightConstants.LIMELIGHT_PIPELINE;
+    private static final int LIMELIGHT_PIPELINE =
+            RobotConstants.LimelightConstants.LIMELIGHT_PIPELINE;
     private static final double AIM_DEADBAND_DEGREES = RobotConstants.LimelightConstants.aimError;
     private static final double AIM_GAIN = RobotConstants.LimelightConstants.AIM_GAIN;
     private static final double MAX_AIM_TURN = RobotConstants.LimelightConstants.MAX_AIM_TURN;
@@ -45,7 +45,6 @@ public class LimelightTestingTeleop extends OpMode {
     }
 
     private TeleopBot bot;
-    private Limelight3A limelight;
     private Alliance alliance = Alliance.BLUE;
     private boolean previousDpadLeft;
     private boolean previousDpadRight;
@@ -53,15 +52,17 @@ public class LimelightTestingTeleop extends OpMode {
 
     @Override
     public void init() {
-        bot = new TeleopBot(this, telemetry);
-        limelight = hardwareMap.get(Limelight3A.class, "limelight");
-        limelight.pipelineSwitch(LIMELIGHT_PIPELINE);
-        limelight.start();
+        bot = new TeleopBot(this, telemetry, PollenTurret.Alliance.BLUE);
 
         telemetry.addLine("Ready - Limelight pipeline 0");
         telemetry.addLine("D-pad Left: Blue | D-pad Right: Red");
         telemetry.addLine("Hold Right Bumper: aim at central alliance AprilTag");
         telemetry.update();
+    }
+
+    @Override
+    public void start() {
+        bot.startPollenTurret();
     }
 
     @Override
@@ -77,7 +78,7 @@ public class LimelightTestingTeleop extends OpMode {
         }
         previousStart = gamepad1.start;
 
-        LLResult result = limelight.getLatestResult();
+        LLResult result = bot.pollenTurret.getLatestLimelightResult();
         Double hiveAngle = null;
         Integer visibleCentralTag = null;
         Double tagAngle = null;
@@ -140,9 +141,6 @@ public class LimelightTestingTeleop extends OpMode {
             bot.stopDrive();
             bot.stop();
         }
-        if (limelight != null) {
-            limelight.stop();
-        }
     }
 
     private void updateAllianceSelection() {
@@ -158,6 +156,10 @@ public class LimelightTestingTeleop extends OpMode {
 
     private void setAlliance(Alliance selectedAlliance) {
         alliance = selectedAlliance;
+        bot.pollenTurret.setAlliance(
+                selectedAlliance == Alliance.RED
+                        ? PollenTurret.Alliance.RED
+                        : PollenTurret.Alliance.BLUE);
     }
 
     private Double findHiveAngle(LLResult result) {

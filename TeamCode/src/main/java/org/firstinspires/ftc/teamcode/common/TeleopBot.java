@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.common;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.common.components.PollenTurret;
 import org.firstinspires.ftc.teamcode.common.constants.RobotConstants;
 
 /**
@@ -15,8 +16,8 @@ public class TeleopBot extends Bot {
     private final AccelerationLimiter turnLimiter = new AccelerationLimiter();
     private long lastDriveUpdateNanos = System.nanoTime();
 
-    public TeleopBot(OpMode opMode, Telemetry telemetry) {
-        super(opMode, telemetry);
+    public TeleopBot(OpMode opMode, Telemetry telemetry, PollenTurret.Alliance alliance) {
+        super(opMode, telemetry, alliance);
         if (follower != null) {
             follower.startTeleopDrive();
         }
@@ -90,10 +91,9 @@ public class TeleopBot extends Bot {
     }
 
     /** Stops the intake */
+    @Override
     public void stop() {
-        if (intake != null) {
-            intake.stop();
-        }
+        super.stop();
     }
 
     /** Resets the robot's heading to zero. Use this if the robot's orientation gets drift. */

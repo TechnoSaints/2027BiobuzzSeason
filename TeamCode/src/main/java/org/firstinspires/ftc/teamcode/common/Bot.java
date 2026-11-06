@@ -6,13 +6,12 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.common.components.Component;
 import org.firstinspires.ftc.teamcode.common.components.Intake;
+import org.firstinspires.ftc.teamcode.common.components.PollenTurret;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 /**
  * Bot is the base class shared by both Autonomous and TeleOp robots.
- * It builds the two things every robot needs - a drivetrain (the Follower)
- * and an Intake - so that code common to both driving modes only has to
- * be written once, here.
+ * It builds the shared drivetrain, intake, and pollen turret.
  */
 public abstract class Bot extends Component {
     // The OpMode (TeleOp or Autonomous) that created this robot
@@ -21,8 +20,9 @@ public abstract class Bot extends Component {
     public Follower follower;
     // Intake picks up and lets go of game pieces
     public Intake intake;
+    public PollenTurret pollenTurret;
 
-    protected Bot(OpMode opMode, Telemetry telemetry) {
+    protected Bot(OpMode opMode, Telemetry telemetry, PollenTurret.Alliance alliance) {
         super(telemetry);
         this.opMode = opMode;
 
@@ -42,11 +42,27 @@ public abstract class Bot extends Component {
         } catch (Exception e) {
             telemetry.addLine("Error: Failed to initialize Intake");
         }
+
+        try {
+            pollenTurret = new PollenTurret(opMode.hardwareMap, telemetry, alliance);
+        } catch (Exception e) {
+            telemetry.addData(
+                    "Error: Failed to initialize Pollen Turret",
+                    "%s: %s", e.getClass().getSimpleName(), String.valueOf(e.getMessage())
+            );
+        }
+    }
+
+    /** Starts Limelight processing and resets the turret's aiming timer. */
+    public void startPollenTurret() {
+        if (pollenTurret != null) {
+            pollenTurret.startLimelight();
+        }
     }
 
     /**
      * Call this once every loop of your OpMode.
-     * It keeps the drivetrain and the intake both up to date.
+     * It keeps the drivetrain and initialized components up to date.
      */
     @Override
     public void update() {
@@ -55,6 +71,9 @@ public abstract class Bot extends Component {
         }
         if (intake != null) {
             intake.update();
+        }
+        if (pollenTurret != null) {
+            pollenTurret.update();
         }
     }
 
@@ -76,6 +95,9 @@ public abstract class Bot extends Component {
     public void stop() {
         if (intake != null) {
             intake.stop();
+        }
+        if (pollenTurret != null) {
+            pollenTurret.stop();
         }
     }
 }

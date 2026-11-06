@@ -6,6 +6,7 @@ import com.pedropathing.paths.Path;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.common.components.PollenTurret;
 
 /**
  * AutoBot is the robot used during Autonomous.
@@ -14,8 +15,8 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
  */
 public class AutoBot extends Bot {
 
-    public AutoBot(OpMode opMode, Telemetry telemetry) {
-        super(opMode, telemetry);
+    public AutoBot(OpMode opMode, Telemetry telemetry, PollenTurret.Alliance alliance) {
+        super(opMode, telemetry, alliance);
     }
 
     /**

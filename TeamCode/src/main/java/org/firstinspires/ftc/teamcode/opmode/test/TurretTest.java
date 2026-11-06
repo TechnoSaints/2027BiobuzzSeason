@@ -5,19 +5,16 @@ import com.bylazar.telemetry.PanelsTelemetry;
 import com.bylazar.telemetry.TelemetryManager;
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
-import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.teamcode.common.components.PollenTurret;
-import org.firstinspires.ftc.teamcode.common.constants.RobotConstants;
 
 @Configurable
 @TeleOp(name = "Turret Test", group = "Test")
 public class TurretTest extends LinearOpMode {
     private PollenTurret pollenTurret;
-    private Limelight3A limelight;
 
     @Override
     public void runOpMode() {
@@ -26,12 +23,8 @@ public class TurretTest extends LinearOpMode {
                 hardwareMap,
                 PanelsTelemetry.INSTANCE.getFtcTelemetry(),
                 PollenTurret.Alliance.RED);
-        limelight = hardwareMap.get(
-                Limelight3A.class, RobotConstants.LimelightConstants.limelightName);
-        limelight.pipelineSwitch(RobotConstants.LimelightConstants.LIMELIGHT_PIPELINE);
         waitForStart();
-        limelight.start();
-        pollenTurret.resetAimingTimer();
+        pollenTurret.startLimelight();
         int targetVelocity = 0;
         double targetPosition = 0.5;
         double kP = 56.4;
@@ -92,7 +85,7 @@ public class TurretTest extends LinearOpMode {
             pollenTurret.setMotorPIDFCoefficients(new PIDFCoefficients(kP, 0, 0, kF));
             pollenTurret.setVelocity(targetVelocity);
 
-            LLResult result = limelight.getLatestResult();
+            LLResult result = pollenTurret.getLatestLimelightResult();
             pollenTurret.update(result);
             LLResultTypes.FiducialResult targetTag = pollenTurret.getClosestAllianceTag(result);
             Double angleOffset = targetTag == null ? null : targetTag.getTargetXDegrees();
@@ -118,6 +111,5 @@ public class TurretTest extends LinearOpMode {
             panelsTelemetry.update();
         }
         pollenTurret.stop();
-        limelight.stop();
     }
 }

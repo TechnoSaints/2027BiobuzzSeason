@@ -3,18 +3,15 @@ package org.firstinspires.ftc.teamcode.opmode.test;
 import com.bylazar.telemetry.TelemetryManager;
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
-import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 
 import org.firstinspires.ftc.teamcode.common.components.PollenTurret;
-import org.firstinspires.ftc.teamcode.common.constants.RobotConstants;
 
 @TeleOp(name = "Turret Aim Test", group = "Test")
 public class TurretAimTest extends OpMode {
     private PollenTurret turret;
-    private Limelight3A limelight;
     private AnalogInput encoder;
 
     // P/D tuning
@@ -26,9 +23,6 @@ public class TurretAimTest extends OpMode {
     @Override
     public void init() {
         turret = new PollenTurret(hardwareMap, telemetry, PollenTurret.Alliance.RED);
-        limelight = hardwareMap.get(
-                Limelight3A.class, RobotConstants.LimelightConstants.limelightName);
-        limelight.pipelineSwitch(RobotConstants.LimelightConstants.LIMELIGHT_PIPELINE);
         encoder = hardwareMap.get(AnalogInput.class, "pollenTurretRotateEncoder");
 
         telemetry.addLine("Initialized");
@@ -37,13 +31,12 @@ public class TurretAimTest extends OpMode {
 
     @Override
     public void start() {
-        limelight.start();
-        turret.resetAimingTimer();
+        turret.startLimelight();
     }
 
     @Override
     public void loop() {
-        LLResult result = limelight.getLatestResult();
+        LLResult result = turret.getLatestLimelightResult();
         turret.update(result);
 
         // p/d tuning controls
@@ -91,6 +84,6 @@ public class TurretAimTest extends OpMode {
 
     @Override
     public void stop() {
-        limelight.stop();
+        turret.stop();
     }
 }

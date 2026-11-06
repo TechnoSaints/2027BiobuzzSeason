@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.common.TeleopBot;
+import org.firstinspires.ftc.teamcode.common.components.PollenTurret;
 
 /**
  * PedroTeleOp is the main driver-controlled OpMode.
@@ -17,7 +18,12 @@ public class PedroTeleOp extends OpMode {
     /** init() runs once when you press the INIT button on the Driver Station. */
     @Override
     public void init() {
-        bot = new TeleopBot(this, telemetry);
+        bot = new TeleopBot(this, telemetry, PollenTurret.Alliance.BLUE);
+    }
+
+    @Override
+    public void start() {
+        bot.startPollenTurret();
     }
 
     /** loop() runs repeatedly after you press the START button. */
