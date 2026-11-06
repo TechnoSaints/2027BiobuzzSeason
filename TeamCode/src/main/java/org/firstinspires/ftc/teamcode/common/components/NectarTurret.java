@@ -37,6 +37,8 @@ public class NectarTurret {
         RED
     }
 
+    private Integer lockedTargetTagId;
+
     private DcMotorEx nectarTurretMotor;
     private CRServo nectarRotationServo;
     private static Servo nectarAngleServo;
@@ -121,9 +123,20 @@ public class NectarTurret {
 
         Set<Integer> centralTagIds =
                 alliance == Alliance.RED ? RED_CENTRAL_TAGS : BLUE_CENTRAL_TAGS;
+
+        if (lockedTargetTagId != null) {
+            for (LLResultTypes.FiducialResult detection : result.getFiducialResults()) {
+                if (detection != null && detection.getFiducialId() == lockedTargetTagId
+                        && centralTagIds.contains(detection.getFiducialId())) {
+                    return detection;
+                }
+            }
+            lockedTargetTagId = null;
+        }
+
         LLResultTypes.FiducialResult closestToCenter = null;
         for (LLResultTypes.FiducialResult detection : result.getFiducialResults()) {
-            if (!centralTagIds.contains(detection.getFiducialId())) {
+            if (detection == null || !centralTagIds.contains(detection.getFiducialId())) {
                 continue;
             }
 
@@ -133,6 +146,11 @@ public class NectarTurret {
                 closestToCenter = detection;
             }
         }
+
+        if (closestToCenter != null) {
+            lockedTargetTagId = closestToCenter.getFiducialId();
+        }
+
         return closestToCenter;
     }
 
@@ -152,6 +170,7 @@ public class NectarTurret {
             throw new IllegalArgumentException("Alliance must be specified");
         }
         this.alliance = alliance;
+        this.lockedTargetTagId = null;
     }
 
     public static void setNectarLaunchAngle(double targetLaunchAngle){
@@ -184,6 +203,7 @@ public class NectarTurret {
 
     public void startLimelight() {
         limelight.start();
+        lockedTargetTagId = null;
         resetAimingTimer();
     }
 
@@ -196,6 +216,7 @@ public class NectarTurret {
         power = 0;
         nectarRotationServo.setPower(power);
         lastError = 0;
+        lockedTargetTagId = null;
         limelight.stop();
     }
 
