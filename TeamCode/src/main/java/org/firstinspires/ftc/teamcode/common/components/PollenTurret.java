@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.common.components;
 
+import com.bylazar.telemetry.TelemetryManager;
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -48,7 +49,9 @@ public class PollenTurret {
     private double kP = RobotConstants.PollenTurretConstants.kP;
     private double kD = RobotConstants.PollenTurretConstants.kD;
     private double lastError = 0;
-    private double power = 0;
+    private double power = 0.5;
+
+    Telemetry telemetry;
 
 
     public PollenTurret(HardwareMap hardwareMap, Telemetry telemetry, Alliance alliance) {
@@ -56,6 +59,7 @@ public class PollenTurret {
             throw new IllegalArgumentException("Alliance must be specified");
         }
         this.alliance = alliance;
+        this.telemetry = telemetry;
 
         try {
             // This name has to exactly match what you typed into the Driver Station's Hardware Config.
@@ -75,10 +79,10 @@ public class PollenTurret {
 
             timer = new ElapsedTime();
         } catch (Exception e) {
-            telemetry.addData(
-                    "Warning: Failed to initialize pollen turret",
-                    "%s: %s", e.getClass().getSimpleName(), String.valueOf(e.getMessage())
-            );
+            //telemetry.addData(
+            //        "Warning: Failed to initialize pollen turret",
+            //        "%s: %s", e.getClass().getSimpleName(), String.valueOf(e.getMessage())
+            //);
         }
     }
 
@@ -156,6 +160,12 @@ public class PollenTurret {
         timer.reset();
     }
 
+    public void stop() {
+        power = 0;
+        pollenRotationServo.setPower(power);
+        lastError = 0;
+    }
+
     public void update(@Nullable LLResult result) {
         double deltaTime = timer.seconds();
         timer.reset();
@@ -185,5 +195,27 @@ public class PollenTurret {
 
         pollenRotationServo.setPower(power);
         lastError = error;
+    }
+
+    public void setVelocity(double targetVelocity){
+        pollenTurretMotor.setVelocity(targetVelocity);
+    }
+
+    public void setMotorPIDFCoefficients(PIDFCoefficients updated){
+        pollenTurretMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, updated);
+    }
+
+    public double getVelocity(){
+        return pollenTurretMotor.getVelocity();
+    }
+
+    public double getHoodPosition(){
+        return pollenAngleServo.getPosition();
+    }
+
+    public void log(){
+        telemetry.addData("Pollen Turret Velocity", getVelocity());
+        telemetry.addData("Pollen Turret Hood Position", getHoodPosition());
+        telemetry.addData("Pollen Turret Rotation Power", power);
     }
 }
