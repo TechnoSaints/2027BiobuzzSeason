@@ -47,8 +47,8 @@ public class PollenTurret {
             RobotConstants.PollenTurretConstants.pollenTurretFlywheelD,
             RobotConstants.PollenTurretConstants.pollenTurretFlywheelF);
     private ElapsedTime timer;
-    private double kP = RobotConstants.PollenTurretConstants.kP;
-    private double kD = RobotConstants.PollenTurretConstants.kD;
+    public static double kP = RobotConstants.PollenTurretConstants.kP;
+    public static double kD = RobotConstants.PollenTurretConstants.kD;
     private double lastError = 0;
     private double power = 0.5;
     private Limelight3A limelight;

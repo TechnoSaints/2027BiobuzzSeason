@@ -42,12 +42,16 @@ public class ServoTuner extends LinearOpMode {
         int currentServoIndex = 0;
         double currentPosition = 0.5;
 
+
+
         // Remembers last loop's button state, so a button press only
         // counts once instead of every single loop it's held down
         boolean prevDpadUp = false;
         boolean prevDpadDown = false;
         boolean prevA = false;
         boolean prevB = false;
+
+
 
         telemetry.addLine("Servo Tuner Initialized");
         telemetry.addLine("Use DPAD UP/DOWN to switch servos");
