@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.common.constants;
 
-import com.bylazar.configurables.annotations.Configurable;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
@@ -8,11 +7,9 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
  * RobotConstants holds all the hardware configuration and tuning values.
  * Centralizing these values makes it easy to update names and constants in one place.
  */
-@Configurable
 public class RobotConstants {
 
     // Drivetrain-specific constants
-    @Configurable
     public static class Drivetrain {
         // Motor names must match your Hardware Config on the Driver Station
         public static final String LEFT_FRONT_NAME = "leftFrontDrive";
@@ -61,7 +58,6 @@ public class RobotConstants {
         public static final double MAX_AIM_TURN = 0.35;
     }
 
-    @Configurable
     public static class PollenTurretConstants {
         public static final String POLLEN_TURRET_NAME = "pollenTurretFlywheel";
         public static final String POLLEN_SERVO_NAME = "pollenTurretRotate";
@@ -76,9 +72,9 @@ public class RobotConstants {
         public static final double pollenTurretFlywheelI = 3.0;
         public static final double pollenTurretFlywheelD = 0.0;
         public static final double pollenTurretFlywheelF = 13.47;
-        public static final double pollenTurretMaxSpeed = 0.5;
+        public static final double pollenTurretMaxSpeed = 0.9;
         public static double kP = 0.02;
-        public static double kD = 0.0001;
+        public static double kD = 1.40000;
         public static final double angleToleranceDegrees = 0.2;
         public static final double goalOffset = 0;
     }

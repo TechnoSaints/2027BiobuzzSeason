@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.pedroPathing;
 
-import com.bylazar.configurables.annotations.Configurable;
 import com.pedropathing.control.FilteredPIDFCoefficients;
 import com.pedropathing.control.PIDFCoefficients;
 import com.pedropathing.follower.Follower;
@@ -15,7 +14,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.common.constants.RobotConstants;
 
-@Configurable
 public class Constants {
     /** Tune with Pedro's forward/lateral velocity tests; these are inches/second. */
     public static double maxAutoPower = RobotConstants.Drivetrain.maxAutoPower;
