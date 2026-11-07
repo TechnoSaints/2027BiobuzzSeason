@@ -95,11 +95,14 @@ public class PollenTurret {
             limelight.pipelineSwitch(RobotConstants.LimelightConstants.LIMELIGHT_PIPELINE);
 
             timer = new ElapsedTime();
+            telemetry.addLine("Status: Initialized");
+            telemetry.update();
         } catch (Exception e) {
-            //telemetry.addData(
-            //        "Warning: Failed to initialize pollen turret",
-            //        "%s: %s", e.getClass().getSimpleName(), String.valueOf(e.getMessage())
-            //);
+            telemetry.addData(
+                    "Warning: Failed to initialize pollen turret",
+                    "%s: %s", e.getClass().getSimpleName(), String.valueOf(e.getMessage())
+            );
+            telemetry.update();
         }
     }
 

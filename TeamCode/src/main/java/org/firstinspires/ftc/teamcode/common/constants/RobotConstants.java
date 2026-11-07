@@ -61,7 +61,7 @@ public class RobotConstants {
         public static final String POLLEN_TURRET_NAME = "pollenTurretFlywheel";
         public static final String POLLEN_SERVO_NAME = "pollenTurretRotate";
         public static final String POLLEN_ANGLE_SERVO_NAME = "pollenTurretHood";
-        public static final String Pollen_Angle_Encoder = "pollenRotateEncoder";
+        public static final String Pollen_Angle_Encoder = "pollenTurretRotateEncoder";
 
         public static final DcMotorSimple.Direction pollenTurretDirection = DcMotorSimple.Direction.FORWARD;
         public static final CRServo.Direction pollenServoDirection = CRServo.Direction.FORWARD;
@@ -76,7 +76,7 @@ public class RobotConstants {
         public static final double startingHoodPosition = 0.5;
         public static final double pollenRotateMaxSpeed = 0.9;
         public static double pollenkP = 0.015;
-        public static double pollenkD = 1;
+        public static double pollenkD = 100;
         public static final double angleToleranceDegrees = 1.0;
         public static final double goalOffset = 0;
         /** Linear reduction in angle correction per inch reported by the Limelight. */
