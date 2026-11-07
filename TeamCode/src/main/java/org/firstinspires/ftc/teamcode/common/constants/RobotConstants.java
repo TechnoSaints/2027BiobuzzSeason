@@ -73,9 +73,9 @@ public class RobotConstants {
         public static final double pollenTurretFlywheelF = 13.47;
         public static final double pollenTurretMaxSpeed = 0.5;
         public static final double startingHoodPosition = 0.5;
-        public static double kP = 0.02;
-        public static double kD = 1.40000;
-        public static final double angleToleranceDegrees = 0.2;
+        public static double kP = 0.15;
+        public static double kD = 0.0000;
+        public static final double angleToleranceDegrees = 1.0;
         public static final double goalOffset = 0;
     }
 
