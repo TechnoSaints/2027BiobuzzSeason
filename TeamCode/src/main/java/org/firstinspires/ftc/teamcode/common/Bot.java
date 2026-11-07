@@ -1,11 +1,15 @@
 package org.firstinspires.ftc.teamcode.common;
 
 import com.pedropathing.follower.Follower;
+import com.qualcomm.hardware.limelightvision.LLResult;
+import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.common.components.Component;
 import org.firstinspires.ftc.teamcode.common.components.Intake;
+import org.firstinspires.ftc.teamcode.common.components.NectarTurret;
 import org.firstinspires.ftc.teamcode.common.components.PollenTurret;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
@@ -21,10 +25,13 @@ public abstract class Bot extends Component {
     // Intake picks up and lets go of game pieces
     public Intake intake;
     public PollenTurret pollenTurret;
+    public NectarTurret nectarTurret;
 
     protected Bot(OpMode opMode, Telemetry telemetry, PollenTurret.Alliance alliance) {
         super(telemetry);
         this.opMode = opMode;
+
+        NectarTurret.Alliance nectarAlliance = toNectarAlliance(alliance);
 
         // If a sensor or motor is missing/misconfigured, catch the error and keep
         // going instead of crashing the whole OpMode - just warn on the Driver Station.
@@ -45,20 +52,63 @@ public abstract class Bot extends Component {
 
         try {
             pollenTurret = new PollenTurret(opMode.hardwareMap, telemetry, alliance);
+            nectarTurret = new NectarTurret(opMode.hardwareMap, telemetry, nectarAlliance);
         } catch (Exception e) {
             telemetry.addData(
-                    "Error: Failed to initialize Pollen Turret",
+                    "Error: Failed to initialize Turrets",
                     "%s: %s", e.getClass().getSimpleName(), String.valueOf(e.getMessage())
             );
         }
+    }
+
+    private static NectarTurret.Alliance toNectarAlliance(PollenTurret.Alliance alliance) {
+        if (alliance == null) {
+            throw new IllegalArgumentException("Alliance must be specified");
+        }
+        return NectarTurret.Alliance.valueOf(alliance.name());
     }
 
     /** Starts Limelight processing and resets the turret's aiming timer. */
     public void startPollenTurret() {
         if (pollenTurret != null) {
             pollenTurret.startLimelight();
+            pollenTurret.startingHoodPosition();
         }
     }
+
+    public void startNectarTurret() {
+        if (nectarTurret != null) {
+            nectarTurret.startLimelight();
+            nectarTurret.startingHoodPosition();
+        }
+    }
+
+    public void runPollenTurret() {
+        if (pollenTurret != null) {
+            pollenTurret.setMotorPIDFCoefficients(new PIDFCoefficients(PollenTurret.kP, 0, 0, PollenTurret.kD));
+            pollenTurret.setVelocity(nectarTurret.findNectarSpeed());
+
+            LLResult result = pollenTurret.getLatestLimelightResult();
+            pollenTurret.update(result);
+            LLResultTypes.FiducialResult targetTag = pollenTurret.getClosestAllianceTag(result);
+            Double angleOffset = targetTag == null ? null : targetTag.getTargetXDegrees();
+
+        }
+    }
+
+    public void runNectarTurret() {
+        if (nectarTurret != null) {
+            nectarTurret.setMotorPIDFCoefficients(new PIDFCoefficients(NectarTurret.kP, 0, 0, NectarTurret.kD));
+            nectarTurret.setVelocity(nectarTurret.findNectarSpeed());
+
+            LLResult result = nectarTurret.getLatestLimelightResult();
+            nectarTurret.update(result);
+            LLResultTypes.FiducialResult targetTag = nectarTurret.getClosestAllianceTag(result);
+            Double angleOffset = targetTag == null ? null : targetTag.getTargetXDegrees();
+
+        }
+    }
+
 
     /**
      * Call this once every loop of your OpMode.
@@ -74,6 +124,9 @@ public abstract class Bot extends Component {
         }
         if (pollenTurret != null) {
             pollenTurret.update();
+        }
+        if (nectarTurret != null) {
+            nectarTurret.update();
         }
     }
 
@@ -98,6 +151,18 @@ public abstract class Bot extends Component {
         }
         if (pollenTurret != null) {
             pollenTurret.stop();
+        }
+        if (nectarTurret != null) {
+            nectarTurret.stop();
+        }
+    }
+
+    public void log() {
+        if (nectarTurret != null) {
+            nectarTurret.log();
+        }
+        if (pollenTurret != null) {
+            pollenTurret.log();
         }
     }
 }

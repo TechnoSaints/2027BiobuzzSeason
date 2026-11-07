@@ -36,6 +36,8 @@ public class PollenTurret {
         RED
     }
 
+    private Integer lockedTargetTagId;
+
     private DcMotorEx pollenTurretMotor;
     private CRServo pollenRotationServo;
     private static Servo pollenAngleServo;
@@ -46,8 +48,8 @@ public class PollenTurret {
             RobotConstants.PollenTurretConstants.pollenTurretFlywheelD,
             RobotConstants.PollenTurretConstants.pollenTurretFlywheelF);
     private ElapsedTime timer;
-    private double kP = RobotConstants.PollenTurretConstants.kP;
-    private double kD = RobotConstants.PollenTurretConstants.kD;
+    public static double kP = RobotConstants.PollenTurretConstants.kP;
+    public static double kD = RobotConstants.PollenTurretConstants.kD;
     private double lastError = 0;
     private double power = 0.5;
     private Limelight3A limelight;
@@ -120,9 +122,20 @@ public class PollenTurret {
 
         Set<Integer> centralTagIds =
                 alliance == Alliance.RED ? RED_CENTRAL_TAGS : BLUE_CENTRAL_TAGS;
+
+        if (lockedTargetTagId != null) {
+            for (LLResultTypes.FiducialResult detection : result.getFiducialResults()) {
+                if (detection != null && detection.getFiducialId() == lockedTargetTagId
+                        && centralTagIds.contains(detection.getFiducialId())) {
+                    return detection;
+                }
+            }
+            lockedTargetTagId = null;
+        }
+
         LLResultTypes.FiducialResult closestToCenter = null;
         for (LLResultTypes.FiducialResult detection : result.getFiducialResults()) {
-            if (!centralTagIds.contains(detection.getFiducialId())) {
+            if (detection == null || !centralTagIds.contains(detection.getFiducialId())) {
                 continue;
             }
 
@@ -132,6 +145,11 @@ public class PollenTurret {
                 closestToCenter = detection;
             }
         }
+
+        if (closestToCenter != null) {
+            lockedTargetTagId = closestToCenter.getFiducialId();
+        }
+
         return closestToCenter;
     }
 
@@ -146,10 +164,15 @@ public class PollenTurret {
             throw new IllegalArgumentException("Alliance must be specified");
         }
         this.alliance = alliance;
+        this.lockedTargetTagId = null;
     }
 
     public static void setPollenLaunchAngle(double targetLaunchAngle){
         pollenAngleServo.setPosition(targetLaunchAngle);
+    }
+
+    public void startingHoodPosition() {
+        pollenAngleServo.setPosition(RobotConstants.PollenTurretConstants.startingHoodPosition);
     }
 
     public double getkP(){
@@ -174,6 +197,7 @@ public class PollenTurret {
 
     public void startLimelight() {
         limelight.start();
+        lockedTargetTagId = null;
         resetAimingTimer();
     }
 
@@ -186,6 +210,7 @@ public class PollenTurret {
         power = 0;
         pollenRotationServo.setPower(power);
         lastError = 0;
+        lockedTargetTagId = null;
         limelight.stop();
     }
 
