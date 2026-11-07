@@ -161,7 +161,7 @@ public class NectarTurret {
     }
 
     public Double findNectarSpeed() {
-        return getLimelightToTagDistanceInches(getClosestAllianceTag(getLatestLimelightResult()));
+        return RobotConstants.NectarTurretConstants.shooterConstant * getLimelightToTagDistanceInches(getClosestAllianceTag(getLatestLimelightResult()));
     }
 
 
