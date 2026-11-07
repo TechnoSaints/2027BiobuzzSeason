@@ -5,14 +5,15 @@ import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
-import com.sun.tools.javac.tree.DCTree;
 
 import org.firstinspires.ftc.teamcode.common.components.Drivetrain;
+import org.firstinspires.ftc.teamcode.common.components.NectarTurret;
 import org.firstinspires.ftc.teamcode.common.components.PollenTurret;
 
 @TeleOp(name = "Turret Test", group = "Test")
 public class TurretTest extends LinearOpMode {
     private PollenTurret pollenTurret;
+    private NectarTurret nectarTurret;
     private Drivetrain drivetrain;
 
     @Override
@@ -22,8 +23,13 @@ public class TurretTest extends LinearOpMode {
                 hardwareMap,
                 telemetry,
                 PollenTurret.Alliance.RED);
+        nectarTurret = new NectarTurret(
+                hardwareMap,
+                telemetry,
+                NectarTurret.Alliance.RED);
         waitForStart();
         pollenTurret.startLimelight();
+        nectarTurret.startLimelight();
         int targetVelocity = 0;
         double targetPosition = 0.5;
         double kP = 56.4;
@@ -86,9 +92,13 @@ public class TurretTest extends LinearOpMode {
             pollenTurret.setVelocity(targetVelocity);
 
             LLResult result = pollenTurret.getLatestLimelightResult();
-            pollenTurret.update(result);
+            nectarTurret.update(result);
             LLResultTypes.FiducialResult targetTag = pollenTurret.getClosestAllianceTag(result);
             Double angleOffset = targetTag == null ? null : targetTag.getTargetXDegrees();
+            pollenTurret.getCurrentPosition();
+            pollenTurret.findOffset(
+                    angleOffset == null ? 0.0 : angleOffset,
+                    PollenTurret.currentPosition);
 
             telemetry.addData("Tuning kP", kP);
             telemetry.addData("Tuning kF", kF);
@@ -106,9 +116,12 @@ public class TurretTest extends LinearOpMode {
             telemetry.addData(
                     "AprilTag angle offset",
                     angleOffset == null ? "No tag detected" : angleOffset);
+            telemetry.addData("Pollen turret encoder angle", PollenTurret.currentPosition);
             pollenTurret.log();
+            nectarTurret.log();
             telemetry.update();
         }
         pollenTurret.stop();
+        nectarTurret.stop();
     }
 }
