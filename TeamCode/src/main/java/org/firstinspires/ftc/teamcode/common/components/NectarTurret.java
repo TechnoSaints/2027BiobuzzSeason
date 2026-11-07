@@ -73,11 +73,11 @@ public class NectarTurret {
 
             nectarTurretMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            nectarRotationServo = hardwareMap.get(CRServo.class, RobotConstants.NectarTurretConstants.NECTAR_SERVO_NAME);
+            nectarRotationServo = hardwareMap.get(CRServo.class, RobotConstants.NectarTurretConstants.NECTAR_ROTATE_SERVO_NAME);
 
             nectarRotationServo.setDirection(RobotConstants.NectarTurretConstants.nectarServoDirection);
 
-            nectarAngleServo = hardwareMap.get(Servo.class, RobotConstants.NectarTurretConstants.NECTAR_ANGLE_SERVO_NAME);
+            nectarAngleServo = hardwareMap.get(Servo.class, RobotConstants.NectarTurretConstants.NECTAR_HOOD_SERVO_NAME);
 
             limelight = hardwareMap.get(
                     Limelight3A.class, RobotConstants.LimelightConstants.limelightName);
@@ -85,10 +85,10 @@ public class NectarTurret {
 
             timer = new ElapsedTime();
         } catch (Exception e) {
-            //telemetry.addData(
-            //        "Warning: Failed to initialize nectar turret",
-            //        "%s: %s", e.getClass().getSimpleName(), String.valueOf(e.getMessage())
-            //);
+            telemetry.addData(
+                    "Warning: Failed to initialize nectar turret",
+                    "%s: %s", e.getClass().getSimpleName(), String.valueOf(e.getMessage())
+            );
         }
     }
 

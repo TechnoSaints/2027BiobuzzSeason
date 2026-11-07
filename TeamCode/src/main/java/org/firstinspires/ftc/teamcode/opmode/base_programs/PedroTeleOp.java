@@ -48,7 +48,7 @@ public class PedroTeleOp extends OpMode {
         double powerScale = gamepad1.left_bumper ? 0.3 : 1.0;
 
         // Send the drive commands to the bot
-        bot.setDrivePowers(forward, strafe, turn, powerScale);
+        bot.setPedroDrivePowers(forward, strafe, turn, powerScale);
 
         // Intake Control Mapping:
         // Hold Right Trigger to intake (spin forward)

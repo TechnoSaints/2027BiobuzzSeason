@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.common;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.common.components.Drivetrain;
 import org.firstinspires.ftc.teamcode.common.components.PollenTurret;
 import org.firstinspires.ftc.teamcode.common.constants.RobotConstants;
 
@@ -14,13 +15,15 @@ public class TeleopBot extends Bot {
     private final AccelerationLimiter forwardLimiter = new AccelerationLimiter();
     private final AccelerationLimiter strafeLimiter = new AccelerationLimiter();
     private final AccelerationLimiter turnLimiter = new AccelerationLimiter();
+    private static Drivetrain drivetrain;
     private long lastDriveUpdateNanos = System.nanoTime();
 
     public TeleopBot(OpMode opMode, Telemetry telemetry, PollenTurret.Alliance alliance) {
         super(opMode, telemetry, alliance);
-        if (follower != null) {
-            follower.startTeleopDrive();
-        }
+        drivetrain = new Drivetrain(telemetry, opMode.hardwareMap);
+//        if (follower != null) {
+//            follower.startTeleopDrive();
+//        }
     }
 
     @Override
@@ -35,7 +38,7 @@ public class TeleopBot extends Bot {
      * @param turn The rotation speed (-1 to 1).
      * @param powerScale A multiplier for the overall speed (e.g. 0.3 for slow mode).
      */
-    public void setDrivePowers(double forward, double strafe, double turn, double powerScale) {
+    public void setPedroDrivePowers(double forward, double strafe, double turn, double powerScale) {
          if (follower != null) {
             long now = System.nanoTime();
             double deltaTimeSeconds = (now - lastDriveUpdateNanos) / 1_000_000_000.0;
@@ -63,6 +66,10 @@ public class TeleopBot extends Bot {
                     true
             );
         }
+    }
+
+    public void setManualDrivePowers(double axial, double strafe, double yaw){
+        drivetrain.setDrivetrainPowers(axial, strafe, yaw);
     }
 
     public void stopDrive() {
@@ -106,5 +113,11 @@ public class TeleopBot extends Bot {
     @Override
     public void update() {
         super.update();
+    }
+
+    @Override
+    public void log(){
+        super.log();
+        drivetrain.log();
     }
 }

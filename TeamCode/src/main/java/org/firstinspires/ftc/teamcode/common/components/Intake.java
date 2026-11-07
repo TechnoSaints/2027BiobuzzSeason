@@ -3,9 +3,12 @@ package org.firstinspires.ftc.teamcode.common.components;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.common.constants.RobotConstants;
+
+import java.net.PortUnreachableException;
 
 /**
  * Intake is the robot part that sucks up game pieces.
@@ -15,7 +18,7 @@ import org.firstinspires.ftc.teamcode.common.constants.RobotConstants;
 public class Intake extends Component {
     private DcMotorEx intakeMotor;
 
-    private CRServo flowerServo;
+    private Servo flowerServo;
 
     public Intake(HardwareMap hardwareMap, Telemetry telemetry) {
         super(telemetry);
@@ -23,8 +26,8 @@ public class Intake extends Component {
             // This name has to exactly match what you typed into the Driver Station's Hardware Config.
             intakeMotor = hardwareMap.get(DcMotorEx.class, RobotConstants.Intake.INTAKE_MOTOR_NAME);
             intakeMotor.setDirection(RobotConstants.Intake.intakeMotorDirection);
-            flowerServo = hardwareMap.get(CRServo.class, RobotConstants.Intake.Flower_Servo_Name);
-            flowerServo.setDirection(RobotConstants.Intake.flowerServoDirection);
+            flowerServo = hardwareMap.get(Servo.class, RobotConstants.Intake.Flower_Servo_Name);
+            flowerServo.setPosition(RobotConstants.Intake.FLOWER_STORE_POSITION);
         } catch (Exception e) {
             telemetry.addData(
                     "Warning: Failed to initialize intake motor",
@@ -67,5 +70,13 @@ public class Intake extends Component {
     public void update() {
         // Nothing needs to happen here every loop yet - if you add a sensor
         // to the intake later (like a color sensor), check it here.
+    }
+
+    public void lowerFlowerServo(){
+        flowerServo.setPosition(RobotConstants.Intake.FLOWER_INTAKE_POSITION);
+    }
+
+    public void raiseFlowerServo(){
+        flowerServo.setPosition(RobotConstants.Intake.FLOWER_STORE_POSITION);
     }
 }

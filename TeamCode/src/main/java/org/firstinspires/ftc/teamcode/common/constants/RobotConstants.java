@@ -35,17 +35,16 @@ public class RobotConstants {
 
     // Intake-specific constants
     public static class Intake {
-        public static final String INTAKE_MOTOR_NAME = "intakeMotor";
-
+        public static final String INTAKE_MOTOR_NAME = "intake";
         public static final String Flower_Servo_Name = "flowerServo";
-
-        public static CRServo.Direction flowerServoDirection = CRServo.Direction.FORWARD;
         public static DcMotorSimple.Direction intakeMotorDirection = DcMotorSimple.Direction.REVERSE;
         
         // Power levels for different intake actions
         public static double maxMovePower = 1.0;
         public static double stopPower = 0.0;
         public static double lockPower = 0.98;
+        public static final double FLOWER_STORE_POSITION = 1.0;
+        public static final double FLOWER_INTAKE_POSITION = 0.32;
     }
 
 
@@ -82,8 +81,8 @@ public class RobotConstants {
 
     public static class NectarTurretConstants {
         public static final String NECTAR_TURRET_NAME = "nectarTurretFlywheel";
-        public static final String NECTAR_SERVO_NAME = "nectarTurretHood";
-        public static final String NECTAR_ANGLE_SERVO_NAME = "nectarTurretRotate";
+        public static final String NECTAR_HOOD_SERVO_NAME = "nectarTurretHood";
+        public static final String NECTAR_ROTATE_SERVO_NAME = "nectarTurretRotate";
         public static final DcMotorSimple.Direction nectarTurretDirection = DcMotorSimple.Direction.REVERSE;
         public static final CRServo.Direction nectarServoDirection = CRServo.Direction.FORWARD;
         /**

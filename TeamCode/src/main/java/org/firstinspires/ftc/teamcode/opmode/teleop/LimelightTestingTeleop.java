@@ -104,7 +104,7 @@ public class LimelightTestingTeleop extends OpMode {
         }
 
         double driveScale = gamepad1.left_bumper ? 0.3 : 1.0;
-        bot.setDrivePowers(forward, strafe, turn, driveScale);
+        bot.setPedroDrivePowers(forward, strafe, turn, driveScale);
         bot.update();
 
         telemetry.addData("Status", "Running (TeleOp)");

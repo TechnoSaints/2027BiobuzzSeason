@@ -109,6 +109,13 @@ public abstract class Bot extends Component {
         }
     }
 
+    public void lowerFlowerServo(){
+        intake.lowerFlowerServo();
+    }
+
+    public void raiseFlowerServo(){
+        intake.raiseFlowerServo();
+    }
 
     /**
      * Call this once every loop of your OpMode.
