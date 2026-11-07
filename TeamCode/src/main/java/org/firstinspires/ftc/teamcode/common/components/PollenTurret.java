@@ -48,8 +48,10 @@ public class PollenTurret {
             RobotConstants.PollenTurretConstants.pollenTurretFlywheelD,
             RobotConstants.PollenTurretConstants.pollenTurretFlywheelF);
     private ElapsedTime timer;
-    public static double kP = RobotConstants.PollenTurretConstants.kP;
-    public static double kD = RobotConstants.PollenTurretConstants.kD;
+    public static double kP = RobotConstants.PollenTurretConstants.pollenkP;
+    public static double kD = RobotConstants.PollenTurretConstants.pollenkD;
+
+
     private double lastError = 0;
     private double power = 0.5;
     private Limelight3A limelight;
@@ -241,7 +243,7 @@ public class PollenTurret {
         if (Math.abs(error) < RobotConstants.PollenTurretConstants.angleToleranceDegrees) {
             power = 0;
         } else {
-            power = Range.clip(pTerm + dTerm, -RobotConstants.PollenTurretConstants.pollenTurretMaxSpeed, RobotConstants.PollenTurretConstants.pollenTurretMaxSpeed);
+            power = Range.clip(pTerm + dTerm, -RobotConstants.PollenTurretConstants.pollenRotateMaxSpeed, RobotConstants.PollenTurretConstants.pollenRotateMaxSpeed);
         }
         // TODO safety check
 

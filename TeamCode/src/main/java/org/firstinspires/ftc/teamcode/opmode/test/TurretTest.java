@@ -5,15 +5,19 @@ import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+import com.sun.tools.javac.tree.DCTree;
 
+import org.firstinspires.ftc.teamcode.common.components.Drivetrain;
 import org.firstinspires.ftc.teamcode.common.components.PollenTurret;
 
 @TeleOp(name = "Turret Test", group = "Test")
 public class TurretTest extends LinearOpMode {
     private PollenTurret pollenTurret;
+    private Drivetrain drivetrain;
 
     @Override
     public void runOpMode() {
+        drivetrain = new Drivetrain(telemetry, hardwareMap);
         pollenTurret = new PollenTurret(
                 hardwareMap,
                 telemetry,
@@ -77,6 +81,7 @@ public class TurretTest extends LinearOpMode {
                     targetVelocity = lowVelocity;
                 }
             }
+            drivetrain.setDrivetrainPowers(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
             pollenTurret.setMotorPIDFCoefficients(new PIDFCoefficients(kP, 0, 0, kF));
             pollenTurret.setVelocity(targetVelocity);
 

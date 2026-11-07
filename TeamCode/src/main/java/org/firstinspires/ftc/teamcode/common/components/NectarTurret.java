@@ -40,6 +40,8 @@ public class NectarTurret {
     private DcMotorEx nectarTurretMotor;
     private CRServo nectarRotationServo;
     private static Servo nectarAngleServo;
+
+
     private Alliance alliance;
     private PIDFCoefficients nectarTurretPIDFCoefficients = new PIDFCoefficients(
             RobotConstants.NectarTurretConstants.nectarTurretFlywheelP,
