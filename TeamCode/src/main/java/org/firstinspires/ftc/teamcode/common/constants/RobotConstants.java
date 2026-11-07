@@ -73,7 +73,8 @@ public class RobotConstants {
         public static final double pollenTurretFlywheelI = 3.0;
         public static final double pollenTurretFlywheelD = 0.0;
         public static final double pollenTurretFlywheelF = 13.47;
-        public static final double startingHoodPosition = 0.5;
+        public static final double raiseHoodPosition = 0.82;
+        public static final double hoodRaiseWaypointPosition = 0.49;
         public static final double pollenRotateMaxSpeed = 0.9;
         public static double pollenkP = 0.015;
         public static double pollenkD = 100;
