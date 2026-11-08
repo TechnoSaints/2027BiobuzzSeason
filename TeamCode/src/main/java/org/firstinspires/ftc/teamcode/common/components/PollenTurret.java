@@ -48,7 +48,7 @@ public class PollenTurret {
             RobotConstants.PollenTurretConstants.pollenTurretFlywheelI,
             RobotConstants.PollenTurretConstants.pollenTurretFlywheelD,
             RobotConstants.PollenTurretConstants.pollenTurretFlywheelF);
-    private ElapsedTime timer;
+    private ElapsedTime timer, movementTimer;
     public static double kP = RobotConstants.PollenTurretConstants.pollenkP;
     public static double kD = RobotConstants.PollenTurretConstants.pollenkD;
 
@@ -95,6 +95,7 @@ public class PollenTurret {
             limelight.pipelineSwitch(RobotConstants.LimelightConstants.LIMELIGHT_PIPELINE);
 
             timer = new ElapsedTime();
+            movementTimer = new ElapsedTime();
             telemetry.addLine("Status: Initialized");
             telemetry.update();
         } catch (Exception e) {
@@ -189,7 +190,6 @@ public class PollenTurret {
     }
 
     public void raiseHood() {
-        pollenAngleServo.setPosition(RobotConstants.PollenTurretConstants.hoodRaiseWaypointPosition);
         pollenAngleServo.setPosition(RobotConstants.PollenTurretConstants.raiseHoodPosition);
     }
 

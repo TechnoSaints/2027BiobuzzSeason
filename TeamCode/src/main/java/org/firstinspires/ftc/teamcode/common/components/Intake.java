@@ -27,7 +27,6 @@ public class Intake extends Component {
             intakeMotor = hardwareMap.get(DcMotorEx.class, RobotConstants.Intake.INTAKE_MOTOR_NAME);
             intakeMotor.setDirection(RobotConstants.Intake.intakeMotorDirection);
             flowerServo = hardwareMap.get(Servo.class, RobotConstants.Intake.Flower_Servo_Name);
-            flowerServo.setPosition(RobotConstants.Intake.FLOWER_STORE_POSITION);
         } catch (Exception e) {
             telemetry.addData(
                     "Warning: Failed to initialize intake motor",

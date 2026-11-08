@@ -37,7 +37,7 @@ public class RobotConstants {
     public static class Intake {
         public static final String INTAKE_MOTOR_NAME = "intake";
         public static final String Flower_Servo_Name = "flowerServo";
-        public static DcMotorSimple.Direction intakeMotorDirection = DcMotorSimple.Direction.REVERSE;
+        public static DcMotorSimple.Direction intakeMotorDirection = DcMotorSimple.Direction.FORWARD;
         
         // Power levels for different intake actions
         public static double maxMovePower = 1.0;
@@ -64,7 +64,7 @@ public class RobotConstants {
         public static final String Pollen_Angle_Encoder = "pollenTurretRotateEncoder";
 
         public static final DcMotorSimple.Direction pollenTurretDirection = DcMotorSimple.Direction.FORWARD;
-        public static final CRServo.Direction pollenServoDirection = CRServo.Direction.FORWARD;
+        public static final CRServo.Direction pollenServoDirection = CRServo.Direction.REVERSE;
         /**
         * PIDF coefficients used to adjust flywheel behavior.
         * P and F should be tuned; I and D should be left as default unless problematic.
@@ -73,8 +73,7 @@ public class RobotConstants {
         public static final double pollenTurretFlywheelI = 3.0;
         public static final double pollenTurretFlywheelD = 0.0;
         public static final double pollenTurretFlywheelF = 13.47;
-        public static final double raiseHoodPosition = 0.82;
-        public static final double hoodRaiseWaypointPosition = 0.49;
+        public static final double raiseHoodPosition = 0.65;
         public static final double pollenRotateMaxSpeed = 0.9;
         public static double pollenkP = 0.015;
         public static double pollenkD = 100;
@@ -102,9 +101,9 @@ public class RobotConstants {
         public static final double nectarTurretFlywheelD = 0.0;
         public static final double nectarTurretFlywheelF = 13.47;
         public static final double nectarTurretMaxSpeed = 0.5;
-        public static final double startingHoodPosition = 0.5;
+        public static final double raiseHoodPosition = 1;
 
-        public static double kP = 0.02;
+        public static double kP = 0.2;
         public static double kD = 0.0001;
         public static final double angleToleranceDegrees = 0.2;
         public static final double goalOffset = 0;

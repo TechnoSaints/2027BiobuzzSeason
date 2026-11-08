@@ -41,6 +41,8 @@ public class NectarTurret {
     private CRServo nectarRotationServo;
     private static Servo nectarAngleServo;
 
+    private ElapsedTime movementTimer;
+
 
     private Alliance alliance;
     private PIDFCoefficients nectarTurretPIDFCoefficients = new PIDFCoefficients(
@@ -86,6 +88,7 @@ public class NectarTurret {
             limelight.pipelineSwitch(RobotConstants.LimelightConstants.LIMELIGHT_PIPELINE);
 
             timer = new ElapsedTime();
+            movementTimer = new ElapsedTime();
         } catch (Exception e) {
             telemetry.addData(
                     "Warning: Failed to initialize nectar turret",
@@ -174,7 +177,7 @@ public class NectarTurret {
     }
 
     public void startingHoodPosition() {
-        nectarAngleServo.setPosition(RobotConstants.NectarTurretConstants.startingHoodPosition);
+        nectarAngleServo.setPosition(RobotConstants.NectarTurretConstants.raiseHoodPosition);
     }
 
     public static void setNectarLaunchAngle(double targetLaunchAngle){
@@ -273,6 +276,10 @@ public class NectarTurret {
 
     public double getHoodPosition(){
         return nectarAngleServo.getPosition();
+    }
+
+    public void raiseHood() {
+        nectarAngleServo.setPosition(RobotConstants.NectarTurretConstants.raiseHoodPosition);
     }
 
     public void log(){

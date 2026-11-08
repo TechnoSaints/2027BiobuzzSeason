@@ -5,6 +5,7 @@ import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.common.components.Component;
@@ -26,6 +27,7 @@ public abstract class Bot extends Component {
     public Intake intake;
     public PollenTurret pollenTurret;
     public NectarTurret nectarTurret;
+    private ElapsedTime movementTimer;
 
     protected Bot(OpMode opMode, Telemetry telemetry, PollenTurret.Alliance alliance) {
         super(telemetry);
@@ -79,7 +81,7 @@ public abstract class Bot extends Component {
     public void startNectarTurret() {
         if (nectarTurret != null) {
             nectarTurret.startLimelight();
-            nectarTurret.startingHoodPosition();
+            nectarTurret.raiseHood();
         }
     }
 

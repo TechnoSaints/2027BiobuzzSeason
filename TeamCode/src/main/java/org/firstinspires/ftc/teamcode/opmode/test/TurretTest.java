@@ -23,13 +23,13 @@ public class TurretTest extends LinearOpMode {
                 hardwareMap,
                 telemetry,
                 PollenTurret.Alliance.RED);
-        nectarTurret = new NectarTurret(
-                hardwareMap,
-                telemetry,
-                NectarTurret.Alliance.RED);
+//        nectarTurret = new NectarTurret(
+//                hardwareMap,
+//                telemetry,
+//                NectarTurret.Alliance.RED);
         waitForStart();
         pollenTurret.startLimelight();
-        nectarTurret.startLimelight();
+        //nectarTurret.startLimelight();
         int targetVelocity = 0;
         double targetPosition = 0.5;
         double kP = 56.4;
@@ -92,7 +92,7 @@ public class TurretTest extends LinearOpMode {
             pollenTurret.setVelocity(targetVelocity);
 
             LLResult result = pollenTurret.getLatestLimelightResult();
-            nectarTurret.update(result);
+            //nectarTurret.update(result);
             LLResultTypes.FiducialResult targetTag = pollenTurret.getClosestAllianceTag(result);
             Double angleOffset = targetTag == null ? null : targetTag.getTargetXDegrees();
             pollenTurret.getCurrentPosition();
@@ -118,10 +118,10 @@ public class TurretTest extends LinearOpMode {
                     angleOffset == null ? "No tag detected" : angleOffset);
             telemetry.addData("Pollen turret encoder angle", PollenTurret.currentPosition);
             pollenTurret.log();
-            nectarTurret.log();
+            //nectarTurret.log();
             telemetry.update();
         }
         pollenTurret.stop();
-        nectarTurret.stop();
+        //nectarTurret.stop();
     }
 }
