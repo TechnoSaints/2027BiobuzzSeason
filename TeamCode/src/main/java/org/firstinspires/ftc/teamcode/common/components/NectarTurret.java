@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.common.components;
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -39,11 +40,8 @@ public class NectarTurret {
     private Integer lockedTargetTagId;
     private DcMotorEx nectarTurretMotor;
     private CRServo nectarRotationServo;
+    private AnalogInput nectarRotationEncoder;
     private static Servo nectarAngleServo;
-
-    private ElapsedTime movementTimer;
-
-
     private Alliance alliance;
     private PIDFCoefficients nectarTurretPIDFCoefficients = new PIDFCoefficients(
             RobotConstants.NectarTurretConstants.nectarTurretFlywheelP,
@@ -77,6 +75,9 @@ public class NectarTurret {
 
             nectarTurretMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+            nectarRotationEncoder = hardwareMap.get(
+                    AnalogInput.class, RobotConstants.NectarTurretConstants.NECTAR_ANGLE_ENCODER);
+
             nectarRotationServo = hardwareMap.get(CRServo.class, RobotConstants.NectarTurretConstants.NECTAR_ROTATE_SERVO_NAME);
 
             nectarRotationServo.setDirection(RobotConstants.NectarTurretConstants.nectarServoDirection);
@@ -88,7 +89,6 @@ public class NectarTurret {
             limelight.pipelineSwitch(RobotConstants.LimelightConstants.LIMELIGHT_PIPELINE);
 
             timer = new ElapsedTime();
-            movementTimer = new ElapsedTime();
         } catch (Exception e) {
             telemetry.addData(
                     "Warning: Failed to initialize nectar turret",
@@ -176,16 +176,8 @@ public class NectarTurret {
         this.lockedTargetTagId = null;
     }
 
-    public void startingHoodPosition() {
-        nectarAngleServo.setPosition(RobotConstants.NectarTurretConstants.raiseHoodPosition);
-    }
-
     public static void setNectarLaunchAngle(double targetLaunchAngle){
         nectarAngleServo.setPosition(targetLaunchAngle);
-    }
-
-    public void setNectarSpeed(double targetSpeed){
-        nectarTurretMotor.setPower(targetSpeed);;
     }
 
     public double getkP(){
@@ -254,7 +246,10 @@ public class NectarTurret {
         if (Math.abs(error) < RobotConstants.NectarTurretConstants.angleToleranceDegrees) {
             power = 0;
         } else {
-            power = Range.clip(pTerm + dTerm, -RobotConstants.NectarTurretConstants.nectarTurretMaxSpeed, RobotConstants.NectarTurretConstants.nectarTurretMaxSpeed);
+            power = Range.clip(
+                    pTerm + dTerm,
+                    -RobotConstants.NectarTurretConstants.nectarTurretMaxSpeed,
+                    RobotConstants.NectarTurretConstants.nectarTurretMaxSpeed);
         }
         // TODO safety check
 
@@ -278,6 +273,15 @@ public class NectarTurret {
         return nectarAngleServo.getPosition();
     }
 
+    public double getEncoderVoltage() {
+        return nectarRotationEncoder.getVoltage();
+    }
+
+    public double getEncoderAngleDegrees() {
+        return getEncoderVoltage() / RobotConstants.NectarTurretConstants.encoderFullScaleVoltage
+                * 360.0;
+    }
+
     public void raiseHood() {
         nectarAngleServo.setPosition(RobotConstants.NectarTurretConstants.raiseHoodPosition);
     }
@@ -286,5 +290,7 @@ public class NectarTurret {
         telemetry.addData("Nectar Turret Velocity", getVelocity());
         telemetry.addData("Nectar Turret Hood Position", getHoodPosition());
         telemetry.addData("Nectar Turret Rotation Power", power);
+        telemetry.addData("Nectar Turret Encoder Voltage (V)", getEncoderVoltage());
+        telemetry.addData("Nectar Turret Encoder Angle (deg)", getEncoderAngleDegrees());
     }
 }

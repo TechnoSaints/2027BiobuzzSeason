@@ -113,6 +113,10 @@ public class TurretTest extends LinearOpMode {
             telemetry.addData(
                     "AprilTag angle offset",
                     angleOffset == null ? "No tag detected" : angleOffset);
+            telemetry.addData(
+                    "Nectar turret encoder voltage (V)", nectarTurret.getEncoderVoltage());
+            telemetry.addData(
+                    "Nectar turret encoder angle (deg)", nectarTurret.getEncoderAngleDegrees());
             pollenTurret.log();
             //nectarTurret.log();
             telemetry.update();

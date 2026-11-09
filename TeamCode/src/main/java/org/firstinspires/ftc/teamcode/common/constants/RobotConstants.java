@@ -92,6 +92,8 @@ public class RobotConstants {
         public static final String NECTAR_TURRET_NAME = "nectarTurretFlywheel";
         public static final String NECTAR_HOOD_SERVO_NAME = "nectarTurretHood";
         public static final String NECTAR_ROTATE_SERVO_NAME = "nectarTurretRotate";
+        public static final String NECTAR_ANGLE_ENCODER = "nectarTurretRotateEncoder";
+        public static final double encoderFullScaleVoltage = 3.2;
         public static final DcMotorSimple.Direction nectarTurretDirection = DcMotorSimple.Direction.REVERSE;
         public static final CRServo.Direction nectarServoDirection = CRServo.Direction.FORWARD;
         /**

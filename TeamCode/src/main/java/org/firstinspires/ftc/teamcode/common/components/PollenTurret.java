@@ -55,6 +55,12 @@ public class PollenTurret {
     public static double kP = RobotConstants.PollenTurretConstants.kP;
     public static double kD = RobotConstants.PollenTurretConstants.kD;
     private double lastError = 0;
+    private double lastOffsetError;
+    private boolean hasPreviousOffsetError;
+    private double targetAprilTagOffsetDegrees = Double.NaN;
+    private double targetPositionDegrees = Double.NaN;
+    private double offsetErrorDegrees = Double.NaN;
+    private double targetDistanceInches = Double.NaN;
     private double power = 0.5;
     private Limelight3A limelight;
 
@@ -182,10 +188,6 @@ public class PollenTurret {
         pollenAngleServo.setPosition(targetLaunchAngle);
     }
 
-    public void raiseHood() {
-        pollenAngleServo.setPosition(RobotConstants.PollenTurretConstants.raiseHoodPosition);
-    }
-
     public double getkP(){
         return kP;
     }
@@ -280,5 +282,11 @@ public class PollenTurret {
         telemetry.addData("Pollen Turret Velocity", getVelocity());
         telemetry.addData("Pollen Turret Hood Position", getHoodPosition());
         telemetry.addData("Pollen Turret Rotation Power", power);
+        telemetry.addData("Pollen Turret Rotation kP", kP);
+        telemetry.addData("Pollen Turret Rotation kD", kD);
+        telemetry.addData("Pollen Turret AprilTag Offset (deg)", targetAprilTagOffsetDegrees);
+        telemetry.addData("Pollen Turret Target Angle (deg)", targetPositionDegrees);
+        telemetry.addData("Pollen Turret Angle Error (deg)", offsetErrorDegrees);
+        telemetry.addData("Pollen Turret Target Distance (in)", targetDistanceInches);
     }
 }

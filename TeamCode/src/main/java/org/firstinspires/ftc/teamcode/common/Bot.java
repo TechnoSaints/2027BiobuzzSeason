@@ -88,7 +88,7 @@ public abstract class Bot extends Component {
     public void runPollenTurret() {
         if (pollenTurret != null) {
             pollenTurret.setMotorPIDFCoefficients(new PIDFCoefficients(PollenTurret.kP, 0, 0, PollenTurret.kD));
-            pollenTurret.setVelocity(nectarTurret.findNectarSpeed());
+            //pollenTurret.setVelocity(nectarTurret.findNectarSpeed());
 
             LLResult result = pollenTurret.getLatestLimelightResult();
             pollenTurret.update(result);
@@ -101,7 +101,7 @@ public abstract class Bot extends Component {
     public void runNectarTurret() {
         if (nectarTurret != null) {
             nectarTurret.setMotorPIDFCoefficients(new PIDFCoefficients(NectarTurret.kP, 0, 0, NectarTurret.kD));
-            nectarTurret.setVelocity(nectarTurret.findNectarSpeed());
+            //nectarTurret.setVelocity(nectarTurret.findNectarSpeed());
 
             LLResult result = nectarTurret.getLatestLimelightResult();
             nectarTurret.update(result);
@@ -111,7 +111,6 @@ public abstract class Bot extends Component {
         }
     }
 
-    public void setPollenTurretVelocity
 
     public void lowerFlowerServo(){
         intake.lowerFlowerServo();
