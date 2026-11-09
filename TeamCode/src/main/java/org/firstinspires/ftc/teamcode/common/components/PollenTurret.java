@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.common.components;
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
-import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -52,21 +51,14 @@ public class PollenTurret {
             RobotConstants.PollenTurretConstants.pollenTurretFlywheelI,
             RobotConstants.PollenTurretConstants.pollenTurretFlywheelD,
             RobotConstants.PollenTurretConstants.pollenTurretFlywheelF);
-    private ElapsedTime timer, movementTimer;
-    public static double kP = RobotConstants.PollenTurretConstants.pollenkP;
-    public static double kD = RobotConstants.PollenTurretConstants.pollenkD;
-
-
+    private ElapsedTime timer;
+    public static double kP = RobotConstants.PollenTurretConstants.kP;
+    public static double kD = RobotConstants.PollenTurretConstants.kD;
     private double lastError = 0;
     private double power = 0.5;
     private Limelight3A limelight;
 
-    public static double currentPosition;
-
     Telemetry telemetry;
-
-    // Example for FIRST Tech Challenge (FTC) / REV Hubs
-    private AnalogInput encoder;
 
 
     public PollenTurret(HardwareMap hardwareMap, Telemetry telemetry, Alliance alliance) {
@@ -85,8 +77,6 @@ public class PollenTurret {
             pollenTurretMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pollenTurretPIDFCoefficients);
 
             pollenTurretMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-            encoder = hardwareMap.get(AnalogInput.class, RobotConstants.PollenTurretConstants.Pollen_Angle_Encoder);
 
             pollenRotationServo = hardwareMap.get(CRServo.class, RobotConstants.PollenTurretConstants.POLLEN_SERVO_NAME);
 
@@ -194,53 +184,6 @@ public class PollenTurret {
 
     public void raiseHood() {
         pollenAngleServo.setPosition(RobotConstants.PollenTurretConstants.raiseHoodPosition);
-    }
-
-    public void getCurrentPosition() {
-        currentPosition = (encoder.getVoltage() / 3.2) * 360;
-    }
-
-    public void findOffset (double nectarTurretOffset, double currentPosition) {
-
-        //This is checking to make sure that a turret offset Exists and the Servos are running.
-        if (!Double.isFinite(nectarTurretOffset) || !Double.isFinite(currentPosition)) {
-            power = 0;
-            pollenRotationServo.setPower(power);
-            return;
-        }
-
-        LLResultTypes.FiducialResult targetTag =
-                getClosestAllianceTag(getLatestLimelightResult());
-        Double distance = getLimelightToTagDistanceInches(targetTag);
-        if (distance == null) {
-            power = 0;
-            pollenRotationServo.setPower(power);
-            return;
-        }
-
-        double pollenTargetPosition = normalizeDegrees(nectarTurretOffset + 180.0);
-        double angleError = normalizeSignedDegrees(pollenTargetPosition - currentPosition);
-        double distanceSlope = Math.max(
-                0, RobotConstants.PollenTurretConstants.pollenOffsetDistanceSlope);
-        double distanceScale = Range.clip(
-                1.0 - distance * distanceSlope,
-                RobotConstants.PollenTurretConstants.pollenOffsetMinimumScale,
-                1.0);
-
-        power = Range.clip(
-                angleError * distanceScale * kP,
-                -RobotConstants.PollenTurretConstants.pollenRotateMaxSpeed,
-                RobotConstants.PollenTurretConstants.pollenRotateMaxSpeed);
-        pollenRotationServo.setPower(power);
-    }
-
-    private static double normalizeDegrees(double angle) {
-        double normalized = angle % 360.0;
-        return normalized < 0 ? normalized + 360.0 : normalized;
-    }
-
-    private static double normalizeSignedDegrees(double angle) {
-        return normalizeDegrees(angle + 180.0) - 180.0;
     }
 
     public double getkP(){
