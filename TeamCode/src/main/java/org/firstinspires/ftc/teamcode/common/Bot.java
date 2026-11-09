@@ -111,6 +111,8 @@ public abstract class Bot extends Component {
         }
     }
 
+    public void setPollenTurretVelocity
+
     public void lowerFlowerServo(){
         intake.lowerFlowerServo();
     }

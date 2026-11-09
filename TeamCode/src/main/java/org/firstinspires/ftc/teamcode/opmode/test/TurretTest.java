@@ -93,12 +93,9 @@ public class TurretTest extends LinearOpMode {
 
             LLResult result = pollenTurret.getLatestLimelightResult();
             //nectarTurret.update(result);
+            pollenTurret.update(result);
             LLResultTypes.FiducialResult targetTag = pollenTurret.getClosestAllianceTag(result);
             Double angleOffset = targetTag == null ? null : targetTag.getTargetXDegrees();
-            pollenTurret.getCurrentPosition();
-            pollenTurret.findOffset(
-                    angleOffset == null ? 0.0 : angleOffset,
-                    PollenTurret.currentPosition);
 
             telemetry.addData("Tuning kP", kP);
             telemetry.addData("Tuning kF", kF);
@@ -116,7 +113,6 @@ public class TurretTest extends LinearOpMode {
             telemetry.addData(
                     "AprilTag angle offset",
                     angleOffset == null ? "No tag detected" : angleOffset);
-            telemetry.addData("Pollen turret encoder angle", PollenTurret.currentPosition);
             pollenTurret.log();
             //nectarTurret.log();
             telemetry.update();

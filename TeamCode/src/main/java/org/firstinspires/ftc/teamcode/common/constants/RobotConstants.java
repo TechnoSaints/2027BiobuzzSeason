@@ -64,7 +64,7 @@ public class RobotConstants {
         public static final String Pollen_Angle_Encoder = "pollenTurretRotateEncoder";
 
         public static final DcMotorSimple.Direction pollenTurretDirection = DcMotorSimple.Direction.FORWARD;
-        public static final CRServo.Direction pollenServoDirection = CRServo.Direction.REVERSE;
+        public static final CRServo.Direction pollenServoDirection = CRServo.Direction.FORWARD;
         /**
         * PIDF coefficients used to adjust flywheel behavior.
         * P and F should be tuned; I and D should be left as default unless problematic.
@@ -84,6 +84,8 @@ public class RobotConstants {
         public static final double pollenOffsetMinimumScale = 0.1;
 
         public static final double shooterConstant = .02;
+        public static final double kP = 0.015;
+        public static final double kD = 1;
     }
 
     public static class NectarTurretConstants {

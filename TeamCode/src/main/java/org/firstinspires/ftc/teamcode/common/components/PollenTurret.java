@@ -32,6 +32,10 @@ public class PollenTurret {
     private static final Set<Integer> BLUE_CENTRAL_TAGS =
             new HashSet<>(Arrays.asList(39, 40, 43, 44));
 
+    public void raiseHood() {
+        pollenAngleServo.setPosition(RobotConstants.PollenTurretConstants.raiseHoodPosition);
+    }
+
     public enum Alliance {
         BLUE,
         RED
@@ -95,7 +99,6 @@ public class PollenTurret {
             limelight.pipelineSwitch(RobotConstants.LimelightConstants.LIMELIGHT_PIPELINE);
 
             timer = new ElapsedTime();
-            movementTimer = new ElapsedTime();
             telemetry.addLine("Status: Initialized");
             telemetry.update();
         } catch (Exception e) {

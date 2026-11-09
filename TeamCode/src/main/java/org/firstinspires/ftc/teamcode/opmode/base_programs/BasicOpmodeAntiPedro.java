@@ -96,6 +96,10 @@ public class BasicOpmodeAntiPedro extends LinearOpMode {
                 bot.raiseFlowerServo();
             }
 
+            if (gamepad1.right_trigger_pressed) {
+                bot.runPollenTurret();
+            }
+
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             bot.update();
