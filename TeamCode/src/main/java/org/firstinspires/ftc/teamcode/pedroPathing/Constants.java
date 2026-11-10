@@ -19,9 +19,9 @@ public class Constants {
     public static double maxAutoPower = RobotConstants.Drivetrain.maxAutoPower;
 
     public static FollowerConstants followerConstants = new FollowerConstants()
-            .mass(3.4)
-            .forwardZeroPowerAcceleration(88.85)
-            .lateralZeroPowerAcceleration(0)
+            .mass(5)
+            .forwardZeroPowerAcceleration(-105)
+            .lateralZeroPowerAcceleration(-63)
             .useSecondaryTranslationalPIDF(false)
             .useSecondaryHeadingPIDF(false)
             .useSecondaryDrivePIDF(false)
@@ -35,15 +35,15 @@ public class Constants {
             ;
 
     public static PinpointConstants localizerConstants = new PinpointConstants()
-            .forwardPodY(6.75)
-            .strafePodX(0.25)
+            .forwardPodY(6.25)
+            .strafePodX(0)
             .distanceUnit(DistanceUnit.INCH)
             .hardwareMapName("pinpoint")
             .encoderResolution(
                     GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD
             )
-            .forwardEncoderDirection(GoBildaPinpointDriver.EncoderDirection.REVERSED)
-            .strafeEncoderDirection(GoBildaPinpointDriver.EncoderDirection.REVERSED);
+            .forwardEncoderDirection(GoBildaPinpointDriver.EncoderDirection.FORWARD)
+            .strafeEncoderDirection(GoBildaPinpointDriver.EncoderDirection.FORWARD);
 
     /**
      These are the PathConstraints in order:
@@ -81,8 +81,8 @@ public class Constants {
                 .leftRearMotorDirection(RobotConstants.Drivetrain.leftRearMotorDirection)
                 .rightFrontMotorDirection(RobotConstants.Drivetrain.rightFrontMotorDirection)
                 .rightRearMotorDirection(RobotConstants.Drivetrain.rightRearMotorDirection)
-                .xVelocity(0)
-                .yVelocity(0)
+                .xVelocity(47.5)
+                .yVelocity(45.18)
                 .useBrakeModeInTeleOp(true)
                 .nominalVoltage(12.5)
                 .useVoltageCompensation(true);

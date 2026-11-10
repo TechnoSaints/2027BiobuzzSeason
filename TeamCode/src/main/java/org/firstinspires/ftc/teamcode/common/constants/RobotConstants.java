@@ -28,7 +28,7 @@ public class RobotConstants {
         public static DcMotorSimple.Direction rightFrontMotorDirection = DcMotorSimple.Direction.FORWARD;
         public static DcMotorSimple.Direction rightRearMotorDirection = DcMotorSimple.Direction.FORWARD;
 
-        public static double maxAutoPower = 1.0;
+        public static double maxAutoPower = 0.5;
         /** Maximum change in normalized drivetrain command per second. */
         public static double maxDriveAcceleration = 2.0;
     }
@@ -44,7 +44,7 @@ public class RobotConstants {
         public static double stopPower = 0.0;
         public static double lockPower = 0.98;
         public static final double FLOWER_STORE_POSITION = 1.0;
-        public static final double FLOWER_INTAKE_POSITION = 0.32;
+        public static final double FLOWER_INTAKE_POSITION = 0.31;
     }
 
 

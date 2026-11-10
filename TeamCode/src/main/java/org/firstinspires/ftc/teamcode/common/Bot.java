@@ -132,12 +132,12 @@ public abstract class Bot extends Component {
         if (intake != null) {
             intake.update();
         }
-        if (pollenTurret != null) {
-            pollenTurret.update();
-        }
-        if (nectarTurret != null) {
-            nectarTurret.update();
-        }
+//        if (pollenTurret != null) {
+//            pollenTurret.update();
+//        }
+//        if (nectarTurret != null) {
+//            nectarTurret.update();
+//        }
     }
 
     /** Spins the intake forward to pick up a game piece. */
@@ -174,5 +174,11 @@ public abstract class Bot extends Component {
         if (pollenTurret != null) {
             pollenTurret.log();
         }
+    }
+
+    public void start(){
+        startNectarTurret();
+        startPollenTurret();
+        raiseFlowerServo();
     }
 }

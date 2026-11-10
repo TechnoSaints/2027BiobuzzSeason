@@ -11,21 +11,6 @@ import org.firstinspires.ftc.teamcode.common.constants.Paths;
 public class TwoTipAuto extends AutoOpMode {
     protected PollenTurret.Alliance alliance = PollenTurret.Alliance.RED;
 
-    private enum State {
-        START_TO_CORNER(0),
-        CORNER_TO_SIDE_FLOWER(4),
-        SIDE_FLOWER_TO_FAR_FLOWER(8),
-        FAR_FLOWER_TO_PUSH_START(12),
-        PUSH_START_TO_END(16),
-        FINISHED(20);
-
-        private final int id;
-
-        State(int id) {
-            this.id = id;
-        }
-    }
-
     @Override
     public void runOpMode() {
         initBot(FieldConstants.startPose, alliance);
@@ -40,41 +25,53 @@ public class TwoTipAuto extends AutoOpMode {
             return;
         }
 
-        new AutoStateMachine<State>(this, bot, State.START_TO_CORNER, State.FINISHED) {
-            private boolean pathStarted;
+        new AutoStateMachine(this, bot, 0, 12) {
 
             @Override
-            protected void handleState(State state) {
-                telemetry.addData("State ID", state.id);
+            protected void handleState(int state) {
+                telemetry.addData("State ID", state);
                 switch (state) {
-                    case START_TO_CORNER:
-                        followPath(Paths.startToCorner, State.CORNER_TO_SIDE_FLOWER);
+                    case 0:
+                        bot.start();
+                        followPath(Paths.startToCornerIntake, 8, 0.25);
                         break;
-                    case CORNER_TO_SIDE_FLOWER:
-                        followPath(Paths.cornerToSideFlower, State.SIDE_FLOWER_TO_FAR_FLOWER);
+                    case 8:
+                        followPath(Paths.cornerIntakeToSideFlowerSetup, 10);
                         break;
-                    case SIDE_FLOWER_TO_FAR_FLOWER:
-                        followPath(Paths.sideFlowerToFarFlower, State.FAR_FLOWER_TO_PUSH_START);
+                    case 10:
+                        bot.lowerFlowerServo();
+                        state = 12;
                         break;
-                    case FAR_FLOWER_TO_PUSH_START:
-                        followPath(Paths.farFlowerToPushStart, State.PUSH_START_TO_END);
-                        break;
-                    case PUSH_START_TO_END:
-                        followPath(Paths.pushStartToEnd, State.FINISHED);
-                        break;
-                    case FINISHED:
-                        break;
-                }
-            }
-
-            private void followPath(PathChain path, State nextState) {
-                if (!pathStarted) {
-                    bot.follower.followPath(path);
-                    pathStarted = true;
-                }
-                if (!bot.isBusy()) {
-                    pathStarted = false;
-                    transition(nextState);
+//                    case 12:
+//                        followPath(Paths.sideFlowerSetupToSideFlowerPickup, 16);
+//                        break;
+//                    case 16:
+//                        followPath(Paths.sideFlowerPickupToFarFlowerSetup, 20);
+//                        break;
+//                    case 20:
+//                        followPath(Paths.farFlowerSetupToFarFlowerPickup, 24);
+//                        break;
+//                    case 24:
+//                        followPath(Paths.farFlowerPickupToFarFlowerShoot, 28);
+//                        break;
+//                    case 28:
+//                        followPath(Paths.farFlowerShootToTeamSetup, 32);
+//                        break;
+//                    case 32:
+//                        followPath(Paths.teamSetupToTeamPickup, 36);
+//                        break;
+//                    case 36:
+//                        followPath(Paths.teamPickupToTeamShoot, 40);
+//                        break;
+//                    case 40:
+//                        followPath(Paths.teamShootToParkStrafe, 44);
+//                        break;
+//                    case 44:
+//                        followPath(Paths.parkStrafeToParkSetup, 48);
+//                        break;
+//                    case 48:
+//                        followPath(Paths.parkSetupToPark, 99);
+//                        break;
                 }
             }
         }.run();

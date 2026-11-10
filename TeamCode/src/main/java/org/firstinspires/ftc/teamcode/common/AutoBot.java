@@ -70,4 +70,8 @@ public class AutoBot extends Bot {
     public String getPoseString() {
         return follower != null ? follower.getPose().toString() : "unknown";
     }
+
+    public void setMaxSpeed(double maxSpeed){
+        follower.setMaxPower(maxSpeed);
+    }
 }
