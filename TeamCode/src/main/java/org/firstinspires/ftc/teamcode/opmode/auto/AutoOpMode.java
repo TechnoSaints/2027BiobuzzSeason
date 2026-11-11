@@ -1,56 +1,60 @@
 package org.firstinspires.ftc.teamcode.opmode.auto;
 
 import com.pedropathing.geometry.Pose;
-import com.pedropathing.paths.PathChain;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.common.AutoBot;
 import org.firstinspires.ftc.teamcode.common.components.PollenTurret;
+import org.firstinspires.ftc.teamcode.common.constants.Paths;
 
-/**
- * AutoOpMode is the starting point for every Autonomous OpMode we write.
- * Every autonomous routine needs to do the same 3 things - build the robot,
- * wait for the driver to press START, and print a final message - so that
- * setup code lives here once instead of being copy-pasted into every routine.
- */
-public abstract class AutoOpMode extends LinearOpMode {
+public abstract class AutoOpMode extends OpMode {
     protected AutoBot bot;
+    protected int pathState;
+    protected double launcherSpeed;
+    protected ElapsedTime controlTimer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
+    protected ElapsedTime gameTimer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
 
     /**
-     * Builds the robot and tells it where it's starting on the field.
-     * Call this first thing in runOpMode(), before waiting for start.
-     * @param startPose where the robot is sitting when the match begins.
-     */
-    protected void initBot(Pose startPose, PollenTurret.Alliance alliance) {
-        bot = new AutoBot(this, telemetry, alliance);
-        bot.setStartingPose(startPose);
+     * This method is called once at the init of the OpMode.
+     **/
+    @Override
+    public void init() {
+        bot = new AutoBot(this, telemetry, PollenTurret.Alliance.BLUE);
+        Paths.buildPaths(bot.getFollower());
     }
 
     /**
-     * Pauses here until the driver presses START.
-     * @return false if the OpMode was stopped before START was pressed.
-     *         When this happens, your runOpMode() should just return right away.
-     */
-    protected boolean awaitStart() {
-        waitForStart();
-        if (!isStopRequested()) {
-            bot.startPollenTurret();
-        }
-        return !isStopRequested();
+     * This method is called continuously after Init while waiting for "play".
+     **/
+    @Override
+    public void init_loop()
+    {
+        bot.update();
     }
 
+    @Override
+    public void start()
+    {
+        setPathState(0);
+        gameTimer.reset();
+    }
     /**
-     * Prints one last telemetry message so the driver knows the routine finished,
-     * then keeps updating the robot until the OpMode actually stops - so the
-     * drivetrain doesn't get left in a weird state right as Autonomous ends.
-     */
-    protected void finish(String message) {
-        telemetry.addLine(message);
-        telemetry.update();
-
-        while (opModeIsActive()) {
-            bot.update();
-            idle();
-        }
+     * This is the main loop of the OpMode, it will run repeatedly after clicking "Play".
+     **/
+    @Override
+    public void loop()
+    {
+        // These loop the movements of the robot
+        bot.update();
+        autonomousPathUpdate();
+        telemetry.addData("Auto Path State", pathState);
     }
+    protected void setPathState(int pState)
+    {
+        pathState = pState;
+    }
+
+    protected abstract void autonomousPathUpdate();
 }
+

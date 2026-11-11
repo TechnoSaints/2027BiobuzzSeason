@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.common.constants;
 
 import com.pedropathing.geometry.Pose;
 
-public class FieldConstants {
+public class FieldLocations {
     public static Pose startPose = new Pose(132.5, 128, Math.toRadians(90));
     public static Pose cornerIntakePose = new Pose(132.5,129,Math.toRadians(90));
     public static Pose sideFlowerSetupPose = new Pose(119, 95, Math.toRadians(0));

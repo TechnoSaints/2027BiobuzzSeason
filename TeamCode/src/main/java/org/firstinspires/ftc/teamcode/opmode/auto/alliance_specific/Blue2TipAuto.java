@@ -8,6 +8,6 @@ import org.firstinspires.ftc.teamcode.opmode.auto.TwoTipAuto;
 @TeleOp(name = "Blue 2 Tip Auto", group = "0 COMPETITION")
 public class Blue2TipAuto extends TwoTipAuto {
     public Blue2TipAuto() {
-        alliance = PollenTurret.Alliance.BLUE;
+        super(PollenTurret.Alliance.BLUE);
     }
 }

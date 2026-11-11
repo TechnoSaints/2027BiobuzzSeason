@@ -1,80 +1,67 @@
 package org.firstinspires.ftc.teamcode.common;
 
+import com.pedropathing.follower.Follower;
 
+import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
-import com.pedropathing.paths.Path;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.common.components.Drivetrain;
 import org.firstinspires.ftc.teamcode.common.components.PollenTurret;
-import org.firstinspires.ftc.teamcode.common.constants.Paths;
+import org.firstinspires.ftc.teamcode.common.constants.RobotConstants;
+import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
+import org.firstinspires.ftc.teamcode.common.constants.FieldLocations;
 
-/**
- * AutoBot is the robot used during Autonomous.
- * On top of everything Bot already does, it adds the ability to follow a
- * pre-planned path and to hold still at a specific spot on the field.
- */
+
 public class AutoBot extends Bot {
+    private Follower follower;
 
     public AutoBot(OpMode opMode, Telemetry telemetry, PollenTurret.Alliance alliance) {
         super(opMode, telemetry, alliance);
-        if (follower == null) {
-            throw new IllegalStateException("AutoBot cannot be initialized: follower failed to initialize.");
-        }
-        Paths.buildPaths(follower);
+        follower = Constants.createFollower(opMode.hardwareMap);
+        telemetry.addLine(FieldLocations.startPose.toString());
+        telemetry.update();
+        follower.setStartingPose(FieldLocations.startPose);
     }
 
-    /**
-     * @return true while the robot is still driving along a path.
-     */
-    @Override
-    public boolean isBusy() {
-        return follower != null && follower.isBusy();
+    public void followPath(PathChain path, double maxSpeed) {
+        followPath(path, maxSpeed, true);
     }
 
-    @Override
+    public void followPath(PathChain path, double maxPower, boolean holdEnd)
+    {
+        follower.followPath(path, maxPower, holdEnd);
+    }
+
+    public Follower getFollower() {
+        return (follower);
+    }
+
+    //    public void moveManualInches(double axial, double strafe, double heading) {
+//        Pose targetPose = new Pose(getFollower().getPose().getX() - axial, getFollower().getPose().getY() - strafe, getFollower().getPose().getHeading() + Math.toRadians(heading));
+//
+//        PathChain targetPath = follower.pathBuilder()
+//                .addPath(new BezierLine(getFollower().getPose(), targetPose))
+//                .setLinearHeadingInterpolation(getFollower().getPose().getHeading(), targetPose.getHeading())
+//                .build();
+//
+//        followPath(targetPath, 0.8);
+//    }
+    public boolean followerIsBusy()
+    {
+        return (follower.isBusy());
+    }
+
+    public boolean isBusy()
+    {
+        return (super.isBusy() || followerIsBusy());
+    }
+
     public void update() {
         super.update();
-    }
-
-    /**
-     * Starts driving the robot along the given path.
-     * @param path the path to follow, usually built with AutoPaths.
-     */
-
-    public void followPath(PathChain path, double maxPower, boolean holdEnd) {
-        if (follower != null) {
-            follower.followPath(path, maxPower, holdEnd);
-        }
-    }
-
-    /**
-     * Tells the robot to stay put at one exact spot and heading.
-     * @param pose the location and heading to hold.
-     */
-    public void holdPose(Pose pose) {
-        if (follower != null) {
-            follower.holdPoint(pose);
-        }
-    }
-
-    /**
-     * Tells the robot "you are here" - use this once at the start of Autonomous
-     * to match the robot's actual starting spot on the field.
-     * @param pose the robot's starting position.
-     */
-    public void setStartingPose(Pose pose) {
-        if (follower != null) {
-            follower.setStartingPose(pose);
-        }
-    }
-
-    /**
-     * @return the robot's current field position as text, ready to print
-     *         with telemetry, or "unknown" if the localizer never started up.
-     */
-    public String getPoseString() {
-        return follower != null ? follower.getPose().toString() : "unknown";
+        //launcher.distanceFromLauncher(follower.getPose(), red);
+        follower.update();
     }
 }
