@@ -80,14 +80,14 @@ public class RobotConstants {
         public static final double pollenTurretFlywheelF = 13.47;
         public static final double raiseHoodPosition = 0.65;
         public static final double pollenRotateMaxSpeed = 0.9;
-        public static final double angleToleranceDegrees = 1.0;
+        public static final double angleToleranceDegrees = 2.0;
         public static final double goalOffset = 0;
         /** Linear reduction in angle correction per inch reported by the Limelight. */
         public static double pollenOffsetDistanceSlope = 0.005;
         public static final double pollenOffsetMinimumScale = 0.1;
 
         public static final double shooterConstant = .02;
-        public static final double kP = 0.015;
+        public static final double kP = 0.0135;
         public static final double kD = 1;
         // TODO: tune positions
         public static final double forwardRotatePosition = 0.5;

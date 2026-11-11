@@ -189,6 +189,5 @@ public class TeleopBot extends Bot {
     @Override
     public void start(){
         super.start();
-        pollenTurret.aimForward();
     }
 }
