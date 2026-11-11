@@ -3,10 +3,12 @@ package org.firstinspires.ftc.teamcode.common;
 
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.Path;
+import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.common.components.PollenTurret;
+import org.firstinspires.ftc.teamcode.common.constants.Paths;
 
 /**
  * AutoBot is the robot used during Autonomous.
@@ -17,6 +19,10 @@ public class AutoBot extends Bot {
 
     public AutoBot(OpMode opMode, Telemetry telemetry, PollenTurret.Alliance alliance) {
         super(opMode, telemetry, alliance);
+        if (follower == null) {
+            throw new IllegalStateException("AutoBot cannot be initialized: follower failed to initialize.");
+        }
+        Paths.buildPaths(follower);
     }
 
     /**
@@ -36,9 +42,10 @@ public class AutoBot extends Bot {
      * Starts driving the robot along the given path.
      * @param path the path to follow, usually built with AutoPaths.
      */
-    public void followPath(Path path) {
+
+    public void followPath(PathChain path, double maxPower, boolean holdEnd) {
         if (follower != null) {
-            follower.followPath(path);
+            follower.followPath(path, maxPower, holdEnd);
         }
     }
 
@@ -69,9 +76,5 @@ public class AutoBot extends Bot {
      */
     public String getPoseString() {
         return follower != null ? follower.getPose().toString() : "unknown";
-    }
-
-    public void setMaxSpeed(double maxSpeed){
-        follower.setMaxPower(maxSpeed);
     }
 }

@@ -31,6 +31,11 @@ public class RobotConstants {
         public static double maxAutoPower = 0.5;
         /** Maximum change in normalized drivetrain command per second. */
         public static double maxDriveAcceleration = 2.0;
+        public static double aimP = .023;
+        public static double aimI = 0.0;
+        public static double aimD = 0.0005;
+        public static double aimF = 0.09;
+        public static double targetError = 0.5;
     }
 
     // Intake-specific constants
@@ -75,8 +80,6 @@ public class RobotConstants {
         public static final double pollenTurretFlywheelF = 13.47;
         public static final double raiseHoodPosition = 0.65;
         public static final double pollenRotateMaxSpeed = 0.9;
-        public static double pollenkP = 0.015;
-        public static double pollenkD = 100;
         public static final double angleToleranceDegrees = 1.0;
         public static final double goalOffset = 0;
         /** Linear reduction in angle correction per inch reported by the Limelight. */
@@ -86,6 +89,8 @@ public class RobotConstants {
         public static final double shooterConstant = .02;
         public static final double kP = 0.015;
         public static final double kD = 1;
+        // TODO: tune positions
+        public static final double forwardRotatePosition = 0.5;
     }
 
     public static class NectarTurretConstants {

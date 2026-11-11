@@ -43,7 +43,8 @@ public class PollenTurret {
     private Integer lockedTargetTagId;
 
     private DcMotorEx pollenTurretMotor;
-    private CRServo pollenRotationServo;
+//    private CRServo pollenRotationServo;
+    private Servo pollenRotationServo;
     private static Servo pollenAngleServo;
     private Alliance alliance;
     private PIDFCoefficients pollenTurretPIDFCoefficients = new PIDFCoefficients(
@@ -62,7 +63,7 @@ public class PollenTurret {
     private double offsetErrorDegrees = Double.NaN;
     private double targetDistanceInches = Double.NaN;
     private double power = 0.5;
-    private Limelight3A limelight;
+//    private Limelight3A limelight;
 
     Telemetry telemetry;
 
@@ -84,15 +85,15 @@ public class PollenTurret {
 
             pollenTurretMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            pollenRotationServo = hardwareMap.get(CRServo.class, RobotConstants.PollenTurretConstants.POLLEN_SERVO_NAME);
+            pollenRotationServo = hardwareMap.get(Servo.class, RobotConstants.PollenTurretConstants.POLLEN_SERVO_NAME);
 
-            pollenRotationServo.setDirection(RobotConstants.PollenTurretConstants.pollenServoDirection);
+//            pollenRotationServo.setDirection(RobotConstants.PollenTurretConstants.pollenServoDirection);
 
             pollenAngleServo = hardwareMap.get(Servo.class, RobotConstants.PollenTurretConstants.POLLEN_ANGLE_SERVO_NAME);
 
-            limelight = hardwareMap.get(
-                    Limelight3A.class, RobotConstants.LimelightConstants.limelightName);
-            limelight.pipelineSwitch(RobotConstants.LimelightConstants.LIMELIGHT_PIPELINE);
+//            limelight = hardwareMap.get(
+//                    Limelight3A.class, RobotConstants.LimelightConstants.limelightName);
+//            limelight.pipelineSwitch(RobotConstants.LimelightConstants.LIMELIGHT_PIPELINE);
 
             timer = new ElapsedTime();
             telemetry.addLine("Status: Initialized");
@@ -165,11 +166,6 @@ public class PollenTurret {
 
         return closestToCenter;
     }
-
-    public Double findPollenSpeed() {
-        return RobotConstants.PollenTurretConstants.shooterConstant * getLimelightToTagDistanceInches(getClosestAllianceTag(getLatestLimelightResult()));
-    }
-
     @Nullable
     public Double getAprilTagAngleOffset(@Nullable LLResult result) {
         LLResultTypes.FiducialResult targetTag = getClosestAllianceTag(result);
@@ -208,28 +204,28 @@ public class PollenTurret {
         timer.reset();
     }
 
-    public void startLimelight() {
-        limelight.start();
-        lockedTargetTagId = null;
-        resetAimingTimer();
-    }
+//    public void startLimelight() {
+//        limelight.start();
+//        lockedTargetTagId = null;
+//        resetAimingTimer();
+//    }
 
-    @Nullable
-    public LLResult getLatestLimelightResult() {
-        return limelight.getLatestResult();
-    }
+//    @Nullable
+//    public LLResult getLatestLimelightResult() {
+//        return limelight.getLatestResult();
+//    }
 
     public void stop() {
         power = 0;
-        pollenRotationServo.setPower(power);
+//        pollenRotationServo.setPower(power);
         lastError = 0;
         lockedTargetTagId = null;
-        limelight.stop();
+//        limelight.stop();
     }
 
-    public void update() {
-        update(getLatestLimelightResult());
-    }
+//    public void update() {
+//        update(getLatestLimelightResult());
+//    }
 
     public void update(@Nullable LLResult result) {
         double deltaTime = timer.seconds();
@@ -238,7 +234,7 @@ public class PollenTurret {
         Double angleOffset = getAprilTagAngleOffset(result);
         if (angleOffset == null) {
             power = 0;
-            pollenRotationServo.setPower(power);
+            // pollenRotationServo.setPower(power);
             lastError = 0;
             return;
         }
@@ -258,9 +254,18 @@ public class PollenTurret {
         }
         // TODO safety check
 
-        pollenRotationServo.setPower(power);
+        // pollenRotationServo.setPower(power);
         lastError = error;
     }
+
+    public void setTurretRotation (double position){
+        pollenRotationServo.setPosition(position);
+    }
+
+    public void aimForward(){
+        pollenRotationServo.setPosition(RobotConstants.PollenTurretConstants.forwardRotatePosition);
+    }
+
 
     public void setVelocity(double targetVelocity){
         pollenTurretMotor.setVelocity(targetVelocity);

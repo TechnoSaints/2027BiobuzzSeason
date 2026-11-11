@@ -28,7 +28,6 @@ public class TurretTest extends LinearOpMode {
 //                telemetry,
 //                NectarTurret.Alliance.RED);
         waitForStart();
-        pollenTurret.startLimelight();
         //nectarTurret.startLimelight();
         int targetVelocity = 0;
         double targetPosition = 0.5;
@@ -91,7 +90,7 @@ public class TurretTest extends LinearOpMode {
             pollenTurret.setMotorPIDFCoefficients(new PIDFCoefficients(kP, 0, 0, kF));
             pollenTurret.setVelocity(targetVelocity);
 
-            LLResult result = pollenTurret.getLatestLimelightResult();
+            LLResult result = nectarTurret.getLatestLimelightResult();
             //nectarTurret.update(result);
             pollenTurret.update(result);
             LLResultTypes.FiducialResult targetTag = pollenTurret.getClosestAllianceTag(result);

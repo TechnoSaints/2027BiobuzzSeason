@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.opmode.base_programs;
+package org.firstinspires.ftc.teamcode.opmode.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -54,17 +54,17 @@ import org.firstinspires.ftc.teamcode.common.components.PollenTurret;
  *
  * 1) Axial:    Driving forward and backward               Left-joystick Forward/Backward
  * 2) Lateral:  Strafing right and left                     Left-joystick Right and Left
- * 3) Yaw:      Rotating Clockwise and counter clockwise    Right-joystick Right and Left
+ * 3) Yaw:      Rotating Clockwise and counterclockwise    Right-joystick Right and Left
  *
  * This code is written assuming that the right-side motors need to be reversed for the robot to drive forward.
  * When you first test your robot, if it moves backward when you push the left stick forward, then you must flip
  * the direction of all 4 motors (see code below).
  *
- * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
+ * Use Android Studio to Copy this Class, and Paste it into your team's Driver Station code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Basic Opmode No PEDRO", group="Linear OpMode")
+@TeleOp(name="Basic Teleop", group="0 COMPETITION")
 public class BasicOpmodeAntiPedro extends LinearOpMode {
 
     // Declare OpMode members for each of the 4 motors.
@@ -87,7 +87,7 @@ public class BasicOpmodeAntiPedro extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            bot.setManualDrivePowers(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+            bot.setManualDrivePowers(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, false);
             bot.forward();
             if (gamepad1.a) {
                 bot.lowerFlowerServo();
@@ -100,10 +100,10 @@ public class BasicOpmodeAntiPedro extends LinearOpMode {
                 bot.runPollenTurret();
             }
 
-            // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             bot.update();
             bot.log();
             telemetry.update();
         }
-    }}
+    }
+}

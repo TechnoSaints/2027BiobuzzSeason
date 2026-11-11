@@ -1,8 +1,11 @@
 package org.firstinspires.ftc.teamcode.common;
 
+import com.arcrobotics.ftclib.controller.PIDFController;
+import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.R;
 import org.firstinspires.ftc.teamcode.common.components.Drivetrain;
 import org.firstinspires.ftc.teamcode.common.components.PollenTurret;
 import org.firstinspires.ftc.teamcode.common.constants.RobotConstants;
@@ -17,10 +20,13 @@ public class TeleopBot extends Bot {
     private final AccelerationLimiter turnLimiter = new AccelerationLimiter();
     private static Drivetrain drivetrain;
     private long lastDriveUpdateNanos = System.nanoTime();
+    private PIDFController pidf;
 
     public TeleopBot(OpMode opMode, Telemetry telemetry, PollenTurret.Alliance alliance) {
         super(opMode, telemetry, alliance);
         drivetrain = new Drivetrain(telemetry, opMode.hardwareMap);
+        pidf = new PIDFController(RobotConstants.Drivetrain.aimP,RobotConstants.Drivetrain.aimI,RobotConstants.Drivetrain.aimD,RobotConstants.Drivetrain.aimF);
+        pidf.setSetPoint(0.0);
 //        if (follower != null) {
 //            follower.startTeleopDrive();
 //        }
@@ -38,7 +44,7 @@ public class TeleopBot extends Bot {
      * @param turn The rotation speed (-1 to 1).
      * @param powerScale A multiplier for the overall speed (e.g. 0.3 for slow mode).
      */
-    public void setPedroDrivePowers(double forward, double strafe, double turn, double powerScale) {
+    public void setPedroDrivePowers(double forward, double strafe, double turn, double powerScale, boolean aim) {
          if (follower != null) {
             long now = System.nanoTime();
             double deltaTimeSeconds = (now - lastDriveUpdateNanos) / 1_000_000_000.0;
@@ -47,6 +53,36 @@ public class TeleopBot extends Bot {
             double scaledForward = forward * powerScale;
             double scaledStrafe = strafe * powerScale;
             double scaledTurn = turn * powerScale;
+
+             double turnPower;
+             if (aim) {
+                 LLResult llResult = nectarTurret.getLatestLimelightResult();
+
+//                telemetry.addData("Error: ", tx);
+//                telemetry.addData("Turn Power: ", turnPower);
+//                List<LLResultTypes.FiducialResult> fiducialResults = llResult.getFiducialResults();
+//                for (
+//                        LLResultTypes.FiducialResult fr : fiducialResults) {
+//                    telemetry.addData("Fiducial", "ID: %d, Family: %s, X: %.2f, Y: %.2f", fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees(), fr.getTargetYDegrees());
+//                }
+
+                 if (llResult != null) {
+                     double error = nectarTurret.getAprilTagAngleOffset(llResult);
+                     pidf.setPIDF(RobotConstants.Drivetrain.aimP,RobotConstants.Drivetrain.aimI,RobotConstants.Drivetrain.aimD,RobotConstants.Drivetrain.aimF);
+                     turnPower = pidf.calculate(error, RobotConstants.Drivetrain.targetError);
+//                    if (error > 0.75) {
+//                        turnPower = -error * kp - f;
+//                    } else if (error < -0.75) {
+//                        turnPower = -error * kp + f;
+//                    } else {
+//                        turnPower = 0.0;
+//                    }
+                 } else
+                 {
+                     turnPower = scaledTurn;
+                 }
+                 scaledTurn = turnPower;
+             }
 
             // Sends the movement vectors to the drivetrain
              // Untested AI code; disabled for now
@@ -68,7 +104,36 @@ public class TeleopBot extends Bot {
         }
     }
 
-    public void setManualDrivePowers(double axial, double strafe, double yaw){
+    public void setManualDrivePowers(double axial, double strafe, double yaw, boolean aim){
+        double turnPower;
+        if (aim) {
+            LLResult llResult = nectarTurret.getLatestLimelightResult();
+
+//                telemetry.addData("Error: ", tx);
+//                telemetry.addData("Turn Power: ", turnPower);
+//                List<LLResultTypes.FiducialResult> fiducialResults = llResult.getFiducialResults();
+//                for (
+//                        LLResultTypes.FiducialResult fr : fiducialResults) {
+//                    telemetry.addData("Fiducial", "ID: %d, Family: %s, X: %.2f, Y: %.2f", fr.getFiducialId(), fr.getFamily(), fr.getTargetXDegrees(), fr.getTargetYDegrees());
+//                }
+
+            if (llResult != null) {
+                double error = nectarTurret.getAprilTagAngleOffset(llResult);
+                pidf.setPIDF(RobotConstants.Drivetrain.aimP,RobotConstants.Drivetrain.aimI,RobotConstants.Drivetrain.aimD,RobotConstants.Drivetrain.aimF);
+                turnPower = pidf.calculate(error, RobotConstants.Drivetrain.targetError);
+//                    if (error > 0.75) {
+//                        turnPower = -error * kp - f;
+//                    } else if (error < -0.75) {
+//                        turnPower = -error * kp + f;
+//                    } else {
+//                        turnPower = 0.0;
+//                    }
+            } else
+            {
+                turnPower = yaw;
+            }
+            yaw = turnPower;
+        }
         drivetrain.setDrivetrainPowers(axial, strafe, yaw);
     }
 
@@ -119,5 +184,11 @@ public class TeleopBot extends Bot {
     public void log(){
         super.log();
         drivetrain.log();
+    }
+
+    @Override
+    public void start(){
+        super.start();
+        pollenTurret.aimForward();
     }
 }

@@ -101,12 +101,12 @@ public class NectarTurret {
 
     public static Double getLimelightToTagDistanceInches(LLResultTypes.FiducialResult targetTag) {
         if (targetTag == null) {
-            return null;
+            return 0.0;
         }
 
         Pose3D targetPose = targetTag.getTargetPoseCameraSpace();
         if (targetPose == null || targetPose.getPosition() == null) {
-            return null;
+            return 0.0;
         }
 
         Position targetPosition = targetPose.getPosition().toUnit(DistanceUnit.INCH);
@@ -115,7 +115,7 @@ public class NectarTurret {
                         + targetPosition.y * targetPosition.y
                         + targetPosition.z * targetPosition.z
         );
-        return Double.isFinite(distance) && distance > 0 ? distance : null;
+        return Double.isFinite(distance) && distance > 0 ? distance : 0.0;
     }
 
     @Nullable
@@ -160,7 +160,7 @@ public class NectarTurret {
     @Nullable
     public Double getAprilTagAngleOffset(@Nullable LLResult result) {
         LLResultTypes.FiducialResult targetTag = getClosestAllianceTag(result);
-        return targetTag == null ? null : targetTag.getTargetXDegrees();
+        return targetTag == null ? 0 : targetTag.getTargetXDegrees();
     }
 
     public Double findNectarSpeed() {

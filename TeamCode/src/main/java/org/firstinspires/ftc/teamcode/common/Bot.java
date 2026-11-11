@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.common;
 
 import com.pedropathing.follower.Follower;
+import com.pedropathing.geometry.Pose;
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -22,11 +23,11 @@ public abstract class Bot extends Component {
     // The OpMode (TeleOp or Autonomous) that created this robot
     protected OpMode opMode;
     // Follower drives the robot and keeps track of where it is on the field
-    public Follower follower;
+    protected Follower follower;
     // Intake picks up and lets go of game pieces
-    public Intake intake;
-    public PollenTurret pollenTurret;
-    public NectarTurret nectarTurret;
+    protected Intake intake;
+    protected PollenTurret pollenTurret;
+    protected NectarTurret nectarTurret;
     private ElapsedTime movementTimer;
 
     protected Bot(OpMode opMode, Telemetry telemetry, PollenTurret.Alliance alliance) {
@@ -73,7 +74,7 @@ public abstract class Bot extends Component {
     /** Starts Limelight processing and resets the turret's aiming timer. */
     public void startPollenTurret() {
         if (pollenTurret != null) {
-            pollenTurret.startLimelight();
+//            pollenTurret.startLimelight();
             pollenTurret.raiseHood();
         }
     }
@@ -87,24 +88,23 @@ public abstract class Bot extends Component {
 
     public void runPollenTurret() {
         if (pollenTurret != null) {
-            pollenTurret.setMotorPIDFCoefficients(new PIDFCoefficients(PollenTurret.kP, 0, 0, PollenTurret.kD));
-            //pollenTurret.setVelocity(nectarTurret.findNectarSpeed());
+            pollenTurret.setVelocity(nectarTurret.findNectarSpeed());
 
-            LLResult result = pollenTurret.getLatestLimelightResult();
-            pollenTurret.update(result);
-            LLResultTypes.FiducialResult targetTag = pollenTurret.getClosestAllianceTag(result);
-            Double angleOffset = targetTag == null ? null : targetTag.getTargetXDegrees();
+            //LLResult result = pollenTurret.getLatestLimelightResult();
+//            pollenTurret.update(result);
+//            LLResultTypes.FiducialResult targetTag = pollenTurret.getClosestAllianceTag(result);
+//            Double angleOffset = targetTag == null ? null : targetTag.getTargetXDegrees();
 
         }
     }
 
     public void runNectarTurret() {
         if (nectarTurret != null) {
-            nectarTurret.setMotorPIDFCoefficients(new PIDFCoefficients(NectarTurret.kP, 0, 0, NectarTurret.kD));
-            //nectarTurret.setVelocity(nectarTurret.findNectarSpeed());
+//            nectarTurret.setMotorPIDFCoefficients(new PIDFCoefficients(NectarTurret.kP, 0, 0, NectarTurret.kD));
+//            nectarTurret.setVelocity(nectarTurret.findNectarSpeed());
 
             LLResult result = nectarTurret.getLatestLimelightResult();
-            nectarTurret.update(result);
+//            nectarTurret.update(result);
             LLResultTypes.FiducialResult targetTag = nectarTurret.getClosestAllianceTag(result);
             Double angleOffset = targetTag == null ? null : targetTag.getTargetXDegrees();
 
@@ -141,14 +141,14 @@ public abstract class Bot extends Component {
     }
 
     /** Spins the intake forward to pick up a game piece. */
-    public void forward() {
+    public void intakeOn() {
         if (intake != null) {
             intake.forward();
         }
     }
 
     /** Spins the intake backward to let go of a game piece. */
-    public void reverse() {
+    public void intakeReverse() {
         if (intake != null) {
             intake.reverse();
         }
@@ -167,6 +167,10 @@ public abstract class Bot extends Component {
         }
     }
 
+    public void intakeOff(){
+        intake.stop();
+    }
+
     public void log() {
         if (nectarTurret != null) {
             nectarTurret.log();
@@ -180,5 +184,22 @@ public abstract class Bot extends Component {
         startNectarTurret();
         startPollenTurret();
         raiseFlowerServo();
+    }
+
+    public void setAlliance(PollenTurret.Alliance alliance) {
+        if (pollenTurret != null) {
+            pollenTurret.setAlliance(alliance);
+        }
+    }
+
+    public Pose getPose() {
+        if (follower != null) {
+            return follower.getPose();
+        }
+        return new Pose(0, 0, 0);
+    }
+
+    public void setPollenTurretVelocity(double velocity){
+        pollenTurret.setVelocity(velocity);
     }
 }

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmode.base_programs;
+package org.firstinspires.ftc.teamcode.opmode.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -48,7 +48,7 @@ public class PedroTeleOp extends OpMode {
         double powerScale = gamepad1.left_bumper ? 0.3 : 1.0;
 
         // Send the drive commands to the bot
-        bot.setPedroDrivePowers(forward, strafe, turn, powerScale);
+        bot.setPedroDrivePowers(forward, strafe, turn, powerScale, false);
 
         // Intake Control Mapping:
         // Hold Right Trigger to intake (spin forward)
@@ -70,9 +70,7 @@ public class PedroTeleOp extends OpMode {
         telemetry.addData("Slow Mode", gamepad1.left_bumper ? "ON" : "OFF");
         
         // Show the robot's coordinates on the field if the sensors are active
-        if (bot.follower != null) {
-            telemetry.addData("Pose", bot.follower.getPose().toString());
-        }
+        telemetry.addData("Pose", bot.getPose().toString());
         telemetry.update();
     }
 

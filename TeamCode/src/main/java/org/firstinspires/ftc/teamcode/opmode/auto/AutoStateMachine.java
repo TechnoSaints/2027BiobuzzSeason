@@ -61,11 +61,9 @@ public abstract class AutoStateMachine {
         }
     }
 
-
-    protected void followPath(PathChain path, int nextState) {
+    protected void followPath(PathChain path, int nextState, double maxPower) {
         if (!pathStarted) {
-            bot.setMaxSpeed(Constants.maxAutoPower);
-            bot.follower.followPath(path);
+            bot.followPath(path, maxPower, true);
             pathStarted = true;
         }
         if (!bot.isBusy()) {
@@ -74,10 +72,9 @@ public abstract class AutoStateMachine {
         }
     }
 
-    protected void followPath(PathChain path, int nextState, double maxPower) {
+    protected void followPath(PathChain path, int nextState, double maxPower, boolean holdEnd) {
         if (!pathStarted) {
-            bot.setMaxSpeed(maxPower);
-            bot.follower.followPath(path);
+            bot.followPath(path, maxPower, holdEnd);
             pathStarted = true;
         }
         if (!bot.isBusy()) {

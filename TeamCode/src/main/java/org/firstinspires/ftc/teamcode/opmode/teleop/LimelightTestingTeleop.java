@@ -78,22 +78,22 @@ public class LimelightTestingTeleop extends OpMode {
         }
         previousStart = gamepad1.start;
 
-        LLResult result = bot.pollenTurret.getLatestLimelightResult();
+//        LLResult result = bot.pollenTurret.getLatestLimelightResult();
         Double hiveAngle = null;
         Integer visibleCentralTag = null;
         Double tagAngle = null;
         Double limelightToTagDistanceInches = null;
 
-        if (result != null && result.isValid()) {
-            hiveAngle = findHiveAngle(result);
-            LLResultTypes.FiducialResult targetTag = findCentralTag(result);
-            if (targetTag != null) {
-                visibleCentralTag = targetTag.getFiducialId();
-                tagAngle = targetTag.getTargetXDegrees();
-                limelightToTagDistanceInches =
-                        PollenTurret.getLimelightToTagDistanceInches(targetTag);
-            }
-        }
+//        if (result != null && result.isValid()) {
+//            hiveAngle = findHiveAngle(result);
+//            LLResultTypes.FiducialResult targetTag = findCentralTag(result);
+//            if (targetTag != null) {
+//                visibleCentralTag = targetTag.getFiducialId();
+//                tagAngle = targetTag.getTargetXDegrees();
+//                limelightToTagDistanceInches =
+//                        PollenTurret.getLimelightToTagDistanceInches(targetTag);
+//            }
+//        }
 
         double forward = -gamepad1.left_stick_y;
         double strafe = -gamepad1.left_stick_x;
@@ -104,7 +104,7 @@ public class LimelightTestingTeleop extends OpMode {
         }
 
         double driveScale = gamepad1.left_bumper ? 0.3 : 1.0;
-        bot.setPedroDrivePowers(forward, strafe, turn, driveScale);
+        bot.setPedroDrivePowers(forward, strafe, turn, driveScale, false);
         bot.update();
 
         telemetry.addData("Status", "Running (TeleOp)");
@@ -129,9 +129,7 @@ public class LimelightTestingTeleop extends OpMode {
                         ? (tagAngle == null ? "On - waiting for tag" : "On")
                         : "Off");
         telemetry.addData("Slow mode", gamepad1.left_bumper ? "On" : "Off");
-        if (bot.follower != null) {
-            telemetry.addData("Pose", bot.follower.getPose().toString());
-        }
+        telemetry.addData("Pose", bot.getPose().toString());
         telemetry.update();
     }
 
@@ -156,7 +154,7 @@ public class LimelightTestingTeleop extends OpMode {
 
     private void setAlliance(Alliance selectedAlliance) {
         alliance = selectedAlliance;
-        bot.pollenTurret.setAlliance(
+        bot.setAlliance(
                 selectedAlliance == Alliance.RED
                         ? PollenTurret.Alliance.RED
                         : PollenTurret.Alliance.BLUE);
