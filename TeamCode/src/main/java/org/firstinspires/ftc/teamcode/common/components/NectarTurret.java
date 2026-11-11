@@ -39,7 +39,8 @@ public class NectarTurret {
 
     private Integer lockedTargetTagId;
     private DcMotorEx nectarTurretMotor;
-    private CRServo nectarRotationServo;
+//    private CRServo nectarRotationServo;
+    private Servo nectarRotationServo;
     private AnalogInput nectarRotationEncoder;
     private static Servo nectarAngleServo;
     private Alliance alliance;
@@ -78,9 +79,9 @@ public class NectarTurret {
             nectarRotationEncoder = hardwareMap.get(
                     AnalogInput.class, RobotConstants.NectarTurretConstants.NECTAR_ANGLE_ENCODER);
 
-            nectarRotationServo = hardwareMap.get(CRServo.class, RobotConstants.NectarTurretConstants.NECTAR_ROTATE_SERVO_NAME);
+            nectarRotationServo = hardwareMap.get(Servo.class, RobotConstants.NectarTurretConstants.NECTAR_ROTATE_SERVO_NAME);
 
-            nectarRotationServo.setDirection(RobotConstants.NectarTurretConstants.nectarServoDirection);
+//            nectarRotationServo.setDirection(RobotConstants.NectarTurretConstants.nectarServoDirection);
 
             nectarAngleServo = hardwareMap.get(Servo.class, RobotConstants.NectarTurretConstants.NECTAR_HOOD_SERVO_NAME);
 
@@ -213,7 +214,7 @@ public class NectarTurret {
 
     public void stop() {
         power = 0;
-        nectarRotationServo.setPower(power);
+//        nectarRotationServo.setPower(power);
         lastError = 0;
         lockedTargetTagId = null;
         limelight.stop();
@@ -230,7 +231,7 @@ public class NectarTurret {
         Double angleOffset = getAprilTagAngleOffset(result);
         if (angleOffset == null) {
             power = 0;
-            nectarRotationServo.setPower(power);
+            // nectarRotationServo.setPower(power);
             lastError = 0;
             return;
         }
@@ -253,7 +254,7 @@ public class NectarTurret {
         }
         // TODO safety check
 
-        nectarRotationServo.setPower(power);
+        // nectarRotationServo.setPower(power);
         lastError = error;
     }
 
@@ -275,6 +276,14 @@ public class NectarTurret {
 
     public double getEncoderVoltage() {
         return nectarRotationEncoder.getVoltage();
+    }
+
+    public void setTurretRotation (double position){
+        nectarRotationServo.setPosition(position);
+    }
+
+    public void aimForward(){
+        nectarRotationServo.setPosition(RobotConstants.NectarTurretConstants.forwardRotatePosition);
     }
 
     public double getEncoderAngleDegrees() {

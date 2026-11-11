@@ -119,6 +119,7 @@ public class RobotConstants {
 
         public static final double shooterConstant = .02;
 
+        public static double forwardRotatePosition = 0.5;
     }
 
 }
