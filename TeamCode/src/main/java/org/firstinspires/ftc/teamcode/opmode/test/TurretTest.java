@@ -70,21 +70,8 @@ public class TurretTest extends LinearOpMode {
             if (gamepad1.rightBumperWasPressed()){
                 velocityIndex = (velocityIndex + 1) % velocitySteps.length;
             }
-            if (gamepad1.optionsWasPressed()){
-                if (gamepad1.touchpad){
-                    highVelocity = targetVelocity;
-                }
-                else {
-                    targetVelocity = highVelocity;
-                }
-            }
-            if (gamepad1.shareWasPressed()){
-                if (gamepad1.touchpad){
-                    lowVelocity = targetVelocity;
-                }
-                else {
-                    targetVelocity = lowVelocity;
-                }
+            if (gamepad1.touchpadWasPressed()) {
+                pollenTurret.setVelocity(targetVelocity);
             }
             drivetrain.setDrivetrainPowers(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
             pollenTurret.setMotorPIDFCoefficients(new PIDFCoefficients(kP, 0, 0, kF));
@@ -112,10 +99,13 @@ public class TurretTest extends LinearOpMode {
             telemetry.addData(
                     "AprilTag angle offset",
                     angleOffset == null ? "No tag detected" : angleOffset);
+<<<<<<< Updated upstream
             //telemetry.addData(
             //        "Nectar turret encoder voltage (V)", nectarTurret.getEncoderVoltage());
             //telemetry.addData(
             //        "Nectar turret encoder angle (deg)", nectarTurret.getEncoderAngleDegrees());
+=======
+>>>>>>> Stashed changes
             pollenTurret.log();
             //nectarTurret.log();
             telemetry.update();
