@@ -74,7 +74,7 @@ public abstract class Bot extends Component {
     /** Starts Limelight processing and resets the turret's aiming timer. */
     public void startPollenTurret() {
         if (pollenTurret != null) {
-//            pollenTurret.startLimelight();
+            pollenTurret.startLimelight();
             pollenTurret.raiseHood();
         }
     }
@@ -88,12 +88,13 @@ public abstract class Bot extends Component {
 
     public void runPollenTurret() {
         if (pollenTurret != null) {
-            pollenTurret.setVelocity(nectarTurret.findNectarSpeed());
+            // TODO: change to pollen calculation
+            pollenTurret.setVelocity(pollenTurret.getVelocity());
 
-            //LLResult result = pollenTurret.getLatestLimelightResult();
-//            pollenTurret.update(result);
-//            LLResultTypes.FiducialResult targetTag = pollenTurret.getClosestAllianceTag(result);
-//            Double angleOffset = targetTag == null ? null : targetTag.getTargetXDegrees();
+            LLResult result = pollenTurret.getLatestLimelightResult();
+            pollenTurret.update(result);
+            LLResultTypes.FiducialResult targetTag = pollenTurret.getClosestAllianceTag(result);
+            Double angleOffset = targetTag == null ? null : targetTag.getTargetXDegrees();
 
         }
     }
@@ -103,10 +104,10 @@ public abstract class Bot extends Component {
 //            nectarTurret.setMotorPIDFCoefficients(new PIDFCoefficients(NectarTurret.kP, 0, 0, NectarTurret.kD));
 //            nectarTurret.setVelocity(nectarTurret.findNectarSpeed());
 
-            LLResult result = nectarTurret.getLatestLimelightResult();
+//            LLResult result = nectarTurret.getLatestLimelightResult();
 //            nectarTurret.update(result);
-            LLResultTypes.FiducialResult targetTag = nectarTurret.getClosestAllianceTag(result);
-            Double angleOffset = targetTag == null ? null : targetTag.getTargetXDegrees();
+//            LLResultTypes.FiducialResult targetTag = nectarTurret.getClosestAllianceTag(result);
+//            Double angleOffset = targetTag == null ? null : targetTag.getTargetXDegrees();
 
         }
     }
@@ -132,9 +133,9 @@ public abstract class Bot extends Component {
         if (intake != null) {
             intake.update();
         }
-//        if (pollenTurret != null) {
-//            pollenTurret.update();
-//        }
+        if (pollenTurret != null) {
+            pollenTurret.update(pollenTurret.getLatestLimelightResult());
+        }
 //        if (nectarTurret != null) {
 //            nectarTurret.update();
 //        }

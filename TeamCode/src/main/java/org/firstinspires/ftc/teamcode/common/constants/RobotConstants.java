@@ -42,7 +42,7 @@ public class RobotConstants {
     public static class Intake {
         public static final String INTAKE_MOTOR_NAME = "intake";
         public static final String Flower_Servo_Name = "flowerServo";
-        public static DcMotorSimple.Direction intakeMotorDirection = DcMotorSimple.Direction.FORWARD;
+        public static DcMotorSimple.Direction intakeMotorDirection = DcMotorSimple.Direction.REVERSE;
         
         // Power levels for different intake actions
         public static double maxMovePower = 1.0;
@@ -55,7 +55,7 @@ public class RobotConstants {
 
 
     public static class LimelightConstants {
-        public static final String limelightName = "limelight";
+        public static final String limelightName = "limelight-pollen";
         public static final int LIMELIGHT_PIPELINE = 0;
         public static final double aimError = 1.0; //Degrees
         public static final double AIM_GAIN = 0.025;
@@ -87,7 +87,7 @@ public class RobotConstants {
         public static final double pollenOffsetMinimumScale = 0.1;
 
         public static final double shooterConstant = .02;
-        public static final double kP = 0.0135;
+        public static final double kP = 0.013;
         public static final double kD = 1;
         // TODO: tune positions
         public static final double forwardRotatePosition = 0.5;

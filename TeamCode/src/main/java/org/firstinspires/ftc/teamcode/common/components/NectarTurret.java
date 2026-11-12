@@ -39,8 +39,7 @@ public class NectarTurret {
 
     private Integer lockedTargetTagId;
     private DcMotorEx nectarTurretMotor;
-//    private CRServo nectarRotationServo;
-    private Servo nectarRotationServo;
+    private CRServo nectarRotationServo;
     private AnalogInput nectarRotationEncoder;
     private static Servo nectarAngleServo;
     private Alliance alliance;
@@ -50,11 +49,11 @@ public class NectarTurret {
             RobotConstants.NectarTurretConstants.nectarTurretFlywheelD,
             RobotConstants.NectarTurretConstants.nectarTurretFlywheelF);
     private ElapsedTime timer;
-    public static double kP = RobotConstants.NectarTurretConstants.kP;
-    public static double kD = RobotConstants.NectarTurretConstants.kD;
+    public static double kP = RobotConstants.PollenTurretConstants.kP;
+    public static double kD = RobotConstants.PollenTurretConstants.kD;
     private double lastError = 0;
     private double power = 0.5;
-    private Limelight3A limelight;
+    //private Limelight3A limelight;
 
     Telemetry telemetry;
 
@@ -79,15 +78,15 @@ public class NectarTurret {
             nectarRotationEncoder = hardwareMap.get(
                     AnalogInput.class, RobotConstants.NectarTurretConstants.NECTAR_ANGLE_ENCODER);
 
-            nectarRotationServo = hardwareMap.get(Servo.class, RobotConstants.NectarTurretConstants.NECTAR_ROTATE_SERVO_NAME);
+            nectarRotationServo = hardwareMap.get(CRServo.class, RobotConstants.NectarTurretConstants.NECTAR_ROTATE_SERVO_NAME);
 
-//            nectarRotationServo.setDirection(RobotConstants.NectarTurretConstants.nectarServoDirection);
+            nectarRotationServo.setDirection(RobotConstants.NectarTurretConstants.nectarServoDirection);
 
             nectarAngleServo = hardwareMap.get(Servo.class, RobotConstants.NectarTurretConstants.NECTAR_HOOD_SERVO_NAME);
 
-            limelight = hardwareMap.get(
-                    Limelight3A.class, RobotConstants.LimelightConstants.limelightName);
-            limelight.pipelineSwitch(RobotConstants.LimelightConstants.LIMELIGHT_PIPELINE);
+//            limelight = hardwareMap.get(
+//                    Limelight3A.class, RobotConstants.NectarTurretConstants.LimelightConstants.limelightName);
+//            limelight.pipelineSwitch(RobotConstants.NectarTurretConstants.LimelightConstants.LIMELIGHT_PIPELINE);
 
             timer = new ElapsedTime();
         } catch (Exception e) {
@@ -164,9 +163,9 @@ public class NectarTurret {
         return targetTag == null ? 0 : targetTag.getTargetXDegrees();
     }
 
-    public Double findNectarSpeed() {
-        return RobotConstants.NectarTurretConstants.shooterConstant * getLimelightToTagDistanceInches(getClosestAllianceTag(getLatestLimelightResult()));
-    }
+//    public Double findNectarSpeed() {
+//        return RobotConstants.NectarTurretConstants.shooterConstant * getLimelightToTagDistanceInches(getClosestAllianceTag(getLatestLimelightResult()));
+//    }
 
 
     public void setAlliance(Alliance alliance) {
@@ -202,27 +201,27 @@ public class NectarTurret {
     }
 
     public void startLimelight() {
-        limelight.start();
+        //limelight.start();
         lockedTargetTagId = null;
         resetAimingTimer();
     }
 
     @Nullable
-    public LLResult getLatestLimelightResult() {
-        return limelight.getLatestResult();
-    }
+//    public LLResult getLatestLimelightResult() {
+//        return limelight.getLatestResult();
+//    }
 
     public void stop() {
         power = 0;
-//        nectarRotationServo.setPower(power);
+        nectarRotationServo.setPower(power);
         lastError = 0;
         lockedTargetTagId = null;
-        limelight.stop();
+//        limelight.stop();
     }
 
-    public void update() {
-        update(getLatestLimelightResult());
-    }
+//    public void update() {
+//        update(getLatestLimelightResult());
+//    }
 
     public void update(@Nullable LLResult result) {
         double deltaTime = timer.seconds();
@@ -231,7 +230,7 @@ public class NectarTurret {
         Double angleOffset = getAprilTagAngleOffset(result);
         if (angleOffset == null) {
             power = 0;
-            // nectarRotationServo.setPower(power);
+             nectarRotationServo.setPower(power);
             lastError = 0;
             return;
         }
@@ -254,7 +253,7 @@ public class NectarTurret {
         }
         // TODO safety check
 
-        // nectarRotationServo.setPower(power);
+        nectarRotationServo.setPower(power);
         lastError = error;
     }
 
@@ -276,14 +275,6 @@ public class NectarTurret {
 
     public double getEncoderVoltage() {
         return nectarRotationEncoder.getVoltage();
-    }
-
-    public void setTurretRotation (double position){
-        nectarRotationServo.setPosition(position);
-    }
-
-    public void aimForward(){
-        nectarRotationServo.setPosition(RobotConstants.NectarTurretConstants.forwardRotatePosition);
     }
 
     public double getEncoderAngleDegrees() {

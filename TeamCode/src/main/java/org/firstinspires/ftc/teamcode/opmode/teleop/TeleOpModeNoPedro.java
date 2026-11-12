@@ -96,26 +96,30 @@ public abstract class TeleOpModeNoPedro extends OpMode {
     @Override
     public void loop(){
         bot.setManualDrivePowers(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, gamepad1.left_trigger_pressed);
-        bot.forward();
-        if (gamepad1.cross) {
+        if (gamepad1.square) {
             bot.lowerFlowerServo();
         }
-        else if (gamepad1.circle) {
+        else if (gamepad1.triangle) {
             bot.raiseFlowerServo();
         }
 
-        if (gamepad1.square){
+        if (gamepad1.cross){
             bot.intakeOn();
         }
-        else if (gamepad1.triangle) {
+        else if (gamepad1.options) {
             bot.intakeOff();
         }
-        else if (gamepad1.share) {
+        else if (gamepad1.circle) {
             bot.intakeReverse();
         }
 
-        if (gamepad1.right_trigger_pressed) {
+        if (gamepad1.right_trigger > 0.2) {
             bot.runPollenTurret();
+        }
+
+        //left trigger nectar
+        if (gamepad1.left_trigger > 0.2) {
+            bot.runNectarTurret();
         }
 
         telemetry.addData("Status", "Run Time: " + runtime.toString());

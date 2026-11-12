@@ -56,7 +56,7 @@ public class TeleopBot extends Bot {
 
              double turnPower;
              if (aim) {
-                 LLResult llResult = nectarTurret.getLatestLimelightResult();
+                 LLResult llResult = pollenTurret.getLatestLimelightResult();
 
 //                telemetry.addData("Error: ", tx);
 //                telemetry.addData("Turn Power: ", turnPower);
@@ -67,7 +67,7 @@ public class TeleopBot extends Bot {
 //                }
 
                  if (llResult != null) {
-                     double error = nectarTurret.getAprilTagAngleOffset(llResult);
+                     double error = pollenTurret.getAprilTagAngleOffset(llResult);
                      pidf.setPIDF(RobotConstants.Drivetrain.aimP,RobotConstants.Drivetrain.aimI,RobotConstants.Drivetrain.aimD,RobotConstants.Drivetrain.aimF);
                      turnPower = pidf.calculate(error, RobotConstants.Drivetrain.targetError);
 //                    if (error > 0.75) {
@@ -107,7 +107,7 @@ public class TeleopBot extends Bot {
     public void setManualDrivePowers(double axial, double strafe, double yaw, boolean aim){
         double turnPower;
         if (aim) {
-            LLResult llResult = nectarTurret.getLatestLimelightResult();
+            LLResult llResult = pollenTurret.getLatestLimelightResult();
 
 //                telemetry.addData("Error: ", tx);
 //                telemetry.addData("Turn Power: ", turnPower);

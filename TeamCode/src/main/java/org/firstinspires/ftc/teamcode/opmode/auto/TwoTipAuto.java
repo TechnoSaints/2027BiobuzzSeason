@@ -7,7 +7,6 @@ import org.firstinspires.ftc.teamcode.common.components.PollenTurret;
 import org.firstinspires.ftc.teamcode.common.constants.FieldConstants;
 import org.firstinspires.ftc.teamcode.common.constants.Paths;
 
-@Autonomous(name = "TwoTipAuto")
 public class TwoTipAuto extends AutoOpMode {
     protected PollenTurret.Alliance alliance;
 

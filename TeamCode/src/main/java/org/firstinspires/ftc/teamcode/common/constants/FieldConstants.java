@@ -3,9 +3,9 @@ package org.firstinspires.ftc.teamcode.common.constants;
 import com.pedropathing.geometry.Pose;
 
 public class FieldConstants {
-    public static Pose startPose = new Pose(132.5, 128, Math.toRadians(90));
-    public static Pose cornerIntakePose = new Pose(132.5,129,Math.toRadians(90));
-    public static Pose sideFlowerSetupPose = new Pose(119, 95, Math.toRadians(0));
+    public static Pose startPose = new Pose(11.5, 16, Math.toRadians(90));
+    public static Pose cornerIntakePose = new Pose(11.5,15,Math.toRadians(90));
+    public static Pose sideFlowerSetupPose = new Pose(25, 49, Math.toRadians(0));
     public static Pose sideFlowerPickupPose = new Pose(9.5,48,Math.toRadians(180));
     public static Pose farFlowerSetupPose = new Pose(48, 120, Math.toRadians(90));
     public static Pose farFlowerPickupPose = new Pose(48, 131, Math.toRadians(90));
