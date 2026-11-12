@@ -54,8 +54,8 @@ public abstract class Bot extends Component {
         }
 
         try {
-            pollenTurret = new PollenTurret(opMode.hardwareMap, telemetry, alliance);
-            nectarTurret = new NectarTurret(opMode.hardwareMap, telemetry, nectarAlliance);
+//            pollenTurret = new PollenTurret(opMode.hardwareMap, telemetry, alliance);
+//            nectarTurret = new NectarTurret(opMode.hardwareMap, telemetry, nectarAlliance);
         } catch (Exception e) {
             telemetry.addData(
                     "Error: Failed to initialize Turrets",
@@ -182,8 +182,8 @@ public abstract class Bot extends Component {
     }
 
     public void start(){
-        startNectarTurret();
-        startPollenTurret();
+        //startNectarTurret();
+        //startPollenTurret();
         raiseFlowerServo();
     }
 

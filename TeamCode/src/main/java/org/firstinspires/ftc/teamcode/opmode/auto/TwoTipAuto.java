@@ -24,34 +24,37 @@ public class TwoTipAuto extends AutoOpMode {
                 telemetry.addData("State ID", state);
                 switch (state) {
                     case 0:
-                        bot.start();
+                       bot.start();
                         followPath(Paths.startToCornerIntake, 2, 0.25);
-                        bot.setPollenTurretVelocity(1780);
+                        telemetry.addLine("Start to corner intake");
+                        //bot.setPollenTurretVelocity(1780);
                         break;
                     case 2:
                         if (!bot.isBusy()){
                             // shoot command
+                            telemetry.addLine("Start to corner intake finished");
                             stateTimer.reset();
-                            state = 4;
+                            transition(4);
                         }
                         break;
                     case 4:
                         if (stateTimer.milliseconds() > 500){
-                            bot.intakeOn();
+                          //  bot.intakeOn();
                             stateTimer.reset();
-                            state = 8;
+                            transition(8);
                         }
+                    break;
                     case 8:
                         if (stateTimer.milliseconds() > 500){
                             bot.intakeOff();
                             followPath(Paths.cornerIntakeToSideFlowerSetup, 10, 0.7, false);
-                            state = 10;
+                            transition(10);
                         }
                         break;
                     case 10:
                         bot.lowerFlowerServo();
                         bot.intakeOn();
-                        state = 12;
+                        transition(12);
                         break;
                     case 12:
                         followPath(Paths.sideFlowerSetupToSideFlowerPickup, 16, 0.25);
@@ -61,7 +64,7 @@ public class TwoTipAuto extends AutoOpMode {
                         if (stateTimer.milliseconds() > 500) {
                             followPath(Paths.sideFlowerPickupToFarFlowerSetup, 20, 0.7, false);
                             stateTimer.reset();
-                            state = 18;
+                            transition(18);
                         }
                         break;
                     case 18:
@@ -69,18 +72,18 @@ public class TwoTipAuto extends AutoOpMode {
                             bot.raiseFlowerServo();
                             bot.intakeOff();
                             stateTimer.reset();
-                            state = 19;
+                            transition(19);
                         }
                         break;
                     case 19:
                         followPath(Paths.sideFlowerPickupToFarFlowerSetup, 20, 0.7, false);
-                        bot.setPollenTurretVelocity(1640);
+                        //bot.setPollenTurretVelocity(1640);
                         break;
                     case 20:
                         if (!bot.isBusy()) {
                             // shoot command
                             stateTimer.reset();
-                            state = 22;
+                            transition(22);
                         }
                     case 22:
                         if (stateTimer.milliseconds() > 500) {
@@ -96,14 +99,14 @@ public class TwoTipAuto extends AutoOpMode {
                             // stop shooting
                             followPath(Paths.farFlowerPickupToTeamSetup, 30, 0.7, false);
                             bot.intakeOff();
-                            bot.setPollenTurretVelocity(0);
+                            //bot.setPollenTurretVelocity(0);
                             stateTimer.reset();
-                            state = 26;
+                            transition(26);
                         }
                         break;
                     case 26:
                         bot.raiseFlowerServo();
-                        state = 28;
+                        transition(28);
                         break;
                     case 28:
                         followPath(Paths.farFlowerPickupToTeamSetup, 30, 0.7, false);
@@ -116,14 +119,14 @@ public class TwoTipAuto extends AutoOpMode {
                         if (stateTimer.milliseconds() > 500) {
                             followPath(Paths.teamPickupToTeamShoot, 36, 0.7);
                             bot.intakeOff();
-                            bot.setPollenTurretVelocity(1780);
+                            //bot.setPollenTurretVelocity(1780);
                         }
                         break;
                     case 36:
                         if (!bot.isBusy()) {
                             // shoot
                             stateTimer.reset();
-                            state = 40;
+                            transition(40);
                         }
                     case 40:
                         if (stateTimer.milliseconds() > 500) {
