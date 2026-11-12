@@ -14,8 +14,12 @@ public abstract class Component {
         this.telemetry = telemetry;
     }
 
-    /** True if this part of the robot is still in the middle of doing something. */
-    protected abstract boolean isBusy();
+    /**
+     * True if this part of the robot is still in the middle of doing something.
+     */
+    protected boolean isBusy() {
+        return false;
+    }
 
     /** Called once per loop so this part of the robot can keep doing its job. */
     protected abstract void update();

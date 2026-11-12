@@ -9,6 +9,6 @@ import org.firstinspires.ftc.teamcode.opmode.auto.TwoTipAuto;
 @Autonomous(name = "Red 2 Tip Auto", group = "0 COMPETITION")
 public class Red2TipAuto extends TwoTipAuto {
     public Red2TipAuto() {
-        alliance = PollenTurret.Alliance.RED;
+        super(PollenTurret.Alliance.RED);
     }
 }
