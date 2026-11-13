@@ -200,7 +200,12 @@ public abstract class Bot extends Component {
         return new Pose(0, 0, 0);
     }
 
-    public void setPollenTurretVelocity(double velocity){
+    public void setPollenTurretVelocity(double velocity)
+    {
         pollenTurret.setVelocity(velocity);
+    }
+
+    public void setPollenTurretAngle(double angle) {
+        pollenTurret.setPollenLaunchAngle(angle);
     }
 }

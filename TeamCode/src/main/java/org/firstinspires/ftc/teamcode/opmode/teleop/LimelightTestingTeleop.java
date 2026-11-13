@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opmode.teleop;
 
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -20,6 +21,7 @@ import org.firstinspires.ftc.teamcode.common.constants.RobotConstants;
  * D-pad left selects the blue alliance; D-pad right selects red.
  * Hold the right bumper to turn toward the closest visible central alliance tag.
  */
+@Disabled
 @TeleOp(name = "Limelight Testing Teleop", group = "TeleOp")
 public class LimelightTestingTeleop extends OpMode {
     private static final int LIMELIGHT_PIPELINE =
