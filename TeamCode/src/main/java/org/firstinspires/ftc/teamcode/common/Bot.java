@@ -247,5 +247,8 @@ public abstract class Bot extends Component {
         }
     }
 
-
+    @Override
+    public boolean isBusy() {
+        return follower.isBusy() || feeder.isBusy() || intake.isBusy() || pollenTurret.isBusy();
+    }
 }

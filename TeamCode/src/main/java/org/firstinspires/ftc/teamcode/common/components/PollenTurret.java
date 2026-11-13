@@ -25,7 +25,7 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-public class PollenTurret {
+public class PollenTurret extends Component{
     private static final Set<Integer> RED_CENTRAL_TAGS =
             new HashSet<>(Arrays.asList(31, 32, 35, 36));
     private static final Set<Integer> BLUE_CENTRAL_TAGS =
@@ -61,13 +61,14 @@ public class PollenTurret {
     private double targetPositionDegrees = Double.NaN;
     private double offsetErrorDegrees = Double.NaN;
     private double targetDistanceInches = Double.NaN;
+    private double targetServoPosition;
     private double power = 0.5;
     private Limelight3A limelight;
 
     Telemetry telemetry;
 
-
     public PollenTurret(HardwareMap hardwareMap, Telemetry telemetry, Alliance alliance) {
+        super(telemetry);
         if (alliance == null) {
             throw new IllegalArgumentException("Alliance must be specified");
         }
@@ -276,6 +277,7 @@ public class PollenTurret {
 
     public void setAimingAngle(double position){
         pollenRotationServo.setPosition(position);
+        targetServoPosition = position;
     }
 
     public double getAimingAngle() {
@@ -292,5 +294,10 @@ public class PollenTurret {
         telemetry.addData("Pollen Turret Target Angle (deg)", targetPositionDegrees);
         telemetry.addData("Pollen Turret Angle Error (deg)", offsetErrorDegrees);
         telemetry.addData("Pollen Turret Target Distance (in)", targetDistanceInches);
+    }
+
+    @Override
+    public boolean isBusy(){
+        return pollenTurretMotor.isBusy() || Math.abs(pollenRotationServo.getPosition() - targetServoPosition) > 0.01;
     }
 }
