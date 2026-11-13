@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmode.teleop;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -10,6 +11,7 @@ import org.firstinspires.ftc.teamcode.common.components.PollenTurret;
  * PedroTeleOp is the main driver-controlled OpMode.
  * It uses the Pedro Pathing library for movement and localization.
  */
+@Disabled
 @TeleOp(name = "Pedro TeleOp", group = "TeleOp")
 public class PedroTeleOp extends OpMode {
     // Reference to our robot object

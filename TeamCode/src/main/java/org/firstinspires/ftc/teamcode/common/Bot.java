@@ -220,6 +220,10 @@ public abstract class Bot extends Component {
         pollenTurret.setVelocity(velocity);
     }
 
+    public void setPollenTurretAngle(double angle) {
+        pollenTurret.setPollenLaunchAngle(angle);
+    }
+
     public void stopFeeder(){
         feeder.stop();
         feeder.closeGate();

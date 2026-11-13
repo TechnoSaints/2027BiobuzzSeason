@@ -179,7 +179,7 @@ public class PollenTurret {
         this.lockedTargetTagId = null;
     }
 
-    public static void setPollenLaunchAngle(double targetLaunchAngle){
+    public void setPollenLaunchAngle(double targetLaunchAngle){
         pollenAngleServo.setPosition(targetLaunchAngle);
     }
 

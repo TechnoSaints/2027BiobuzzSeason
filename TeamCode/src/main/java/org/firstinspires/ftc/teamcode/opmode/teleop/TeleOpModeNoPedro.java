@@ -35,6 +35,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.common.TeleopBot;
 import org.firstinspires.ftc.teamcode.common.components.PollenTurret;
+import org.firstinspires.ftc.teamcode.common.constants.RobotConstants;
 
 /*
  * This file contains an example of a Linear "OpMode".
@@ -116,8 +117,38 @@ public abstract class TeleOpModeNoPedro extends OpMode {
             bot.eject();
         }
 
-        if (gamepad1.right_trigger > 0.2) {
-            bot.runPollenTurret();
+        if (alliance.name() == "red") {
+            if (gamepad2.dpad_left) {
+                bot.setPollenTurretAngle(RobotConstants.PollenTurretConstants.TurretPositions.NEAR_CORNER_ANGLE);
+                bot.setPollenTurretVelocity(RobotConstants.PollenTurretConstants.TurretPositions.NEAR_CORNER_SPEED);
+            }
+
+            if (gamepad2.dpad_right) {
+                bot.setPollenTurretAngle(RobotConstants.PollenTurretConstants.TurretPositions.CENTER_ANGLE);
+                bot.setPollenTurretVelocity(RobotConstants.PollenTurretConstants.TurretPositions.CENTER_SPEED);
+            }
+
+            if (gamepad2.dpad_up) {
+                bot.setPollenTurretAngle(RobotConstants.PollenTurretConstants.TurretPositions.FAR_CORNER_ANGLE);
+                bot.setPollenTurretVelocity(RobotConstants.PollenTurretConstants.TurretPositions.FAR_CORNER_SPEED);
+            }
+        }
+
+        if (alliance.name() == "blue") {
+            if (gamepad2.dpad_up) {
+                bot.setPollenTurretAngle(RobotConstants.PollenTurretConstants.TurretPositions.NEAR_CORNER_ANGLE);
+                bot.setPollenTurretVelocity(RobotConstants.PollenTurretConstants.TurretPositions.NEAR_CORNER_SPEED);
+            }
+
+            if (gamepad2.dpad_right) {
+                bot.setPollenTurretAngle(RobotConstants.PollenTurretConstants.TurretPositions.CENTER_ANGLE);
+                bot.setPollenTurretVelocity(RobotConstants.PollenTurretConstants.TurretPositions.CENTER_SPEED);
+            }
+
+            if (gamepad2.dpad_left) {
+                bot.setPollenTurretAngle(RobotConstants.PollenTurretConstants.TurretPositions.FAR_CORNER_ANGLE);
+                bot.setPollenTurretVelocity(RobotConstants.PollenTurretConstants.TurretPositions.FAR_CORNER_SPEED);
+            }
         }
 
         //left trigger nectar

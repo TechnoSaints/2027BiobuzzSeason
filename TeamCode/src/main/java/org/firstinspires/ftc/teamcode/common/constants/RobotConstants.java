@@ -105,6 +105,12 @@ public class RobotConstants {
         public static class TurretPositions {
             public static final double NEAR_CORNER_ANGLE = 0.28;
             public static final double NEAR_CORNER_SPEED = 1700;
+
+            public static final double CENTER_ANGLE = 0.28;
+            public static final double CENTER_SPEED = 1580;
+
+            public static final double FAR_CORNER_ANGLE = 0.28;
+            public static final double FAR_CORNER_SPEED = 1700;
         }
     }
 
