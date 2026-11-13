@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import org.firstinspires.ftc.teamcode.common.components.Drivetrain;
 import org.firstinspires.ftc.teamcode.common.components.NectarTurret;
 import org.firstinspires.ftc.teamcode.common.components.PollenTurret;
+import org.firstinspires.ftc.teamcode.common.constants.RobotConstants;
 
 @TeleOp(name = "Turret Test", group = "Test")
 public class TurretTest extends LinearOpMode {
@@ -29,6 +30,7 @@ public class TurretTest extends LinearOpMode {
                 NectarTurret.Alliance.RED);
         waitForStart();
         pollenTurret.startLimelight();
+        pollenTurret.raiseHood();
         int targetVelocity = 0;
         double targetPosition = 0.5;
         double kP = 56.4;
@@ -83,6 +85,15 @@ public class TurretTest extends LinearOpMode {
             LLResultTypes.FiducialResult targetTag = pollenTurret.getClosestAllianceTag(result);
             Double angleOffset = targetTag == null ? null : targetTag.getTargetXDegrees();
 
+            if (gamepad1.shareWasPressed()) {
+                pollenTurret.setAimingAngle(pollenTurret.getAimingAngle() - 0.01);
+            }
+
+            if (gamepad1.optionsWasPressed()) {
+                pollenTurret.setAimingAngle(pollenTurret.getAimingAngle() + 0.01);
+            }
+
+            telemetry.addData("Pollen Turret Position", pollenTurret.getAimingAngle());
             telemetry.addData("Tuning kP", kP);
             telemetry.addData("Tuning kF", kF);
             telemetry.addData("PIDF Increment", pidfSteps[pidfIndex]);

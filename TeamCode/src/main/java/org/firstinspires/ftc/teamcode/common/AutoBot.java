@@ -10,9 +10,9 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.common.components.Drivetrain;
 import org.firstinspires.ftc.teamcode.common.components.PollenTurret;
+import org.firstinspires.ftc.teamcode.common.constants.FieldConstants;
 import org.firstinspires.ftc.teamcode.common.constants.RobotConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
-import org.firstinspires.ftc.teamcode.common.constants.FieldLocations;
 
 
 public class AutoBot extends Bot {
@@ -21,9 +21,9 @@ public class AutoBot extends Bot {
     public AutoBot(OpMode opMode, Telemetry telemetry, PollenTurret.Alliance alliance) {
         super(opMode, telemetry, alliance);
         follower = Constants.createFollower(opMode.hardwareMap);
-        telemetry.addLine(FieldLocations.startPose.toString());
+        telemetry.addLine(FieldConstants.startPose.toString());
         telemetry.update();
-        follower.setStartingPose(FieldLocations.startPose);
+        follower.setStartingPose(FieldConstants.startPose);
     }
 
     public void followPath(PathChain path, double maxSpeed) {

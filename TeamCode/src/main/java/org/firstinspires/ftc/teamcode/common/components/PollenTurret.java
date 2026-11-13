@@ -43,7 +43,7 @@ public class PollenTurret {
     private Integer lockedTargetTagId;
 
     private DcMotorEx pollenTurretMotor;
-    private CRServo pollenRotationServo;
+    private Servo pollenRotationServo;
     private static Servo pollenAngleServo;
     private Alliance alliance;
     private PIDFCoefficients pollenTurretPIDFCoefficients = new PIDFCoefficients(
@@ -84,9 +84,9 @@ public class PollenTurret {
 
             pollenTurretMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            pollenRotationServo = hardwareMap.get(CRServo.class, RobotConstants.PollenTurretConstants.POLLEN_SERVO_NAME);
+            pollenRotationServo = hardwareMap.get(Servo.class, RobotConstants.PollenTurretConstants.POLLEN_SERVO_NAME);
 
-            pollenRotationServo.setDirection(RobotConstants.PollenTurretConstants.pollenServoDirection);
+//            pollenRotationServo.setDirection(RobotConstants.PollenTurretConstants.pollenServoDirection);
 
             pollenAngleServo = hardwareMap.get(Servo.class, RobotConstants.PollenTurretConstants.POLLEN_ANGLE_SERVO_NAME);
 
@@ -216,7 +216,7 @@ public class PollenTurret {
 
     public void stop() {
         power = 0;
-        pollenRotationServo.setPower(power);
+        // pollenRotationServo.setPower(power);
         lastError = 0;
         lockedTargetTagId = null;
         limelight.stop();
@@ -233,7 +233,7 @@ public class PollenTurret {
         Double angleOffset = getAprilTagAngleOffset(result);
         if (angleOffset == null) {
             power = 0;
-             pollenRotationServo.setPower(power);
+//             pollenRotationServo.setPower(power);
             lastError = 0;
             return;
         }
@@ -253,7 +253,7 @@ public class PollenTurret {
         }
         // TODO safety check
 
-         pollenRotationServo.setPower(power);
+//         pollenRotationServo.setPower(power);
         lastError = error;
     }
 
@@ -272,6 +272,14 @@ public class PollenTurret {
 
     public double getHoodPosition(){
         return pollenAngleServo.getPosition();
+    }
+
+    public void setAimingAngle(double position){
+        pollenRotationServo.setPosition(position);
+    }
+
+    public double getAimingAngle() {
+        return pollenRotationServo.getPosition();
     }
 
     public void log(){

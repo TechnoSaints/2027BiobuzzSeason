@@ -6,9 +6,9 @@ public class FieldConstants {
     public static Pose startPose = new Pose(11.5, 16, Math.toRadians(270));
     public static Pose cornerIntakePose = new Pose(11.5,15,Math.toRadians(270));
     public static Pose sideFlowerSetupPose = new Pose(30, 37 , Math.toRadians(180));
-    public static Pose sideFlowerPickupPose = new Pose(9.5,37,Math.toRadians(180));
-    public static Pose farFlowerSetupPose = new Pose(48, 120, Math.toRadians(90));
-    public static Pose farFlowerPickupPose = new Pose(48, 131, Math.toRadians(90));
+    public static Pose sideFlowerPickupPose = new Pose(22,38,Math.toRadians(180));
+    public static Pose farFlowerSetupPose = new Pose(47, 108, Math.toRadians(90));
+    public static Pose farFlowerPickupPose = new Pose(48, 122, Math.toRadians(90));
     public static Pose teamSetupPose = new Pose(34, 83, Math.toRadians(180));
     public static Pose teamPickupPose = new Pose(25, 83, Math.toRadians(180));
     public static Pose teamShootPose = new Pose(35, 118, Math.toRadians(180));
