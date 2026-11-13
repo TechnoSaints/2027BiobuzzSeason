@@ -52,7 +52,18 @@ public class RobotConstants {
         public static final double FLOWER_INTAKE_POSITION = 0.31;
     }
 
+    public static class Feeder {
+        public static final String FEEDER_MOTOR_NAME = "feeder";
+        public static DcMotorSimple.Direction feederMotorDirection = DcMotorSimple.Direction.REVERSE;
 
+        // Power levels for different intake actions
+        public static double maxMovePower = 1.0;
+        public static double stopPower = 0.0;
+        public static double lockPower = 0.98;
+        public static final String FEEDER_GATE_NAME = "gate";
+        public static final double FEEDER_GATE_CLOSED_POSITION = 0.0;
+        public static final double FEEDER_GATE_OPEN_POSITION = 1.0;
+    }
 
     public static class LimelightConstants {
         public static final String limelightName = "limelight-pollen";
