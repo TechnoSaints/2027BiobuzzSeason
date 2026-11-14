@@ -26,7 +26,7 @@ public class TurretTest extends LinearOpMode {
 //                hardwareMap,
 //                telemetry);
         waitForStart();
-        pollenTurret.startLimelight();
+//        pollenTurret.startLimelight();
         pollenTurret.raiseHood();
         int targetVelocity = 0;
         double targetPosition = 0.5;
@@ -76,11 +76,11 @@ public class TurretTest extends LinearOpMode {
             pollenTurret.setMotorPIDFCoefficients(new PIDFCoefficients(kP, 0, 0, kF));
             pollenTurret.setVelocity(targetVelocity);
 
-            LLResult result = pollenTurret.getLatestLimelightResult();
+//            LLResult result = pollenTurret.getLatestLimelightResult();
             //nectarTurret.update(result);
-            pollenTurret.update(result);
-            LLResultTypes.FiducialResult targetTag = pollenTurret.getClosestAllianceTag(result);
-            Double angleOffset = targetTag == null ? null : targetTag.getTargetXDegrees();
+//            pollenTurret.update(result);
+//            LLResultTypes.FiducialResult targetTag = pollenTurret.getClosestAllianceTag(result);
+//            Double angleOffset = targetTag == null ? null : targetTag.getTargetXDegrees();
 
             if (gamepad1.shareWasPressed()) {
                 pollenTurret.setAimingAngle(pollenTurret.getAimingAngle() - 0.01);
@@ -89,6 +89,8 @@ public class TurretTest extends LinearOpMode {
             if (gamepad1.optionsWasPressed()) {
                 pollenTurret.setAimingAngle(pollenTurret.getAimingAngle() + 0.01);
             }
+
+            pollenTurret.setPollenLaunchAngle(targetPosition);
 
             telemetry.addData("Pollen Turret Position", pollenTurret.getAimingAngle());
             telemetry.addData("Tuning kP", kP);
@@ -102,11 +104,11 @@ public class TurretTest extends LinearOpMode {
             telemetry.addData("Hood Position", pollenTurret.getHoodPosition());
             telemetry.addLine("------------AprilTag Aiming-----------");
             telemetry.addData("Alliance", PollenTurret.Alliance.RED);
-            telemetry.addData("Target AprilTag",
-                    targetTag == null ? "None" : targetTag.getFiducialId());
-            telemetry.addData(
-                    "AprilTag angle offset",
-                    angleOffset == null ? "No tag detected" : angleOffset);
+//            telemetry.addData("Target AprilTag",
+//                    targetTag == null ? "None" : targetTag.getFiducialId());
+//            telemetry.addData(
+//                    "AprilTag angle offset",
+//                    angleOffset == null ? "No tag detected" : angleOffset);
             pollenTurret.log();
 //            nectarTurret.log();
             telemetry.update();

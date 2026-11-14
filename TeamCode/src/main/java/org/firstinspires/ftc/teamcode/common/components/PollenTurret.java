@@ -184,6 +184,10 @@ public class PollenTurret extends Component{
         pollenAngleServo.setPosition(targetLaunchAngle);
     }
 
+    public void setPollenRotation(double targetRotation) {
+        pollenRotationServo.setPosition(targetRotation);
+    }
+
     public double getkP(){
         return kP;
     }

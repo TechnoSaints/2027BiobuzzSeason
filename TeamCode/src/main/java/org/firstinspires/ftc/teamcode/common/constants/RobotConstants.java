@@ -103,8 +103,11 @@ public class RobotConstants {
         // TODO: tune positions
         public static final double forwardRotatePosition = 0.5;
         public static class TurretPositions {
-            public static final double NEAR_CORNER_ANGLE = 0.28;
+            // right position = 0.28
+
+            public static final double NEAR_CORNER_ANGLE = 0.53;
             public static final double NEAR_CORNER_SPEED = 1700;
+            public static final double RIGHT_CON = 0.5;
 
             public static final double CENTER_ANGLE = 0.28;
             public static final double CENTER_SPEED = 1580;

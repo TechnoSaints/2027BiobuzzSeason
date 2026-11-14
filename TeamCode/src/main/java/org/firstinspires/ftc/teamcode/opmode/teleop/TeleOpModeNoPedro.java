@@ -121,38 +121,49 @@ public abstract class TeleOpModeNoPedro extends OpMode {
             bot.openGate();
         }
 
-        if (alliance.name().equals("red")) {
-            if (gamepad2.dpad_left) {
-                bot.setPollenTurretAngle(RobotConstants.PollenTurretConstants.TurretPositions.NEAR_CORNER_ANGLE);
-                bot.setPollenTurretVelocity(RobotConstants.PollenTurretConstants.TurretPositions.NEAR_CORNER_SPEED);
-            }
+//        if (alliance.name().equals("red")) {
+//            if (gamepad2.dpad_left) {
+//                bot.setPollenTurretAngle(RobotConstants.PollenTurretConstants.TurretPositions.NEAR_CORNER_ANGLE);
+//                bot.setPollenTurretVelocity(RobotConstants.PollenTurretConstants.TurretPositions.NEAR_CORNER_SPEED);
+////                bot.setPollenTurretRotation(RobotConstants.PollenTurretConstants.TurretPositions.NEAR_CORNER_ROTATION);
+//            }
+//
+//            if (gamepad2.dpad_right) {
+//                bot.setPollenTurretAngle(RobotConstants.PollenTurretConstants.TurretPositions.CENTER_ANGLE);
+//                bot.setPollenTurretVelocity(RobotConstants.PollenTurretConstants.TurretPositions.CENTER_SPEED);
+//            }
+//
+//            if (gamepad2.dpad_up) {
+//                bot.setPollenTurretAngle(RobotConstants.PollenTurretConstants.TurretPositions.FAR_CORNER_ANGLE);
+//                bot.setPollenTurretVelocity(RobotConstants.PollenTurretConstants.TurretPositions.FAR_CORNER_SPEED);
+//            }
+//        }
+
+//        else {
+//            if (gamepad2.dpad_up) {
+//                bot.setPollenTurretAngle(RobotConstants.PollenTurretConstants.TurretPositions.NEAR_CORNER_ANGLE);
+//                bot.setPollenTurretVelocity(RobotConstants.PollenTurretConstants.TurretPositions.NEAR_CORNER_SPEED);
+//
+//            }
 
             if (gamepad2.dpad_right) {
-                bot.setPollenTurretAngle(RobotConstants.PollenTurretConstants.TurretPositions.CENTER_ANGLE);
-                bot.setPollenTurretVelocity(RobotConstants.PollenTurretConstants.TurretPositions.CENTER_SPEED);
+                bot.setPollenTurretAngle(RobotConstants.PollenTurretConstants.TurretPositions.NEAR_CORNER_ANGLE);
+                bot.setPollenTurretVelocity(RobotConstants.PollenTurretConstants.TurretPositions.NEAR_CORNER_SPEED);
+                bot.setPollenTurretRotation(0.28);
             }
 
-            if (gamepad2.dpad_up) {
+            if (gamepad2.dpad_left) {
                 bot.setPollenTurretAngle(RobotConstants.PollenTurretConstants.TurretPositions.FAR_CORNER_ANGLE);
                 bot.setPollenTurretVelocity(RobotConstants.PollenTurretConstants.TurretPositions.FAR_CORNER_SPEED);
+                bot.setPollenTurretRotation(0.28);
             }
+//        }
+        if (gamepad2.rightBumperWasPressed()) {
+            bot.setPollenTurretRotation(.05);
         }
 
-        else {
-            if (gamepad2.dpad_up) {
-                bot.setPollenTurretAngle(RobotConstants.PollenTurretConstants.TurretPositions.NEAR_CORNER_ANGLE);
-                bot.setPollenTurretVelocity(RobotConstants.PollenTurretConstants.TurretPositions.NEAR_CORNER_SPEED);
-            }
-
-            if (gamepad2.dpad_right) {
-                bot.setPollenTurretAngle(RobotConstants.PollenTurretConstants.TurretPositions.CENTER_ANGLE);
-                bot.setPollenTurretVelocity(RobotConstants.PollenTurretConstants.TurretPositions.CENTER_SPEED);
-            }
-
-            if (gamepad2.dpad_left) {
-                bot.setPollenTurretAngle(RobotConstants.PollenTurretConstants.TurretPositions.FAR_CORNER_ANGLE);
-                bot.setPollenTurretVelocity(RobotConstants.PollenTurretConstants.TurretPositions.FAR_CORNER_SPEED);
-            }
+        if (gamepad2.leftBumperWasPressed()) {
+            bot.setPollenTurretRotation(.05);
         }
 
         telemetry.addData("Status", "Run Time: " + runtime.toString());

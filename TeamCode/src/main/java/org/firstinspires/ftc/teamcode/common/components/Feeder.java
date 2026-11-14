@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.common.components;
 
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -24,6 +25,7 @@ public class Feeder extends Component {
             feederMotor = hardwareMap.get(DcMotorEx.class, RobotConstants.Feeder.FEEDER_MOTOR_NAME);
             feederMotor.setDirection(RobotConstants.Feeder.feederMotorDirection);
             gate = hardwareMap.get(CRServo.class, RobotConstants.Feeder.FEEDER_GATE_NAME);
+            gate.setDirection(DcMotorSimple.Direction.REVERSE);
         } catch (Exception e) {
             telemetry.addData(
                     "Warning: Failed to initialize feeder motor",
