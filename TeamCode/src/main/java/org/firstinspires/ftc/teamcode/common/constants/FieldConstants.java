@@ -14,7 +14,7 @@ public class FieldConstants {
     public static Pose teamShootPose = new Pose(35, 118, Math.toRadians(180));
     public static Pose parkStrafePose = new Pose(35, 63, Math.toRadians(270));
     public static Pose parkSetupPose = new Pose(9, 63, Math.toRadians(270));
-    public static Pose parkPose = new Pose(9, 93, Math.toRadians(270));
+    public static Pose parkPose = new Pose(13, 93, Math.toRadians(270));
 
 
     // Control points for sideFlowerPickupPose to farFlowerSetupPose

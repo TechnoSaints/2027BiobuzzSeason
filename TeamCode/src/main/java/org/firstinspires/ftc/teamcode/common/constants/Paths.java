@@ -54,7 +54,7 @@ public class Paths {
         teamPickupToTeamShoot = buildLine(follower, FieldConstants.teamPickupPose, FieldConstants.teamShootPose);
         teamShootToParkStrafe = buildLine(follower, FieldConstants.teamShootPose, FieldConstants.parkStrafePose);
         parkStrafeToParkSetup = buildLine(follower, FieldConstants.parkStrafePose, FieldConstants.parkSetupPose);
-        parkSetupToPark = buildLine(follower, FieldConstants.parkSetupPose, FieldConstants.parkPose);
+        parkSetupToPark = buildLine(follower, FieldConstants.teamSetupPose, FieldConstants.parkPose);
         cornerIntakeToTeamSetup = follower.pathBuilder()
                 .addPath(new BezierCurve(
                         FieldConstants.cornerIntakePose,
