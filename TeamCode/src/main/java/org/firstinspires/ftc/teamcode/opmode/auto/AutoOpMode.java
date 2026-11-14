@@ -37,6 +37,7 @@ public abstract class AutoOpMode extends OpMode {
     public void start()
     {
         setPathState(0);
+        bot.intakeOn();
         gameTimer.reset();
     }
     /**

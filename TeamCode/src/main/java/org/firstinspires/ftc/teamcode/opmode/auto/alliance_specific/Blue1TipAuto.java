@@ -25,7 +25,7 @@ public class Blue1TipAuto extends AutoOpMode {
                 controlTimer.reset();
                 bot.setPollenTurretAngle(RobotConstants.PollenTurretConstants.TurretPositions.NEAR_CORNER_ANGLE);
                 bot.setPollenTurretVelocity(RobotConstants.PollenTurretConstants.TurretPositions.NEAR_CORNER_SPEED);
-                bot.setPollenTurretRotation(0.28);
+                bot.setPollenTurretRotation(0.27);
                 bot.handleShooting(true, true);
                 bot.intakeOn();
                 setPathState(2);
@@ -58,14 +58,16 @@ public class Blue1TipAuto extends AutoOpMode {
                 break;
 
             case 8:
-                if (controlTimer.milliseconds() > 5000){
+                if (controlTimer.milliseconds() > 2000){
                     bot.followPath(Paths.cornerIntakeToTeamSetup, 1);
                     setPathState(99);
                 }
                 break;
 
             case 99:
-                requestOpModeStop();
+                if(!bot.isBusy()) {
+                    requestOpModeStop();
+                }
                 break;
 
         }
