@@ -7,6 +7,8 @@ import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.Path;
 import com.pedropathing.paths.PathChain;
 
+import java.lang.reflect.Field;
+
 public class Paths {
     public static PathChain startToCornerIntake;
     public static PathChain cornerIntakeToSideFlowerSetup;
@@ -19,6 +21,8 @@ public class Paths {
     public static PathChain teamShootToParkStrafe;
     public static PathChain parkStrafeToParkSetup;
     public static PathChain parkSetupToPark;
+
+    public static PathChain cornerIntakeToTeamSetup;
 
     public static void buildPaths(Follower follower) {
         startToCornerIntake = buildLine(follower, FieldConstants.startPose, FieldConstants.cornerIntakePose);
@@ -51,6 +55,14 @@ public class Paths {
         teamShootToParkStrafe = buildLine(follower, FieldConstants.teamShootPose, FieldConstants.parkStrafePose);
         parkStrafeToParkSetup = buildLine(follower, FieldConstants.parkStrafePose, FieldConstants.parkSetupPose);
         parkSetupToPark = buildLine(follower, FieldConstants.parkSetupPose, FieldConstants.parkPose);
+        cornerIntakeToTeamSetup = follower.pathBuilder()
+                .addPath(new BezierCurve(
+                        FieldConstants.cornerIntakePose,
+                        FieldConstants.sideFlowerSetupPose,
+                        FieldConstants.parkSetupPose
+                ))
+                .setLinearHeadingInterpolation(FieldConstants.cornerIntakePose.getHeading(), FieldConstants.parkSetupPose.getHeading())
+                .build();
     }
 
     private static PathChain buildLine(Follower follower, Pose start, Pose end) {

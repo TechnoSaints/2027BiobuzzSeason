@@ -153,9 +153,12 @@ public abstract class TeleOpModeNoPedro extends OpMode {
             }
 
             if (gamepad2.dpad_left) {
-                bot.setPollenTurretAngle(RobotConstants.PollenTurretConstants.TurretPositions.FAR_CORNER_ANGLE);
-                bot.setPollenTurretVelocity(RobotConstants.PollenTurretConstants.TurretPositions.FAR_CORNER_SPEED);
-                bot.setPollenTurretRotation(0.28);
+                bot.setPollenTurretAngle(RobotConstants.PollenTurretConstants.TurretPositions.NEAR_CORNER_ANGLE);
+                bot.setPollenTurretVelocity(RobotConstants.PollenTurretConstants.TurretPositions.NEAR_CORNER_SPEED );
+                bot.setPollenTurretRotation(0.88);
+            }
+            if (gamepad2.dpad_down) {
+                bot.setPollenTurretVelocity(0);
             }
 //        }
         if (gamepad2.rightBumperWasPressed()) {
