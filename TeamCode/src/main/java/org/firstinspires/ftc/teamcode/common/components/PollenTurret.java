@@ -91,9 +91,9 @@ public class PollenTurret extends Component{
 
             pollenAngleServo = hardwareMap.get(Servo.class, RobotConstants.PollenTurretConstants.POLLEN_ANGLE_SERVO_NAME);
 
-            limelight = hardwareMap.get(
-                    Limelight3A.class, RobotConstants.LimelightConstants.limelightName);
-            limelight.pipelineSwitch(RobotConstants.LimelightConstants.LIMELIGHT_PIPELINE);
+            //limelight = hardwareMap.get(
+                    //Limelight3A.class, RobotConstants.LimelightConstants.limelightName);
+            //limelight.pipelineSwitch(RobotConstants.LimelightConstants.LIMELIGHT_PIPELINE);
 
             timer = new ElapsedTime();
             telemetry.addLine("Status: Initialized");

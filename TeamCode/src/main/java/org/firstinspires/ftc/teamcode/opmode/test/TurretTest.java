@@ -7,14 +7,12 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.teamcode.common.components.Drivetrain;
-import org.firstinspires.ftc.teamcode.common.components.NectarTurret;
 import org.firstinspires.ftc.teamcode.common.components.PollenTurret;
-import org.firstinspires.ftc.teamcode.common.constants.RobotConstants;
 
 @TeleOp(name = "Turret Test", group = "Test")
 public class TurretTest extends LinearOpMode {
     private PollenTurret pollenTurret;
-    private NectarTurret nectarTurret;
+//    private NectarTurret nectarTurret;
     private Drivetrain drivetrain;
 
     @Override
@@ -24,10 +22,9 @@ public class TurretTest extends LinearOpMode {
                 hardwareMap,
                 telemetry,
                 PollenTurret.Alliance.RED);
-        nectarTurret = new NectarTurret(
-                hardwareMap,
-                telemetry,
-                NectarTurret.Alliance.RED);
+//        nectarTurret = new NectarTurret(
+//                hardwareMap,
+//                telemetry);
         waitForStart();
         pollenTurret.startLimelight();
         pollenTurret.raiseHood();
@@ -111,10 +108,10 @@ public class TurretTest extends LinearOpMode {
                     "AprilTag angle offset",
                     angleOffset == null ? "No tag detected" : angleOffset);
             pollenTurret.log();
-            nectarTurret.log();
+//            nectarTurret.log();
             telemetry.update();
         }
         pollenTurret.stop();
-        nectarTurret.stop();
+//        nectarTurret.stop();
     }
 }

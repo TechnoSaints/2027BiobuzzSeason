@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.common.components;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -14,7 +15,7 @@ import org.firstinspires.ftc.teamcode.common.constants.RobotConstants;
  */
 public class Feeder extends Component {
     private DcMotorEx feederMotor;
-    private Servo gate;
+    private CRServo gate;
 
     public Feeder(HardwareMap hardwareMap, Telemetry telemetry) {
         super(telemetry);
@@ -22,7 +23,7 @@ public class Feeder extends Component {
             // This name has to exactly match what you typed into the Driver Station's Hardware Config.
             feederMotor = hardwareMap.get(DcMotorEx.class, RobotConstants.Feeder.FEEDER_MOTOR_NAME);
             feederMotor.setDirection(RobotConstants.Feeder.feederMotorDirection);
-            gate = hardwareMap.servo.get(RobotConstants.Feeder.FEEDER_GATE_NAME);
+            gate = hardwareMap.get(CRServo.class, RobotConstants.Feeder.FEEDER_GATE_NAME);
         } catch (Exception e) {
             telemetry.addData(
                     "Warning: Failed to initialize feeder motor",
@@ -57,15 +58,12 @@ public class Feeder extends Component {
     }
 
     public void openGate(){
-        gate.setPosition(RobotConstants.Feeder.FEEDER_GATE_OPEN_POSITION);
+        gate.setPower(1);
+        telemetry.addLine("Continuous Servo Running");
     }
 
     public void closeGate() {
-        gate.setPosition(RobotConstants.Feeder.FEEDER_GATE_CLOSED_POSITION);
-    }
-
-    public double getGatePosition() {
-        return gate.getPosition();
+        gate.setPower(-1);
     }
 
     @Override

@@ -117,7 +117,11 @@ public abstract class TeleOpModeNoPedro extends OpMode {
             bot.eject();
         }
 
-        if (alliance.name() == "red") {
+        if(gamepad1.right_trigger > 0.2) {
+            bot.openGate();
+        }
+
+        if (alliance.name().equals("red")) {
             if (gamepad2.dpad_left) {
                 bot.setPollenTurretAngle(RobotConstants.PollenTurretConstants.TurretPositions.NEAR_CORNER_ANGLE);
                 bot.setPollenTurretVelocity(RobotConstants.PollenTurretConstants.TurretPositions.NEAR_CORNER_SPEED);
@@ -134,7 +138,7 @@ public abstract class TeleOpModeNoPedro extends OpMode {
             }
         }
 
-        if (alliance.name() == "blue") {
+        else {
             if (gamepad2.dpad_up) {
                 bot.setPollenTurretAngle(RobotConstants.PollenTurretConstants.TurretPositions.NEAR_CORNER_ANGLE);
                 bot.setPollenTurretVelocity(RobotConstants.PollenTurretConstants.TurretPositions.NEAR_CORNER_SPEED);
@@ -149,11 +153,6 @@ public abstract class TeleOpModeNoPedro extends OpMode {
                 bot.setPollenTurretAngle(RobotConstants.PollenTurretConstants.TurretPositions.FAR_CORNER_ANGLE);
                 bot.setPollenTurretVelocity(RobotConstants.PollenTurretConstants.TurretPositions.FAR_CORNER_SPEED);
             }
-        }
-
-        //left trigger nectar
-        if (gamepad1.left_trigger > 0.2) {
-            bot.runNectarTurret();
         }
 
         telemetry.addData("Status", "Run Time: " + runtime.toString());

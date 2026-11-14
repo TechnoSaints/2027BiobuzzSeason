@@ -118,9 +118,9 @@ public class TeleopBot extends Bot {
 //                }
 
             if (llResult != null) {
-                double error = nectarTurret.getAprilTagAngleOffset(llResult);
+//                double error = nectarTurret.getAprilTagAngleOffset(llResult);
                 pidf.setPIDF(RobotConstants.Drivetrain.aimP,RobotConstants.Drivetrain.aimI,RobotConstants.Drivetrain.aimD,RobotConstants.Drivetrain.aimF);
-                turnPower = pidf.calculate(error, RobotConstants.Drivetrain.targetError);
+//                turnPower = pidf.calculate(error, RobotConstants.Drivetrain.targetError);
 //                    if (error > 0.75) {
 //                        turnPower = -error * kp - f;
 //                    } else if (error < -0.75) {
@@ -132,7 +132,7 @@ public class TeleopBot extends Bot {
             {
                 turnPower = yaw;
             }
-            yaw = turnPower;
+//            yaw = turnPower;
         }
         drivetrain.setDrivetrainPowers(axial, strafe, yaw);
     }

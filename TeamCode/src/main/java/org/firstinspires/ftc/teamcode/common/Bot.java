@@ -11,7 +11,6 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.common.components.Component;
 import org.firstinspires.ftc.teamcode.common.components.Feeder;
 import org.firstinspires.ftc.teamcode.common.components.Intake;
-import org.firstinspires.ftc.teamcode.common.components.NectarTurret;
 import org.firstinspires.ftc.teamcode.common.components.PollenTurret;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
@@ -27,7 +26,6 @@ public abstract class Bot extends Component {
     // Intake picks up and lets go of game pieces
     protected Intake intake;
     protected PollenTurret pollenTurret;
-    protected NectarTurret nectarTurret;
     private ElapsedTime movementTimer;
     protected Feeder feeder;
     private boolean hasHandledShootingState;
@@ -37,7 +35,7 @@ public abstract class Bot extends Component {
         super(telemetry);
         this.opMode = opMode;
 
-        NectarTurret.Alliance nectarAlliance = toNectarAlliance(alliance);
+        //NectarTurret.Alliance nectarAlliance = toNectarAlliance(alliance);
 
         // If a sensor or motor is missing/misconfigured, catch the error and keep
         // going instead of crashing the whole OpMode - just warn on the Driver Station.
@@ -78,25 +76,11 @@ public abstract class Bot extends Component {
         }
     }
 
-    private static NectarTurret.Alliance toNectarAlliance(PollenTurret.Alliance alliance) {
-        if (alliance == null) {
-            throw new IllegalArgumentException("Alliance must be specified");
-        }
-        return NectarTurret.Alliance.valueOf(alliance.name());
-    }
-
     /** Starts Limelight processing and resets the turret's aiming timer. */
     public void startPollenTurret() {
         if (pollenTurret != null) {
             pollenTurret.startLimelight();
             pollenTurret.raiseHood();
-        }
-    }
-
-    public void startNectarTurret() {
-        if (nectarTurret != null) {
-            nectarTurret.startLimelight();
-            nectarTurret.raiseHood();
         }
     }
 
@@ -113,20 +97,6 @@ public abstract class Bot extends Component {
         }
     }
 
-    public void runNectarTurret() {
-        if (nectarTurret != null) {
-//            nectarTurret.setMotorPIDFCoefficients(new PIDFCoefficients(NectarTurret.kP, 0, 0, NectarTurret.kD));
-//            nectarTurret.setVelocity(nectarTurret.findNectarSpeed());
-
-//            LLResult result = nectarTurret.getLatestLimelightResult();
-//            nectarTurret.update(result);
-//            LLResultTypes.FiducialResult targetTag = nectarTurret.getClosestAllianceTag(result);
-//            Double angleOffset = targetTag == null ? null : targetTag.getTargetXDegrees();
-
-        }
-    }
-
-
     public void lowerFlowerServo(){
         intake.lowerFlowerServo();
     }
@@ -135,6 +105,9 @@ public abstract class Bot extends Component {
         intake.raiseFlowerServo();
     }
 
+    public void openGate(){
+        feeder.openGate();
+    }
     /**
      * Call this once every loop of your OpMode.
      * It keeps the drivetrain and initialized components up to date.
@@ -146,9 +119,6 @@ public abstract class Bot extends Component {
         }
         if (intake != null) {
             intake.update();
-        }
-        if (pollenTurret != null) {
-            pollenTurret.update(pollenTurret.getLatestLimelightResult());
         }
 //        if (nectarTurret != null) {
 //            nectarTurret.update();
@@ -176,9 +146,6 @@ public abstract class Bot extends Component {
         if (pollenTurret != null) {
             pollenTurret.stop();
         }
-        if (nectarTurret != null) {
-            nectarTurret.stop();
-        }
     }
 
     public void intakeOff(){
@@ -187,9 +154,6 @@ public abstract class Bot extends Component {
     }
 
     public void log() {
-        if (nectarTurret != null) {
-            nectarTurret.log();
-        }
         if (pollenTurret != null) {
             pollenTurret.log();
         }
