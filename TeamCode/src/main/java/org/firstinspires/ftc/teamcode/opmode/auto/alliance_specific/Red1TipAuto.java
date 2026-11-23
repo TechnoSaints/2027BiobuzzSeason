@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.opmode.auto.AutoOpMode;
 
 @Autonomous(name = "RED 1 tip auto", group = "0 COMPETITION")
 public class Red1TipAuto extends AutoOpMode {
-    protected PollenTurret.Alliance alliance;
+    private PollenTurret.Alliance alliance;
 
     public Red1TipAuto() {
         super();

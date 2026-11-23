@@ -82,7 +82,6 @@ public class BasicOpmodeAntiPedro extends LinearOpMode {
         telemetry.update();
 
         waitForStart();
-        //bot.startNectarTurret();
         bot.startPollenTurret();
         bot.raiseFlowerServo();
         runtime.reset();

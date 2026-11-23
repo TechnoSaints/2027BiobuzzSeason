@@ -119,42 +119,17 @@ public class RobotConstants {
 
     public static class TurretConstants {
         public static final String LAUNCHER_MOTOR_NAME = "turretLauncher";
+        public static final String KICKER_MOTOR_NAME = "turretKicker";
         public static final String AIM_SERVO_NAME = "turretAim";
         public static final String LAUNCH_ANGLE_SERVO_NAME = "turretLaunchAngle";
         public static final DcMotorSimple.Direction LAUNCHER_MOTOR_DIRECTION =
                 DcMotorSimple.Direction.FORWARD;
+        public static final DcMotorSimple.Direction KICKER_MOTOR_DIRECTION =
+                DcMotorSimple.Direction.FORWARD;
         public static final double LAUNCHER_RATED_RPM = 6000.0;
+        public static final double KICKER_RATED_RPM = 1620.0;
         public static final double AIM_FORWARD_POSITION = 0.5;
         public static final double AIM_SERVO_RANGE_DEGREES = 355.0;
-    }
-
-    public static class NectarTurretConstants {
-        public static final String NECTAR_TURRET_NAME = "nectarTurretFlywheel";
-        public static final String NECTAR_HOOD_SERVO_NAME = "nectarTurretHood";
-        public static final String NECTAR_ROTATE_SERVO_NAME = "nectarTurretRotate";
-        public static final String NECTAR_ANGLE_ENCODER = "nectarTurretRotateEncoder";
-        public static final double encoderFullScaleVoltage = .2;
-        public static final DcMotorSimple.Direction nectarTurretDirection = DcMotorSimple.Direction.REVERSE;
-        public static final CRServo.Direction nectarServoDirection = CRServo.Direction.FORWARD;
-        /**
-         * PIDF coefficients used to adjust flywheel behavior.
-         * P and F should be tuned; I and D should be left as default unless problematic.
-         */
-        public static final double nectarTurretFlywheelP = 56.4;
-        public static final double nectarTurretFlywheelI = 3.0;
-        public static final double nectarTurretFlywheelD = 0.0;
-        public static final double nectarTurretFlywheelF = 13.47;
-        public static final double nectarTurretMaxSpeed = 0.5;
-        public static final double raiseHoodPosition = 1;
-
-        public static double kP = 0.2;
-        public static double kD = 0.0001;
-        public static final double angleToleranceDegrees = 0.2;
-        public static final double goalOffset = 0;
-
-        public static final double shooterConstant = .02;
-
-        public static double forwardRotatePosition = 0.5;
     }
 
 }

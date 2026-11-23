@@ -5,11 +5,9 @@ import com.pedropathing.geometry.Pose;
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.common.components.Component;
-import org.firstinspires.ftc.teamcode.common.components.Feeder;
 import org.firstinspires.ftc.teamcode.common.components.Intake;
 import org.firstinspires.ftc.teamcode.common.components.PollenTurret;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
@@ -19,23 +17,16 @@ import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
  * It builds the shared drivetrain, intake, and pollen turret.
  */
 public abstract class Bot extends Component {
-    // The OpMode (TeleOp or Autonomous) that created this robot
-    protected OpMode opMode;
     // Follower drives the robot and keeps track of where it is on the field
     protected Follower follower;
-    // Intake picks up and lets go of game pieces
-    protected Intake intake;
+    // Intake and feeder form one game-piece handling subsystem.
+    protected Intake intakeFeeder;
     protected PollenTurret pollenTurret;
-    private ElapsedTime movementTimer;
-    protected Feeder feeder;
     private boolean hasHandledShootingState;
     private boolean lastShootingState;
 
     protected Bot(OpMode opMode, Telemetry telemetry, PollenTurret.Alliance alliance) {
         super(telemetry);
-        this.opMode = opMode;
-
-        //NectarTurret.Alliance nectarAlliance = toNectarAlliance(alliance);
 
         // If a sensor or motor is missing/misconfigured, catch the error and keep
         // going instead of crashing the whole OpMode - just warn on the Driver Station.
@@ -49,7 +40,7 @@ public abstract class Bot extends Component {
         }
 
         try {
-            this.intake = new Intake(opMode.hardwareMap, telemetry);
+            this.intakeFeeder = new Intake(opMode.hardwareMap, telemetry);
         } catch (Exception e) {
             telemetry.addData(
                     "Error: Failed to initialize Intake",
@@ -59,18 +50,9 @@ public abstract class Bot extends Component {
 
         try {
             pollenTurret = new PollenTurret(opMode.hardwareMap, telemetry, alliance);
-            //nectarTurret = new NectarTurret(opMode.hardwareMap, telemetry, nectarAlliance);
         } catch (Exception e) {
             telemetry.addData(
                     "Error: Failed to initialize Turrets",
-                    "%s: %s", e.getClass().getSimpleName(), String.valueOf(e.getMessage())
-            );
-        }
-        try {
-            feeder = new Feeder(opMode.hardwareMap, telemetry);
-        } catch (Exception e) {
-            telemetry.addData(
-                    "Error: Failed to initialize Feeder",
                     "%s: %s", e.getClass().getSimpleName(), String.valueOf(e.getMessage())
             );
         }
@@ -98,15 +80,15 @@ public abstract class Bot extends Component {
     }
 
     public void lowerFlowerServo(){
-        intake.lowerFlowerServo();
+        intakeFeeder.lowerFlowerServo();
     }
 
     public void raiseFlowerServo(){
-        intake.raiseFlowerServo();
+        intakeFeeder.raiseFlowerServo();
     }
 
     public void openGate(){
-        feeder.openGate();
+        intakeFeeder.openGate();
     }
     /**
      * Call this once every loop of your OpMode.
@@ -117,31 +99,28 @@ public abstract class Bot extends Component {
         if (follower != null) {
             follower.update();
         }
-        if (intake != null) {
-            intake.update();
+        if (intakeFeeder != null) {
+            intakeFeeder.update();
         }
-//        if (nectarTurret != null) {
-//            nectarTurret.update();
-//        }
     }
 
     /** Spins the intake forward to pick up a game piece. */
     public void intakeOn() {
-        if (intake != null) {
-            intake.forward();
-            feeder.forward();
+        if (intakeFeeder != null) {
+            intakeFeeder.forward();
+            intakeFeeder.feederForward();
         }
     }
 
     /** Spins the intake backward to let go of a game piece. */
     public void eject() {
-        intake.reverse();
+        intakeFeeder.reverse();
     }
 
     /** Turns the intake off. */
     public void stop() {
-        if (intake != null) {
-            intake.stop();
+        if (intakeFeeder != null) {
+            intakeFeeder.stop();
         }
         if (pollenTurret != null) {
             pollenTurret.stop();
@@ -149,7 +128,7 @@ public abstract class Bot extends Component {
     }
 
     public void intakeOff(){
-        intake.stop();
+        intakeFeeder.stop();
         stopFeeder();
     }
 
@@ -160,10 +139,9 @@ public abstract class Bot extends Component {
     }
 
     public void start(){
-        //startNectarTurret();
         //startPollenTurret();
         raiseFlowerServo();
-        feeder.closeGate();
+        intakeFeeder.closeGate();
 
     }
 
@@ -193,8 +171,8 @@ public abstract class Bot extends Component {
     }
 
     public void stopFeeder(){
-        feeder.stop();
-        feeder.closeGate();
+        intakeFeeder.stopFeeder();
+        intakeFeeder.closeGate();
     }
 
     public void handleShooting(boolean shoot, boolean intakeOn){
@@ -205,18 +183,18 @@ public abstract class Bot extends Component {
         lastShootingState = shoot;
 
         if (shoot) {
-            feeder.forward();
-            feeder.openGate();
+            intakeFeeder.feederForward();
+            intakeFeeder.openGate();
         } else {
             if (!intakeOn) {
-                feeder.stop();
+                intakeFeeder.stopFeeder();
             }
-            feeder.closeGate();
+            intakeFeeder.closeGate();
         }
     }
 
     @Override
     public boolean isBusy() {
-        return follower.isBusy() || feeder.isBusy() || intake.isBusy() || pollenTurret.isBusy();
+        return follower.isBusy() || intakeFeeder.isBusy() || pollenTurret.isBusy();
     }
 }

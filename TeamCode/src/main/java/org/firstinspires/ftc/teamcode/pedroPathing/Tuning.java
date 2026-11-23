@@ -33,9 +33,9 @@ import java.util.List;
  */
 @TeleOp(name = "Tuning", group = "Pedro Pathing")
 public class Tuning extends SelectableOpMode {
-    public static Follower follower;
+    static Follower follower;
 
-    static PoseHistory poseHistory;
+    private static PoseHistory poseHistory;
 
     static ArrayList<String> changes = new ArrayList<>();
 
@@ -91,7 +91,7 @@ public class Tuning extends SelectableOpMode {
     public void onLog(List<String> lines) {}
 
     /** This creates a full stop of the robot by setting the drive motors to run at 0 power. */
-    public static void stopRobot() {
+    static void stopRobot() {
         follower.startTeleopDrive(true);
         follower.setTeleOpDrive(0,0,0,true);
     }
@@ -108,7 +108,7 @@ public class Tuning extends SelectableOpMode {
  * @version 1.0, 5/6/2024
  */
 class LocalizationTest extends OpMode {
-    boolean debugStringEnabled = false;
+    private boolean debugStringEnabled = false;
 
     @Override
     public void init() {
@@ -177,7 +177,7 @@ class LocalizationTest extends OpMode {
  * @version 1.0, 5/6/2024
  */
 class ForwardTuner extends OpMode {
-    public static double DISTANCE = 48;
+    private static double DISTANCE = 48;
 
     @Override
     public void init() {
@@ -222,7 +222,7 @@ class ForwardTuner extends OpMode {
  * @version 2.0, 6/26/2025
  */
 class LateralTuner extends OpMode {
-    public static double DISTANCE = 48;
+    private static double DISTANCE = 48;
 
     @Override
     public void init() {
@@ -267,7 +267,7 @@ class LateralTuner extends OpMode {
  * @version 1.0, 5/6/2024
  */
 class TurnTuner extends OpMode {
-    public static double ANGLE = 2 * Math.PI;
+    private static double ANGLE = 2 * Math.PI;
 
     @Override
     public void init() {
@@ -316,8 +316,8 @@ class TurnTuner extends OpMode {
  */
 class ForwardVelocityTuner extends OpMode {
     private final ArrayList<Double> velocities = new ArrayList<>();
-    public static double DISTANCE = 36;
-    public static double RECORD_NUMBER = 10;
+    private static double DISTANCE = 36;
+    private static double RECORD_NUMBER = 10;
 
     private boolean end;
 
@@ -421,8 +421,8 @@ class ForwardVelocityTuner extends OpMode {
 class LateralVelocityTuner extends OpMode {
     private final ArrayList<Double> velocities = new ArrayList<>();
 
-    public static double DISTANCE = 36;
-    public static double RECORD_NUMBER = 10;
+    private static double DISTANCE = 36;
+    private static double RECORD_NUMBER = 10;
 
     private boolean end;
 
@@ -520,7 +520,7 @@ class LateralVelocityTuner extends OpMode {
  */
 class ForwardZeroPowerAccelerationTuner extends OpMode {
     private final ArrayList<Double> accelerations = new ArrayList<>();
-    public static double VELOCITY = 30;
+    private static double VELOCITY = 30;
 
     private double previousVelocity;
     private long previousTimeNano;
@@ -624,7 +624,7 @@ class ForwardZeroPowerAccelerationTuner extends OpMode {
  */
 class LateralZeroPowerAccelerationTuner extends OpMode {
     private final ArrayList<Double> accelerations = new ArrayList<>();
-    public static double VELOCITY = 30;
+    private static double VELOCITY = 30;
     private double previousVelocity;
     private long previousTimeNano;
     private boolean stopping;
@@ -898,7 +898,7 @@ class PredictiveBrakingTuner extends OpMode {
  * @version 1.0, 3/12/2024
  */
 class TranslationalTuner extends OpMode {
-    public static double DISTANCE = 40;
+    private static double DISTANCE = 40;
     private boolean forward = true;
 
     private Path forwards;
@@ -965,7 +965,7 @@ class TranslationalTuner extends OpMode {
  * @version 1.0, 3/12/2024
  */
 class HeadingTuner extends OpMode {
-    public static double DISTANCE = 40;
+    private static double DISTANCE = 40;
     private boolean forward = true;
 
     private Path forwards;
@@ -1035,7 +1035,7 @@ class HeadingTuner extends OpMode {
  * @version 1.0, 3/12/2024
  */
 class DriveTuner extends OpMode {
-    public static double DISTANCE = 40;
+    private static double DISTANCE = 40;
     private boolean forward = true;
 
     private PathChain forwards;
@@ -1115,7 +1115,7 @@ class DriveTuner extends OpMode {
  * @version 1.0, 3/12/2024
  */
 class Line extends OpMode {
-    public static double DISTANCE = 40;
+    private static double DISTANCE = 40;
     private boolean forward = true;
 
     private Path forwards;
@@ -1180,7 +1180,7 @@ class Line extends OpMode {
  * @version 1.0, 3/13/2024
  */
 class CentripetalTuner extends OpMode {
-    public static double DISTANCE = 20;
+    private static double DISTANCE = 20;
     private boolean forward = true;
 
     private Path forwards;
@@ -1310,7 +1310,7 @@ class Triangle extends OpMode {
  * @version 1.0, 3/12/2024
  */
 class Circle extends OpMode {
-    public static double RADIUS = 10;
+    private static double RADIUS = 10;
     private PathChain circle;
 
     public void start() {
@@ -1424,7 +1424,7 @@ class AnalogMinMaxTuner extends OpMode {
  *
  */
 class SwerveOffsetsTest extends OpMode {
-    boolean debugStringEnabled = false;
+    private boolean debugStringEnabled = false;
 
     @Override
     public void init() {}
@@ -1480,7 +1480,7 @@ class SwerveOffsetsTest extends OpMode {
  *
  */
 class SwerveTurnTest extends OpMode {
-    boolean debugStringEnabled = false;
+    private boolean debugStringEnabled = false;
 
     @Override
     public void init() {}

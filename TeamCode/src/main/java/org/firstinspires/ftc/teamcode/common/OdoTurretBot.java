@@ -5,14 +5,14 @@ import com.pedropathing.geometry.Pose;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.common.components.PollenTurret;
-import org.firstinspires.ftc.teamcode.common.components.Turret;
+import org.firstinspires.ftc.teamcode.common.components.UnderTurret;
 import org.firstinspires.ftc.teamcode.common.constants.FieldConstants;
 import org.firstinspires.ftc.teamcode.common.constants.RobotConstants;
 
 /** Bot variant for an odometry turret that uses the Pedro Pathing follower. */
 public class OdoTurretBot extends Bot {
     private final PollenTurret.Alliance alliance;
-    private final Turret turret;
+    private final UnderTurret underTurret;
 
     public OdoTurretBot(
             OpMode opMode, Telemetry telemetry, PollenTurret.Alliance alliance) {
@@ -24,11 +24,7 @@ public class OdoTurretBot extends Bot {
         if (follower == null) {
             throw new IllegalStateException("Pedro Pathing follower failed to initialize.");
         }
-        turret = new Turret(opMode.hardwareMap, telemetry);
-    }
-
-    private double getCurrentHeadingDegrees() {
-        return Math.toDegrees(follower.getPose().getHeading());
+        underTurret = new UnderTurret(opMode.hardwareMap, telemetry);
     }
 
     public void startTeleopDrive() {
@@ -42,6 +38,18 @@ public class OdoTurretBot extends Bot {
     public void stopDrive() {
         follower.setTeleOpDrive(0, 0, 0, true);
         follower.update();
+    }
+
+    public void runKickerForward() {
+        underTurret.runKickerForward();
+    }
+
+    public void runKickerReverse() {
+        underTurret.runKickerReverse();
+    }
+
+    public void stopKicker() {
+        underTurret.stopKicker();
     }
 
     /**
@@ -90,6 +98,12 @@ public class OdoTurretBot extends Bot {
     public void aimTurretAtNearestCell() {
         double targetPosition = RobotConstants.TurretConstants.AIM_FORWARD_POSITION
                 + getCellHeading() / RobotConstants.TurretConstants.AIM_SERVO_RANGE_DEGREES;
-        turret.setAimPosition(targetPosition);
+        underTurret.setAimPosition(targetPosition);
+    }
+
+    /** Returns the turret's current angle relative to forward, in degrees. */
+    public double getTurretAngleDegrees() {
+        return (underTurret.getAimPosition() - RobotConstants.TurretConstants.AIM_FORWARD_POSITION)
+                * RobotConstants.TurretConstants.AIM_SERVO_RANGE_DEGREES;
     }
 }

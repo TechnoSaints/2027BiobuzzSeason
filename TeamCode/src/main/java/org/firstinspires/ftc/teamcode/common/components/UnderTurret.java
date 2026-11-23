@@ -10,17 +10,23 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.common.constants.RobotConstants;
 
 /** Launcher turret with a 6000 RPM motor and two standard positional servos. */
-public class Turret extends Component {
+public class UnderTurret extends Component {
     private final DcMotorEx launcherMotor;
+    private final DcMotorEx kickerMotor;
     private final Servo aimServo;
     private final Servo launchAngleServo;
 
-    public Turret(HardwareMap hardwareMap, Telemetry telemetry) {
+    public UnderTurret(HardwareMap hardwareMap, Telemetry telemetry) {
         super(telemetry);
         launcherMotor = hardwareMap.get(
                 DcMotorEx.class, RobotConstants.TurretConstants.LAUNCHER_MOTOR_NAME);
         launcherMotor.setDirection(RobotConstants.TurretConstants.LAUNCHER_MOTOR_DIRECTION);
         launcherMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        kickerMotor = hardwareMap.get(
+                DcMotorEx.class, RobotConstants.TurretConstants.KICKER_MOTOR_NAME);
+        kickerMotor.setDirection(RobotConstants.TurretConstants.KICKER_MOTOR_DIRECTION);
+        kickerMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         aimServo = hardwareMap.get(
                 Servo.class, RobotConstants.TurretConstants.AIM_SERVO_NAME);
@@ -52,6 +58,21 @@ public class Turret extends Component {
         launcherMotor.setPower(0.0);
     }
 
+    /** Runs the kicker wheel at full power to feed balls into the launcher. */
+    public void runKickerForward() {
+        kickerMotor.setPower(1.0);
+    }
+
+    /** Runs the kicker wheel at full power in reverse. */
+    public void runKickerReverse() {
+        kickerMotor.setPower(-1.0);
+    }
+
+    /** Stops the kicker wheel. */
+    public void stopKicker() {
+        kickerMotor.setPower(0.0);
+    }
+
     /** Sets turret aim-servo position from 0.0 to 1.0. */
     public void setAimPosition(double position) {
         aimServo.setPosition(clampServoPosition(position));
@@ -78,12 +99,12 @@ public class Turret extends Component {
     }
 
     @Override
-    public boolean isBusy() {
+    protected boolean isBusy() {
         return false;
     }
 
     @Override
-    public void update() {
+    protected void update() {
         // The launcher and positional servos are controlled directly by their setters.
     }
 }

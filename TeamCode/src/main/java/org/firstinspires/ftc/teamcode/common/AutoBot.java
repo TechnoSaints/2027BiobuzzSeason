@@ -49,7 +49,7 @@ public class AutoBot extends Bot {
 //
 //        followPath(targetPath, 0.8);
 //    }
-    public boolean followerIsBusy()
+    private boolean followerIsBusy()
     {
         return (follower.isBusy());
     }

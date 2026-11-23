@@ -1,11 +1,14 @@
 package org.firstinspires.ftc.teamcode.opmode.auto.alliance_specific;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+
 import org.firstinspires.ftc.teamcode.common.components.PollenTurret;
 import org.firstinspires.ftc.teamcode.common.constants.Paths;
 import org.firstinspires.ftc.teamcode.opmode.auto.AutoOpMode;
 
+@Autonomous(name = "RED 2 tip auto", group = "0 COMPETITION")
 public class Red2TipAuto extends AutoOpMode {
-    protected PollenTurret.Alliance alliance = PollenTurret.Alliance.RED;
+    private PollenTurret.Alliance alliance = PollenTurret.Alliance.RED;
 
     public Red2TipAuto() {
         super();

@@ -52,8 +52,8 @@ public class PollenTurret extends Component{
             RobotConstants.PollenTurretConstants.pollenTurretFlywheelD,
             RobotConstants.PollenTurretConstants.pollenTurretFlywheelF);
     private ElapsedTime timer;
-    public static double kP = RobotConstants.PollenTurretConstants.kP;
-    public static double kD = RobotConstants.PollenTurretConstants.kD;
+    private static double kP = RobotConstants.PollenTurretConstants.kP;
+    private static double kD = RobotConstants.PollenTurretConstants.kD;
     private double lastError = 0;
     private double lastOffsetError;
     private boolean hasPreviousOffsetError;
@@ -65,16 +65,12 @@ public class PollenTurret extends Component{
     private double power = 0.5;
     private Limelight3A limelight;
 
-    Telemetry telemetry;
-
     public PollenTurret(HardwareMap hardwareMap, Telemetry telemetry, Alliance alliance) {
         super(telemetry);
         if (alliance == null) {
             throw new IllegalArgumentException("Alliance must be specified");
         }
         this.alliance = alliance;
-        this.telemetry = telemetry;
-
         try {
             // This name has to exactly match what you typed into the Driver Station's Hardware Config.
             pollenTurretMotor = hardwareMap.get(DcMotorEx.class, RobotConstants.PollenTurretConstants.POLLEN_TURRET_NAME);

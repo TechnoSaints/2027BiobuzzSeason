@@ -118,7 +118,6 @@ public class TeleopBot extends Bot {
 //                }
 
             if (llResult != null) {
-//                double error = nectarTurret.getAprilTagAngleOffset(llResult);
                 pidf.setPIDF(RobotConstants.Drivetrain.aimP,RobotConstants.Drivetrain.aimI,RobotConstants.Drivetrain.aimD,RobotConstants.Drivetrain.aimF);
 //                turnPower = pidf.calculate(error, RobotConstants.Drivetrain.targetError);
 //                    if (error > 0.75) {
@@ -150,15 +149,15 @@ public class TeleopBot extends Bot {
 
     /** Runs the intake forward */
     public void forward() {
-        if (intake != null) {
-            intake.forward();
+        if (intakeFeeder != null) {
+            intakeFeeder.forward();
         }
     }
 
     /** Runs the intake in reverse */
     public void reverse() {
-        if (intake != null) {
-            intake.reverse();
+        if (intakeFeeder != null) {
+            intakeFeeder.reverse();
         }
     }
 

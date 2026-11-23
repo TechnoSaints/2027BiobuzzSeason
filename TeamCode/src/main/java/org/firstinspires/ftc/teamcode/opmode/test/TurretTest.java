@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.opmode.test;
 
-import com.qualcomm.hardware.limelightvision.LLResult;
-import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
@@ -12,7 +10,6 @@ import org.firstinspires.ftc.teamcode.common.components.PollenTurret;
 @TeleOp(name = "Turret Test", group = "Test")
 public class TurretTest extends LinearOpMode {
     private PollenTurret pollenTurret;
-//    private NectarTurret nectarTurret;
     private Drivetrain drivetrain;
 
     @Override
@@ -22,9 +19,6 @@ public class TurretTest extends LinearOpMode {
                 hardwareMap,
                 telemetry,
                 PollenTurret.Alliance.RED);
-//        nectarTurret = new NectarTurret(
-//                hardwareMap,
-//                telemetry);
         waitForStart();
 //        pollenTurret.startLimelight();
         pollenTurret.raiseHood();
@@ -76,12 +70,6 @@ public class TurretTest extends LinearOpMode {
             pollenTurret.setMotorPIDFCoefficients(new PIDFCoefficients(kP, 0, 0, kF));
             pollenTurret.setVelocity(targetVelocity);
 
-//            LLResult result = pollenTurret.getLatestLimelightResult();
-            //nectarTurret.update(result);
-//            pollenTurret.update(result);
-//            LLResultTypes.FiducialResult targetTag = pollenTurret.getClosestAllianceTag(result);
-//            Double angleOffset = targetTag == null ? null : targetTag.getTargetXDegrees();
-
             if (gamepad1.shareWasPressed()) {
                 pollenTurret.setAimingAngle(pollenTurret.getAimingAngle() - 0.01);
             }
@@ -110,10 +98,8 @@ public class TurretTest extends LinearOpMode {
 //                    "AprilTag angle offset",
 //                    angleOffset == null ? "No tag detected" : angleOffset);
             pollenTurret.log();
-//            nectarTurret.log();
             telemetry.update();
         }
         pollenTurret.stop();
-//        nectarTurret.stop();
     }
 }

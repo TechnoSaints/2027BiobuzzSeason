@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.common.components;
 
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -8,17 +7,13 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.common.constants.RobotConstants;
 
-import java.net.PortUnreachableException;
-
 /**
- * Intake is the robot part that sucks up game pieces.
- * It's really just one motor - this class gives the rest of the code easy
- * on/off/reverse commands so nobody has to remember raw power numbers.
+ * Combines the intake and feeder into one game-piece handling subsystem.
  */
 public class Intake extends Component {
     private DcMotorEx intakeMotor;
-
     private Servo flowerServo;
+    private Feeder feeder;
 
     public Intake(HardwareMap hardwareMap, Telemetry telemetry) {
         super(telemetry);
@@ -33,6 +28,7 @@ public class Intake extends Component {
                     "%s: %s", e.getClass().getSimpleName(), String.valueOf(e.getMessage())
             );
         }
+        feeder = new Feeder(hardwareMap, telemetry);
     }
 
     /**
@@ -60,15 +56,34 @@ public class Intake extends Component {
         setIntakePower(RobotConstants.Intake.stopPower);
     }
 
+    public void feederForward() {
+        feeder.forward();
+    }
+
+    public void feederReverse() {
+        feeder.reverse();
+    }
+
+    public void stopFeeder() {
+        feeder.stop();
+    }
+
+    public void openGate() {
+        feeder.openGate();
+    }
+
+    public void closeGate() {
+        feeder.closeGate();
+    }
+
     @Override
     public boolean isBusy() {
-        return false;
+        return feeder.isBusy();
     }
 
     @Override
     public void update() {
-        // Nothing needs to happen here every loop yet - if you add a sensor
-        // to the intake later (like a color sensor), check it here.
+        feeder.update();
     }
 
     public void lowerFlowerServo(){

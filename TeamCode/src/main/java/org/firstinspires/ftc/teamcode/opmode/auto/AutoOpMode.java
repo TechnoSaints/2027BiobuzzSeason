@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.common.constants.Paths;
 public abstract class AutoOpMode extends OpMode {
     protected AutoBot bot;
     protected int pathState;
-    protected double launcherSpeed;
+    private double launcherSpeed;
     protected ElapsedTime controlTimer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
     protected ElapsedTime gameTimer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
 
@@ -58,4 +58,3 @@ public abstract class AutoOpMode extends OpMode {
 
     protected abstract void autonomousPathUpdate();
 }
-
