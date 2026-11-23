@@ -117,6 +117,17 @@ public class RobotConstants {
         }
     }
 
+    public static class TurretConstants {
+        public static final String LAUNCHER_MOTOR_NAME = "turretLauncher";
+        public static final String AIM_SERVO_NAME = "turretAim";
+        public static final String LAUNCH_ANGLE_SERVO_NAME = "turretLaunchAngle";
+        public static final DcMotorSimple.Direction LAUNCHER_MOTOR_DIRECTION =
+                DcMotorSimple.Direction.FORWARD;
+        public static final double LAUNCHER_RATED_RPM = 6000.0;
+        public static final double AIM_FORWARD_POSITION = 0.5;
+        public static final double AIM_SERVO_RANGE_DEGREES = 355.0;
+    }
+
     public static class NectarTurretConstants {
         public static final String NECTAR_TURRET_NAME = "nectarTurretFlywheel";
         public static final String NECTAR_HOOD_SERVO_NAME = "nectarTurretHood";

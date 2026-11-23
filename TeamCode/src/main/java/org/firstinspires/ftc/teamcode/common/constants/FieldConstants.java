@@ -16,6 +16,13 @@ public class FieldConstants {
     public static Pose parkSetupPose = new Pose(9, 63, Math.toRadians(270));
     public static Pose parkPose = new Pose(13, 93, Math.toRadians(270));
 
+    // Estimated cell centers in Pedro field coordinates; calibrate to the field layout.
+    public static Pose blueAudienceCellPose = new Pose(24, 72);
+    public static Pose blueOppositeAudienceCellPose = new Pose(120, 72);
+    public static Pose redAudienceCellPose = new Pose(72, 24);
+    public static Pose redOppositeAudienceCellPose = new Pose(72, 120);
+    public static final double CELL_CENTER_UP_HEIGHT_INCHES = 59.0;
+
 
     // Control points for sideFlowerPickupPose to farFlowerSetupPose
     public static Pose controlPoint1 = new Pose(17, 47);
