@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmode.test;
+package org.firstinspires.ftc.teamcode.opmode.tuner;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 @TeleOp(name = "Motor Velocity Test", group = "Test")
-public class MotorVelocityTest extends LinearOpMode {
+public class MotorVelocityTuner extends LinearOpMode {
     private static final double SPEED_STEP = 0.05;
 
     @Override
@@ -77,8 +77,10 @@ public class MotorVelocityTest extends LinearOpMode {
                 telemetry.addData("Selected Motor", motorNames.get(currentMotorIndex));
                 telemetry.addData("Target Speed", "%.0f%%", speedPercentage * 100);
                 telemetry.addData("Target Velocity", "%.0f ticks/s", targetVelocity);
-                telemetry.addData("Encoder Position", selectedMotor.getCurrentPosition());
-                telemetry.addData("Measured Velocity", "%.0f ticks/s", selectedMotor.getVelocity());
+                telemetry.addData(
+                        "Current Motor Velocity",
+                        "%.1f ticks/s",
+                        selectedMotor.getVelocity());
                 telemetry.addLine("D-pad Up/Down: select motor | A/B: +/- 5% | X: stop");
                 telemetry.update();
             }
