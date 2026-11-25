@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 
-@TeleOp(name = "Basic Axon CR Servo", group = "Linear Opmode")
+@TeleOp(name = "Basic Axon CR Servo Tuner", group = "Tuner")
 public class ServoTuner extends LinearOpMode {
 
     private CRServo axonServo;

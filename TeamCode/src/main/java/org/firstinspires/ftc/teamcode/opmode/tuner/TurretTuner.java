@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.common.constants.RobotConstants;
 
-@TeleOp(name = "Turret Test", group = "Test")
+@TeleOp(name = "Turret Tuner", group = "Tuner")
 public class TurretTuner extends LinearOpMode {
     private static final double ANGLE_STEP_DEGREES = 0.5;
     private static final double[] VELOCITY_STEPS_TICKS_PER_SECOND = {20.0, 100.0};

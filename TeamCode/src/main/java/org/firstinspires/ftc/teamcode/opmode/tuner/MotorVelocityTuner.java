@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@TeleOp(name = "Motor Velocity Test", group = "Test")
+@TeleOp(name = "Motor Velocity Tuner", group = "Tuner")
 public class MotorVelocityTuner extends LinearOpMode {
     private static final double SPEED_STEP = 0.05;
 
