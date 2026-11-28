@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.common.components.Component;
-import org.firstinspires.ftc.teamcode.common.components.FlowerBar;
 import org.firstinspires.ftc.teamcode.common.components.IntakeFeeder;
 import org.firstinspires.ftc.teamcode.common.components.Turret;
 import org.firstinspires.ftc.teamcode.common.constants.FieldConstants;
@@ -23,7 +22,9 @@ public class Bot extends Component {
 
     private final Alliance alliance;
     private final IntakeFeeder intakeFeeder;
+    /*
     private final FlowerBar flowerBar;
+    */
     private final Turret turret;
     private final Follower follower;
     /*
@@ -42,7 +43,9 @@ public class Bot extends Component {
 
         this.alliance = alliance;
         intakeFeeder = new IntakeFeeder(opMode.hardwareMap, telemetry);
+        /*
         flowerBar = new FlowerBar(opMode.hardwareMap, telemetry);
+        */
         turret = new Turret(opMode.hardwareMap, telemetry);
         /*
         intakeSensor = opMode.hardwareMap.get(DistanceSensor.class, "intakeSensor");
@@ -68,6 +71,7 @@ public class Bot extends Component {
         intakeFeeder.stop();
     }
 
+    /*
     public void setFlowerBarPosition(double position) {
         flowerBar.setPosition(position);
     }
@@ -83,6 +87,7 @@ public class Bot extends Component {
     public double getFlowerBarPosition() {
         return flowerBar.getPosition();
     }
+    */
 
     public void setLauncherPower(double power) {
         turret.setLauncherPower(power);
@@ -94,6 +99,10 @@ public class Bot extends Component {
 
     public double getLauncherVelocity() {
         return turret.getLauncherVelocity();
+    }
+
+    public double getMaxLauncherVelocity() {
+        return turret.getMaxLauncherVelocity();
     }
 
     public void stopLauncher() {

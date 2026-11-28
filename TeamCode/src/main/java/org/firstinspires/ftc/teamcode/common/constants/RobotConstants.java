@@ -40,9 +40,7 @@ public class RobotConstants {
 
     // Intake-specific constants
     public static class Intake {
-        public static final String INTAKE_MOTOR_NAME = "intake";
         public static final String Flower_Servo_Name = "flowerServo";
-        public static DcMotorSimple.Direction intakeMotorDirection = DcMotorSimple.Direction.REVERSE;
         
         // Power levels for different intake actions
         public static double maxMovePower = 1.0;
@@ -52,10 +50,15 @@ public class RobotConstants {
         public static final double FLOWER_INTAKE_POSITION = 0.31;
     }
 
-    public static class Feeder {
-        public static final String FEEDER_MOTOR_NAME = "feeder";
-        public static DcMotorSimple.Direction feederMotorDirection = DcMotorSimple.Direction.REVERSE;
+    /** One 435 RPM motor shared by the intake and feeder mechanisms. */
+    public static class IntakeFeeder {
+        public static final String MOTOR_NAME = "feeder";
+        public static final DcMotorSimple.Direction MOTOR_DIRECTION =
+                DcMotorSimple.Direction.REVERSE;
+        public static final double MOTOR_RATED_RPM = 435.0;
+    }
 
+    public static class Feeder {
         // Power levels for different intake actions
         public static double maxMovePower = 1.0;
         public static double stopPower = 0.0;
@@ -73,55 +76,10 @@ public class RobotConstants {
         public static final double MAX_AIM_TURN = 0.35;
     }
 
-    public static class PollenTurretConstants {
-        public static final String POLLEN_TURRET_NAME = "pollenTurretFlywheel";
-        public static final String POLLEN_SERVO_NAME = "pollenTurretRotate";
-        public static final String POLLEN_ANGLE_SERVO_NAME = "pollenTurretHood";
-        public static final String Pollen_Angle_Encoder = "pollenTurretRotateEncoder";
-
-        public static final DcMotorSimple.Direction pollenTurretDirection = DcMotorSimple.Direction.REVERSE;
-        public static final CRServo.Direction pollenServoDirection = CRServo.Direction.FORWARD;
-        /**
-        * PIDF coefficients used to adjust flywheel behavior.
-        * P and F should be tuned; I and D should be left as default unless problematic.
-        */
-        public static final double pollenTurretFlywheelP = 56.4;
-        public static final double pollenTurretFlywheelI = 3.0;
-        public static final double pollenTurretFlywheelD = 4;
-        public static final double pollenTurretFlywheelF = 13.47;
-        public static final double raiseHoodPosition = 0.65;
-        public static final double pollenRotateMaxSpeed = 0.9;
-        public static final double angleToleranceDegrees = 2.0;
-        public static final double goalOffset = 0;
-        /** Linear reduction in angle correction per inch reported by the Limelight. */
-        public static double pollenOffsetDistanceSlope = 0.005;
-        public static final double pollenOffsetMinimumScale = 0.1;
-
-        public static final double shooterConstant = .02;
-        public static final double kP = 0.013;
-        public static final double kD = 1;
-        // TODO: tune positions
-        public static final double forwardRotatePosition = 0.5;
-        public static class TurretPositions {
-            // right position = 0.28
-
-            public static final double NEAR_CORNER_ANGLE = 0.53;
-            public static final double NEAR_CORNER_SPEED = 1680;
-            public static final double RIGHT_CON = 0.5;
-
-            public static final double CENTER_ANGLE = 0.28;
-            public static final double CENTER_SPEED = 1580;
-
-            public static final double FAR_CORNER_ANGLE = 0.28;
-            public static final double FAR_CORNER_SPEED = 1680;
-        }
-    }
-
     public static class TurretConstants {
         public static final String LAUNCHER_MOTOR_NAME = "turretLauncher";
         public static final String KICKER_MOTOR_NAME = "turretKicker";
         public static final String AIM_SERVO_NAME = "turretAim";
-        public static final String LAUNCH_ANGLE_SERVO_NAME = "turretLaunchAngle";
         public static final DcMotorSimple.Direction LAUNCHER_MOTOR_DIRECTION =
                 DcMotorSimple.Direction.FORWARD;
         public static final DcMotorSimple.Direction KICKER_MOTOR_DIRECTION =
@@ -130,6 +88,10 @@ public class RobotConstants {
         public static final double KICKER_RATED_RPM = 1620.0;
         public static final double AIM_FORWARD_POSITION = 0.5;
         public static final double AIM_SERVO_RANGE_DEGREES = 355.0;
+        public static final double LAUNCHER_VELOCITY_P = 56.4;
+        public static final double LAUNCHER_VELOCITY_I = 3.0;
+        public static final double LAUNCHER_VELOCITY_D = 4.0;
+        public static final double LAUNCHER_VELOCITY_F = 13.47;
     }
 
 }

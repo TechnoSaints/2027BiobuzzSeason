@@ -21,6 +21,11 @@ public class Turret extends Component {
                 DcMotorEx.class, RobotConstants.TurretConstants.LAUNCHER_MOTOR_NAME);
         launcherMotor.setDirection(RobotConstants.TurretConstants.LAUNCHER_MOTOR_DIRECTION);
         launcherMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        launcherMotor.setVelocityPIDFCoefficients(
+                RobotConstants.TurretConstants.LAUNCHER_VELOCITY_P,
+                RobotConstants.TurretConstants.LAUNCHER_VELOCITY_I,
+                RobotConstants.TurretConstants.LAUNCHER_VELOCITY_D,
+                RobotConstants.TurretConstants.LAUNCHER_VELOCITY_F);
 
         kickerMotor = hardwareMap.get(
                 DcMotorEx.class, RobotConstants.TurretConstants.KICKER_MOTOR_NAME);
@@ -46,6 +51,10 @@ public class Turret extends Component {
 
     public double getLauncherVelocity() {
         return launcherMotor.getVelocity();
+    }
+
+    public double getMaxLauncherVelocity() {
+        return launcherMotor.getMotorType().getAchieveableMaxTicksPerSecond();
     }
 
     public void stopLauncher() {

@@ -7,23 +7,23 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.common.constants.RobotConstants;
 
-/** Controls the 435 RPM intake feeder motor. */
+/** Controls the single 435 RPM motor shared by the intake and feeder. */
 public class IntakeFeeder extends Component {
     private final DcMotorEx motor;
 
     public IntakeFeeder(HardwareMap hardwareMap, Telemetry telemetry) {
         super(telemetry);
         motor = hardwareMap.get(
-                DcMotorEx.class, RobotConstants.Feeder.FEEDER_MOTOR_NAME);
-        motor.setDirection(RobotConstants.Feeder.feederMotorDirection);
+                DcMotorEx.class, RobotConstants.IntakeFeeder.MOTOR_NAME);
+        motor.setDirection(RobotConstants.IntakeFeeder.MOTOR_DIRECTION);
     }
 
-    /** Runs the feeder forward at a proportion of maximum power from 0.0 to 1.0. */
+    /** Runs the shared intake and feeder motor forward at a power proportion from 0.0 to 1.0. */
     public void runForward(double powerProportion) {
         motor.setPower(validatePowerProportion(powerProportion));
     }
 
-    /** Runs the feeder in reverse at a proportion of maximum power from 0.0 to 1.0. */
+    /** Runs the shared intake and feeder motor in reverse at a power proportion from 0.0 to 1.0. */
     public void runReverse(double powerProportion) {
         motor.setPower(-validatePowerProportion(powerProportion));
     }
