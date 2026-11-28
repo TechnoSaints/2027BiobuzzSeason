@@ -2,44 +2,68 @@ package org.firstinspires.ftc.teamcode.opmode.tuner;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name = "Basic Axon CR Servo Tuner", group = "Tuner")
-public class ServoTuner extends LinearOpMode {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
-    private CRServo axonServo;
+@TeleOp(name = "Servo Mode Tuner", group = "Tuner")
+public class
+ServoTuner extends LinearOpMode {
+    private static final double POSITION_STEP = 0.01;
 
     @Override
     public void runOpMode() {
-        // 1. Map the servo to the hardware configuration name ("axonServo")
-        axonServo = hardwareMap.get(CRServo.class, "gate");
+        List<Servo> servos = new ArrayList<>();
+        List<String> servoNames = new ArrayList<>();
 
-        telemetry.addData("Status", "Initialized");
+        for (Map.Entry<String, Servo> entry : hardwareMap.servo.entrySet()) {
+            servoNames.add(entry.getKey());
+            servos.add(entry.getValue());
+        }
+
+        if (servos.isEmpty()) {
+            telemetry.addLine("No positional servos found in hardware map.");
+            telemetry.update();
+            waitForStart();
+            return;
+        }
+
+        telemetry.addLine("Servo tuner initialized");
+        telemetry.addLine("D-pad Left/Right: select servo");
+        telemetry.addLine("D-pad Up/Down: adjust position by 0.01");
         telemetry.update();
 
         waitForStart();
+        if (isStopRequested()) {
+            return;
+        }
+
+        int selectedServoIndex = 0;
+        double position = servos.get(selectedServoIndex).getPosition();
 
         while (opModeIsActive()) {
-            // 2. Control the continuous servo power using Gamepad 1 Left Joystick Y-axis,
-            // or use buttons like A and B for full speed.
-
-            // Example A: Using the Left Stick Y-axis (-1.0 to 1.0)
-            double power = -gamepad1.left_stick_y; // Negative if you need to invert direction
-            axonServo.setPower(power);
-
-            // --- OR ---
-            // Example B: Using buttons A (forward) and B (reverse) and X (stop)
-            /*
-            if (gamepad1.a) {
-                axonServo.setPower(1.0);  // Full speed one way
-            } else if (gamepad1.b) {
-                axonServo.setPower(-1.0); // Full speed opposite way
-            } else {
-                axonServo.setPower(0.0);  // Stop
+            if (gamepad1.dpadRightWasPressed()) {
+                selectedServoIndex = (selectedServoIndex + 1) % servos.size();
+                position = servos.get(selectedServoIndex).getPosition();
+            } else if (gamepad1.dpadLeftWasPressed()) {
+                selectedServoIndex = (selectedServoIndex - 1 + servos.size()) % servos.size();
+                position = servos.get(selectedServoIndex).getPosition();
             }
-            */
 
-            telemetry.addData("Servo Power", axonServo.getPower());
+            if (gamepad1.dpadUpWasPressed()) {
+                position = Math.min(1.0, position + POSITION_STEP);
+            } else if (gamepad1.dpadDownWasPressed()) {
+                position = Math.max(0.0, position - POSITION_STEP);
+            }
+
+            Servo selectedServo = servos.get(selectedServoIndex);
+            selectedServo.setPosition(position);
+
+            telemetry.addData("Selected Servo", servoNames.get(selectedServoIndex));
+            telemetry.addData("Position", "%.2f", position);
+            telemetry.addLine("D-pad Left/Right: select servo | Up/Down: position +/- 0.01");
             telemetry.update();
         }
     }

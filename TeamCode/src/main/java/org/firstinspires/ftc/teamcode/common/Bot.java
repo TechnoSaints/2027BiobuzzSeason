@@ -2,199 +2,161 @@ package org.firstinspires.ftc.teamcode.common;
 
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.Pose;
-import com.qualcomm.hardware.limelightvision.LLResult;
-import com.qualcomm.hardware.limelightvision.LLResultTypes;
+import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.common.components.Component;
-import org.firstinspires.ftc.teamcode.common.components.Intake;
-import org.firstinspires.ftc.teamcode.common.components.PollenTurret;
+import org.firstinspires.ftc.teamcode.common.components.FlowerBar;
+import org.firstinspires.ftc.teamcode.common.components.IntakeFeeder;
+import org.firstinspires.ftc.teamcode.common.components.Turret;
+import org.firstinspires.ftc.teamcode.common.constants.FieldConstants;
+import org.firstinspires.ftc.teamcode.common.constants.RobotConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
-/**
- * Bot is the base class shared by both Autonomous and TeleOp robots.
- * It builds the shared drivetrain, intake, and pollen turret.
- */
-public abstract class Bot extends Component {
-    // Follower drives the robot and keeps track of where it is on the field
-    protected Follower follower;
-    // Intake and feeder form one game-piece handling subsystem.
-    protected Intake intakeFeeder;
-    protected PollenTurret pollenTurret;
-    private boolean hasHandledShootingState;
-    private boolean lastShootingState;
+/** Robot systems shared by the red and blue alliance configurations. */
+public class Bot extends Component {
+    public enum Alliance {
+        RED,
+        BLUE
+    }
 
-    protected Bot(OpMode opMode, Telemetry telemetry, PollenTurret.Alliance alliance) {
+    private final Alliance alliance;
+    private final IntakeFeeder intakeFeeder;
+    private final FlowerBar flowerBar;
+    private final Turret turret;
+    private final Follower follower;
+    /*
+    private final DistanceSensor intakeSensor;
+    private final DistanceSensor kickerSensor;
+    */
+
+    public Bot(OpMode opMode, Telemetry telemetry, Alliance alliance) {
         super(telemetry);
-
-        // If a sensor or motor is missing/misconfigured, catch the error and keep
-        // going instead of crashing the whole OpMode - just warn on the Driver Station.
-        try {
-            this.follower = Constants.createFollower(opMode.hardwareMap);
-        } catch (Exception e) {
-            telemetry.addData(
-                    "Error: Failed to initialize Follower (Drivetrain)",
-                    "%s: %s", e.getClass().getSimpleName(), String.valueOf(e.getMessage())
-            );
+        if (opMode == null) {
+            throw new IllegalArgumentException("OpMode must be provided.");
+        }
+        if (alliance == null) {
+            throw new IllegalArgumentException("Alliance must be RED or BLUE.");
         }
 
-        try {
-            this.intakeFeeder = new Intake(opMode.hardwareMap, telemetry);
-        } catch (Exception e) {
-            telemetry.addData(
-                    "Error: Failed to initialize Intake",
-                    "%s: %s", e.getClass().getSimpleName(), String.valueOf(e.getMessage())
-            );
-        }
-
-        try {
-            pollenTurret = new PollenTurret(opMode.hardwareMap, telemetry, alliance);
-        } catch (Exception e) {
-            telemetry.addData(
-                    "Error: Failed to initialize Turrets",
-                    "%s: %s", e.getClass().getSimpleName(), String.valueOf(e.getMessage())
-            );
-        }
+        this.alliance = alliance;
+        intakeFeeder = new IntakeFeeder(opMode.hardwareMap, telemetry);
+        flowerBar = new FlowerBar(opMode.hardwareMap, telemetry);
+        turret = new Turret(opMode.hardwareMap, telemetry);
+        /*
+        intakeSensor = opMode.hardwareMap.get(DistanceSensor.class, "intakeSensor");
+        kickerSensor = opMode.hardwareMap.get(DistanceSensor.class, "kickerSensor");
+        */
+        follower = Constants.createFollower(opMode.hardwareMap);
+        follower.setStartingPose(FieldConstants.startPose);
     }
 
-    /** Starts Limelight processing and resets the turret's aiming timer. */
-    public void startPollenTurret() {
-        if (pollenTurret != null) {
-            pollenTurret.startLimelight();
-            pollenTurret.raiseHood();
-        }
+    public Alliance getAlliance() {
+        return alliance;
     }
 
-    public void runPollenTurret() {
-        if (pollenTurret != null) {
-            // TODO: change to pollen calculation
-            pollenTurret.setVelocity(pollenTurret.getVelocity());
-
-            LLResult result = pollenTurret.getLatestLimelightResult();
-            pollenTurret.update(result);
-            LLResultTypes.FiducialResult targetTag = pollenTurret.getClosestAllianceTag(result);
-            Double angleOffset = targetTag == null ? null : targetTag.getTargetXDegrees();
-
-        }
+    public void runIntakeFeederForward(double powerProportion) {
+        intakeFeeder.runForward(powerProportion);
     }
 
-    public void lowerFlowerServo(){
-        intakeFeeder.lowerFlowerServo();
+    public void runIntakeFeederReverse(double powerProportion) {
+        intakeFeeder.runReverse(powerProportion);
     }
 
-    public void raiseFlowerServo(){
-        intakeFeeder.raiseFlowerServo();
-    }
-
-    public void openGate(){
-        intakeFeeder.openGate();
-    }
-    /**
-     * Call this once every loop of your OpMode.
-     * It keeps the drivetrain and initialized components up to date.
-     */
-    @Override
-    public void update() {
-        if (follower != null) {
-            follower.update();
-        }
-        if (intakeFeeder != null) {
-            intakeFeeder.update();
-        }
-    }
-
-    /** Spins the intake forward to pick up a game piece. */
-    public void intakeOn() {
-        if (intakeFeeder != null) {
-            intakeFeeder.forward();
-            intakeFeeder.feederForward();
-        }
-    }
-
-    /** Spins the intake backward to let go of a game piece. */
-    public void eject() {
-        intakeFeeder.reverse();
-    }
-
-    /** Turns the intake off. */
-    public void stop() {
-        if (intakeFeeder != null) {
-            intakeFeeder.stop();
-        }
-        if (pollenTurret != null) {
-            pollenTurret.stop();
-        }
-    }
-
-    public void intakeOff(){
+    public void stopIntakeFeeder() {
         intakeFeeder.stop();
-        stopFeeder();
     }
 
-    public void log() {
-        if (pollenTurret != null) {
-            pollenTurret.log();
-        }
+    public void setFlowerBarPosition(double position) {
+        flowerBar.setPosition(position);
     }
 
-    public void start(){
-        //startPollenTurret();
-        raiseFlowerServo();
-        intakeFeeder.closeGate();
-
+    public void raiseFlowerBar() {
+        flowerBar.setPosition(RobotConstants.Intake.FLOWER_STORE_POSITION);
     }
 
-    public void setAlliance(PollenTurret.Alliance alliance) {
-        if (pollenTurret != null) {
-            pollenTurret.setAlliance(alliance);
-        }
+    public void lowerFlowerBar() {
+        flowerBar.setPosition(RobotConstants.Intake.FLOWER_INTAKE_POSITION);
+    }
+
+    public double getFlowerBarPosition() {
+        return flowerBar.getPosition();
+    }
+
+    public void setLauncherPower(double power) {
+        turret.setLauncherPower(power);
+    }
+
+    public void setLauncherVelocity(double ticksPerSecond) {
+        turret.setLauncherVelocity(ticksPerSecond);
+    }
+
+    public double getLauncherVelocity() {
+        return turret.getLauncherVelocity();
+    }
+
+    public void stopLauncher() {
+        turret.stopLauncher();
+    }
+
+    public void runKickerForward() {
+        turret.runKickerForward();
+    }
+
+    public void runKickerReverse() {
+        turret.runKickerReverse();
+    }
+
+    public void stopKicker() {
+        turret.stopKicker();
+    }
+
+    public void setTurretAimPosition(double position) {
+        turret.setAimPosition(position);
+    }
+
+    public double getTurretAimPosition() {
+        return turret.getAimPosition();
+    }
+
+    /*
+    public double getIntakeSensorDistance(DistanceUnit unit) {
+        return intakeSensor.getDistance(unit);
+    }
+
+    public double getKickerSensorDistance(DistanceUnit unit) {
+        return kickerSensor.getDistance(unit);
+    }
+    */
+
+    public void startTeleopDrive() {
+        follower.startTeleopDrive();
+    }
+
+    public void setDrivePowers(double forward, double strafe, double turn) {
+        follower.setTeleOpDrive(forward, strafe, turn, true);
+    }
+
+    public void followPath(PathChain path, double maxPower, boolean holdEnd) {
+        follower.followPath(path, maxPower, holdEnd);
     }
 
     public Pose getPose() {
-        if (follower != null) {
-            return follower.getPose();
-        }
-        return new Pose(0, 0, 0);
+        return follower.getPose();
     }
 
-    public void setPollenTurretVelocity(double velocity){
-        pollenTurret.setVelocity(velocity);
-    }
-
-    public void setPollenTurretAngle(double angle) {
-        pollenTurret.setPollenLaunchAngle(angle);
-    }
-
-    public void setPollenTurretRotation (double angle) {
-        pollenTurret.setPollenRotation(angle);
-    }
-
-    public void stopFeeder(){
-        intakeFeeder.stopFeeder();
-        intakeFeeder.closeGate();
-    }
-
-    public void handleShooting(boolean shoot, boolean intakeOn){
-        if (hasHandledShootingState && shoot == lastShootingState) {
-            return;
-        }
-        hasHandledShootingState = true;
-        lastShootingState = shoot;
-
-        if (shoot) {
-            intakeFeeder.feederForward();
-            intakeFeeder.openGate();
-        } else {
-            if (!intakeOn) {
-                intakeFeeder.stopFeeder();
-            }
-            intakeFeeder.closeGate();
-        }
+    public void stopDrive() {
+        follower.setTeleOpDrive(0.0, 0.0, 0.0, true);
     }
 
     @Override
     public boolean isBusy() {
-        return follower.isBusy() || intakeFeeder.isBusy() || pollenTurret.isBusy();
+        return follower.isBusy();
+    }
+
+    @Override
+    public void update() {
+        follower.update();
     }
 }

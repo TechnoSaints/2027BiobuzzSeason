@@ -9,15 +9,13 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.common.constants.RobotConstants;
 
-/** Launcher turret with a 6000 RPM motor and two standard positional servos. */
-public class UnderTurret extends Component {
+/** Launcher turret with a 6000 RPM motor and an aim servo. */
+public class Turret extends Component {
     private final DcMotorEx launcherMotor;
     private final DcMotorEx kickerMotor;
     private final Servo aimServo;
 
-   // private final Servo launchAngleServo;
-
-    public UnderTurret(HardwareMap hardwareMap, Telemetry telemetry) {
+    public Turret(HardwareMap hardwareMap, Telemetry telemetry) {
         super(telemetry);
         launcherMotor = hardwareMap.get(
                 DcMotorEx.class, RobotConstants.TurretConstants.LAUNCHER_MOTOR_NAME);
@@ -31,8 +29,6 @@ public class UnderTurret extends Component {
 
         aimServo = hardwareMap.get(
                 Servo.class, RobotConstants.TurretConstants.AIM_SERVO_NAME);
-   //     launchAngleServo = hardwareMap.get(
-      //          Servo.class, RobotConstants.TurretConstants.LAUNCH_ANGLE_SERVO_NAME);
     }
 
     /** Sets launcher output from -1.0 to 1.0. */
@@ -76,18 +72,9 @@ public class UnderTurret extends Component {
         aimServo.setPosition(clampServoPosition(position));
     }
 
-    /** Sets launch-angle-servo position from 0.0 to 1.0. */
-   /* public void setLaunchAnglePosition(double position) {
-        launchAngleServo.setPosition(clampServoPosition(position));
-    } */
-
     public double getAimPosition() {
         return aimServo.getPosition();
     }
-
-  /*  public double getLaunchAnglePosition() {
-        return launchAngleServo.getPosition();
-    } */
 
     private double clampServoPosition(double position) {
         if (!Double.isFinite(position)) {
