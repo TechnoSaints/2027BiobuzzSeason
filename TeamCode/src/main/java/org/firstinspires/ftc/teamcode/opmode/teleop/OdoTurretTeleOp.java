@@ -42,6 +42,8 @@ public class OdoTurretTeleOp extends OpMode {
     public void start() {
         bot = new OdoTurretBot(this, telemetry, alliance);
         bot.startTeleopDrive();
+        bot.setPollenTurretVelocity(1500);
+        bot.intakeOn();
     }
 
     @Override
@@ -58,7 +60,7 @@ public class OdoTurretTeleOp extends OpMode {
         bot.update();
         bot.aimTurretAtNearestCell();
 
-        if (gamepad1.aWasPressed() && !kickerFiring) {
+     /*   if (gamepad1.a && !kickerFiring) {
             kickerFiring = true;
             kickerTimer.reset();
             bot.runKickerForward();
@@ -66,6 +68,26 @@ public class OdoTurretTeleOp extends OpMode {
         if (kickerFiring && kickerTimer.seconds() >= KICKER_FIRE_DURATION_SECONDS) {
             bot.stopKicker();
             kickerFiring = false;
+        } */
+
+        if (gamepad1.right_trigger > 0.2) {
+            bot.runKickerReverse();
+        } else {
+            bot.stopKicker();
+        }
+
+        if (gamepad1.a) {
+            bot.intakeOn();
+        } else if (gamepad1.b) {
+            bot.intakeOff();
+        }
+
+        if (gamepad1.right_bumper){
+            //increase velocity by 50 ticks
+        }
+
+        if (gamepad1.left_bumper){
+            //Decrease velocity by 50 ticks
         }
 
         telemetry.addData("Alliance", alliance);

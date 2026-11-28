@@ -14,7 +14,8 @@ public class UnderTurret extends Component {
     private final DcMotorEx launcherMotor;
     private final DcMotorEx kickerMotor;
     private final Servo aimServo;
-    private final Servo launchAngleServo;
+
+   // private final Servo launchAngleServo;
 
     public UnderTurret(HardwareMap hardwareMap, Telemetry telemetry) {
         super(telemetry);
@@ -30,8 +31,8 @@ public class UnderTurret extends Component {
 
         aimServo = hardwareMap.get(
                 Servo.class, RobotConstants.TurretConstants.AIM_SERVO_NAME);
-        launchAngleServo = hardwareMap.get(
-                Servo.class, RobotConstants.TurretConstants.LAUNCH_ANGLE_SERVO_NAME);
+   //     launchAngleServo = hardwareMap.get(
+      //          Servo.class, RobotConstants.TurretConstants.LAUNCH_ANGLE_SERVO_NAME);
     }
 
     /** Sets launcher output from -1.0 to 1.0. */
@@ -44,9 +45,6 @@ public class UnderTurret extends Component {
 
     /** Sets launcher velocity in the motor encoder's ticks per second. */
     public void setLauncherVelocity(double ticksPerSecond) {
-        if (!Double.isFinite(ticksPerSecond)) {
-            throw new IllegalArgumentException("Launcher velocity must be finite.");
-        }
         launcherMotor.setVelocity(ticksPerSecond);
     }
 
@@ -79,17 +77,17 @@ public class UnderTurret extends Component {
     }
 
     /** Sets launch-angle-servo position from 0.0 to 1.0. */
-    public void setLaunchAnglePosition(double position) {
+   /* public void setLaunchAnglePosition(double position) {
         launchAngleServo.setPosition(clampServoPosition(position));
-    }
+    } */
 
     public double getAimPosition() {
         return aimServo.getPosition();
     }
 
-    public double getLaunchAnglePosition() {
+  /*  public double getLaunchAnglePosition() {
         return launchAngleServo.getPosition();
-    }
+    } */
 
     private double clampServoPosition(double position) {
         if (!Double.isFinite(position)) {

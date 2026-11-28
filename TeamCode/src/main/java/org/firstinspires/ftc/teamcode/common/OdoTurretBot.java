@@ -106,4 +106,8 @@ public class OdoTurretBot extends Bot {
         return (underTurret.getAimPosition() - RobotConstants.TurretConstants.AIM_FORWARD_POSITION)
                 * RobotConstants.TurretConstants.AIM_SERVO_RANGE_DEGREES;
     }
+
+    public void setPollenTurretVelocity(double velocity){
+        underTurret.setLauncherVelocity(velocity);
+    }
 }

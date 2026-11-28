@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 @TeleOp(name = "Servo Mode Tuner", group = "Tuner")
-public class ServoModeTuner extends LinearOpMode {
+public class
+ServoModeTuner extends LinearOpMode {
     private static final double POSITION_STEP = 0.01;
 
     @Override
